@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "dcc"
-require "nokogiri"
 require "canon/rspec_matchers"
 
 Canon::Config.configure do |config|
