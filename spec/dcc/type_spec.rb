@@ -64,27 +64,33 @@ RSpec.describe Dcc::Type::SiUnit do
 end
 
 RSpec.describe Dcc::Type::Base64Binary do
-  describe ".cast / .serialize round-trip" do
-    it "decodes base64 to binary" do
-      expect(described_class.cast("VGVzdAo=")).to eq("Test\n")
-      expect(described_class.cast("VGVzdAo=").encoding).to eq(Encoding::BINARY)
-    end
-
-    it "encodes binary to base64" do
-      binary = "Test\n".dup.force_encoding(Encoding::BINARY)
-      expect(described_class.serialize(binary)).to eq("VGVzdAo=")
-    end
-
-    it "round-trips" do
-      original = "Hello, DCC!\n".dup.force_encoding(Encoding::BINARY)
-      encoded = described_class.serialize(original)
-      decoded = described_class.cast(encoded)
-      expect(decoded).to eq(original)
+  describe ".cast / .serialize" do
+    it "passes through base64 strings unchanged (preserves round-trip)" do
+      expect(described_class.cast("VGVzdAo=")).to eq("VGVzdAo=")
+      expect(described_class.serialize("VGVzdAo=")).to eq("VGVzdAo=")
     end
 
     it "returns nil for nil" do
       expect(described_class.cast(nil)).to be_nil
       expect(described_class.serialize(nil)).to be_nil
+    end
+  end
+
+  describe ".decode" do
+    it "decodes base64 to binary" do
+      expect(described_class.decode("VGVzdAo=")).to eq("Test\n")
+      expect(described_class.decode("VGVzdAo=").encoding).to eq(Encoding::BINARY)
+    end
+
+    it "returns empty string for nil/invalid" do
+      expect(described_class.decode(nil)).to eq("")
+      expect(described_class.decode("not-base64!@#")).to eq("")
+    end
+  end
+
+  describe ".encode" do
+    it "encodes binary to base64" do
+      expect(described_class.encode("Test\n")).to eq("VGVzdAo=")
     end
   end
 end

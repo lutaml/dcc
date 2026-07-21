@@ -13,6 +13,7 @@ module Dcc
           attribute :text, :text, collection: true
           attribute :formula, :formula, collection: true
           attribute :byte_data, :byteData, collection: true
+          attribute :file, :byteData, collection: true
 
           xml do
             namespace ::Dcc::Namespace::Dcc
@@ -24,6 +25,7 @@ module Dcc
             map_element "text", to: :text
             map_element "formula", to: :formula
             map_element "byteData", to: :byte_data
+            map_element "file", to: :file
           end
         end
       end
