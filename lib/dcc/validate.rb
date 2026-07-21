@@ -9,5 +9,6 @@ module Dcc
     autoload :Issue, "dcc/validate/issue"
     autoload :Severity, "dcc/validate/severity"
     autoload :Xsd, "dcc/validate/xsd"
+    autoload :Schematron, "dcc/validate/schematron"
   end
 end
