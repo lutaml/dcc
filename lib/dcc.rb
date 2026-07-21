@@ -89,7 +89,7 @@ module Dcc
       when 2 then V2
       when 3 then V3
       else
-        raise Error::UnknownVersionError, "Unsupported DCC version: #{version.inspect} (expected 2 or 3)"
+        raise UnknownVersionError, "Unsupported DCC version: #{version.inspect} (expected 2 or 3)"
       end
     end
 

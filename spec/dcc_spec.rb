@@ -13,7 +13,6 @@ RSpec.describe Dcc do
     end
 
     it "raises UnknownVersionError for unsupported versions" do
-      pending "autoload of Dcc::Error requires Dcc::V2/V3 to be loaded first"
       expect { Dcc.parser_for(99) }
         .to raise_error(Dcc::UnknownVersionError, /Unsupported DCC version/)
     end
