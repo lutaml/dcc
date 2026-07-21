@@ -10,5 +10,6 @@ module Dcc
     autoload :Severity, "dcc/validate/severity"
     autoload :Xsd, "dcc/validate/xsd"
     autoload :Schematron, "dcc/validate/schematron"
+    autoload :BusinessRules, "dcc/validate/business_rules"
   end
 end
