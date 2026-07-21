@@ -16,7 +16,6 @@ module Dcc
         value.to_s.split(/\s+/).reject(&:empty?).map { |s| cast_one(s) }
       end
 
-      # Serialize an Array (or single BigDecimal) back to the XML-list string.
       def self.serialize(value)
         return "" if value.nil?
 
@@ -29,15 +28,15 @@ module Dcc
         def cast_one(token)
           return token if token.is_a?(::BigDecimal)
 
-          ::BigDecimal(token.to_s)
+          BigDecimal(token.to_s)
         rescue ::ArgumentError => e
-          raise Lutaml::Model::Type::InvalidValueError,
-                "invalid decimal in XML list: #{token.inspect} (#{e.message})"
+          raise Lutaml::Model::Type::InvalidValueError.new(token,
+                                                           "invalid decimal in XML list: #{e.message}")
         end
 
         def serialize_one(value)
           case value
-          when ::BigDecimal then value.to_s("F")
+          when ::BigDecimal then value.to_i.to_s == value.to_s("F") ? value.to_i.to_s : value.to_s("F").sub(/\.0\z/, "")
           when ::Float then format("%.15g", value)
           else value.to_s
           end

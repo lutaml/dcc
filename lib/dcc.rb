@@ -61,6 +61,7 @@ module Dcc
     # @param register [Symbol, nil] Alias for `context` (mml-compatible API).
     # @return [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]
     def parse(input, version: nil, context: nil, register: nil)
+      load_all!
       resolved = version || detect_version(input)
       parser_for(resolved).parse(input, context: context, register: register)
     end
@@ -118,6 +119,17 @@ module Dcc
         input.is_a?(::StringIO) ||
         input.is_a?(::File) ||
         (defined?(::Tempfile) && input.is_a?(::Tempfile)))
+    end
+
+    # Eager-load every version context (DCC + D-SI) so symbol type
+    # references in the base modules resolve correctly. Called automatically
+    # on first `Dcc.parse`. Safe to call multiple times.
+    # @return [true]
+    def load_all!
+      V2.load_all!
+      V3.load_all!
+      Si::V2.load_all!
+      true
     end
   end
 end

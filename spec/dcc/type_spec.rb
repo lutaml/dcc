@@ -149,8 +149,8 @@ RSpec.describe Dcc::Type::SchemaVersion do
 
   describe "#major" do
     it "extracts the major number" do
-      expect(described_class.cast("3.3.0").major).to eq(3)
-      expect(described_class.cast("2.4.0").major).to eq(2)
+      expect(described_class.extract_major("3.3.0")).to eq(3)
+      expect(described_class.extract_major("2.4.0")).to eq(2)
     end
   end
 

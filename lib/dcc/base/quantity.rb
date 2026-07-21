@@ -2,16 +2,15 @@
 
 module Dcc
   module Base
-    # `dcc:quantityType` — DCC quantity wrapper around a D-SI quantity element
-    # (`si:real`, `si:complex`, `si:constant`, `si:hybrid`, `si:list`, etc.).
-    # Also has its own name, usedMethods, usedSoftware, influenceConditions,
-    # measurementMetaData.
+    # `dcc:quantityType` — DCC quantity wrapper around a D-SI quantity element.
+    # The XSD allows any of: si:real, si:complex, si:constant, si:hybrid,
+    # si:list, si:realListXMLList, si:complexListXMLList, or noQuantity.
     #
-    # We use Option B (one attribute per substitution element) since this is
-    # the most reliable pattern in current lutaml-model. The version wrappers
-    # (`Dcc::V2::Quantity`, `Dcc::V3::Quantity`) re-declare these attributes
-    # with the version-appropriate D-SI class so the right type resolves at
-    # parse time.
+    # We use Option B (one attribute per substitution element) — the most
+    # reliable pattern in current lutaml-model. Each si:* element resolves
+    # via the active type registry to the version-appropriate D-SI class
+    # (`Dcc::Si::V2::Real` under `:dcc_v3`, `Dcc::Si::V1::Real` under
+    # `:dcc_v2`, etc.).
     module Quantity
       def self.included(klass)
         klass.class_eval do
@@ -20,6 +19,15 @@ module Dcc
           attribute :ref_type, :string
           attribute :name, :text
           attribute :no_quantity, :string
+          # D-SI quantity substitutions (Option B)
+          attribute :real, :real, collection: true
+          attribute :complex, :complex, collection: true
+          attribute :constant, :constant, collection: true
+          attribute :hybrid, :hybrid, collection: true
+          attribute :real_list_xml_list, :realListXMLList, collection: true
+          attribute :complex_list_xml_list, :complexListXMLList, collection: true
+          attribute :list, :list, collection: true
+          # Ancillary DCC sections
           attribute :used_methods, :usedMethods
           attribute :used_software, :softwareList
           attribute :influence_conditions, :influenceConditions
@@ -34,6 +42,13 @@ module Dcc
             map_attribute "refType", to: :ref_type
             map_element "name", to: :name
             map_element "noQuantity", to: :no_quantity
+            map_element "real", to: :real
+            map_element "complex", to: :complex
+            map_element "constant", to: :constant
+            map_element "hybrid", to: :hybrid
+            map_element "realListXMLList", to: :real_list_xml_list
+            map_element "complexListXMLList", to: :complex_list_xml_list
+            map_element "list", to: :list
             map_element "usedMethods", to: :used_methods
             map_element "usedSoftware", to: :used_software
             map_element "influenceConditions", to: :influence_conditions

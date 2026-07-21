@@ -78,11 +78,24 @@ module Dcc
       AdministrativeData DigitalCalibrationCertificate
     ].freeze
 
-    # Eagerly load every element wrapper so registrations run.
+    # Eagerly load every element wrapper so registrations run, then register
+    # D-SI types in the DCC v3 context so cross-namespace `:real` / `:hybrid`
+    # references inside DCC Quantity's D-SI children resolve cleanly.
     def self.load_all!
       ELEMENT_CLASSES.each { |name| const_get(name) }
       Configuration.populate_context!
+      register_dsi_types!
       true
+    end
+
+    # Re-export D-SI v2 type registrations into the DCC v3 context. Uses
+    # only the public `register_model` API (no instance_variable access).
+    def self.register_dsi_types!
+      ::Dcc::Si::V2.load_all!
+      ::Dcc::Si::V2::Configuration.registered_model_ids.each do |id|
+        klass = ::Dcc::Si::V2::Configuration.registered_model_class(id)
+        Configuration.register_model(klass, id: id)
+      end
     end
   end
 end

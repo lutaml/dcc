@@ -53,6 +53,14 @@ module Dcc
       register_models_in(base_type_context)
     end
 
+    # Contexts that this one falls back to when type lookup fails.
+    # Override in version modules to pull in cross-namespace types
+    # (e.g. DCC contexts fall back to D-SI contexts for `:real`, `:hybrid`).
+    # @return [Array<Symbol>]
+    def fallback_contexts
+      [:default]
+    end
+
     # Register a model for an XML element name and remember it for rebuilds.
     #
     # @param klass [Class] the model class.
@@ -90,6 +98,18 @@ module Dcc
       @default_context_id = nil
     end
 
+    # Public read-only accessors for cross-context re-export.
+    # @return [Array<Symbol>] ids registered in this context.
+    def registered_model_ids
+      registered_models.keys
+    end
+
+    # @param id [Symbol] the model id.
+    # @return [Class, nil] the registered class.
+    def registered_model_class(id)
+      registered_models[id.to_sym]
+    end
+
     private
 
     def unregister_existing(id)
@@ -115,7 +135,7 @@ module Dcc
       create_type_context(
         id: context_id,
         registry: Lutaml::Model::TypeRegistry.new,
-        fallback_to: [:default],
+        fallback_to: fallback_contexts,
       )
     end
 
