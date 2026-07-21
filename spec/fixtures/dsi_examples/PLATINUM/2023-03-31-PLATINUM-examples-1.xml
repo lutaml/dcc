@@ -1,0 +1,361 @@
+<siTest:testDSIXML
+    xmlns:siTest="https://ptb.de/si/examples"
+    xmlns:si="https://ptb.de/si"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+    
+    <!--
+		Copyright (c) 2018-2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved.  
+			
+		AUTHORS: 			Wafa El Jaoua, Daniel Hutzschenreuter & autors of predecessor versions
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+    
+    <siTest:metaData>
+        <siTest:testDescription>XML examples including quantity type for SmartCom D-SI data with quality class PLATINUM (D-SI XSD version 2.2.0)</siTest:testDescription>
+    </siTest:metaData>
+
+    <siTest:testData id="PTB800">
+	    <si:real>
+            <si:quantityTypeQUDT>length</si:quantityTypeQUDT>                            
+	        <si:value>NaN</si:value>
+	        <si:unit>\metre</si:unit>
+	        <si:expandedUnc>
+				<si:uncertainty>NaN</si:uncertainty>
+				<si:coverageFactor>NaN</si:coverageFactor>
+				<si:coverageProbability>NaN</si:coverageProbability>
+			</si:expandedUnc>
+	    </si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB801">
+	    <si:realListXMLList>
+            <si:quantityTypeQUDTXMLList>length</si:quantityTypeQUDTXMLList>                            
+	        <si:valueXMLList>NaN 3.45 0.78 NaN 9.87</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:expandedUncXMLList>
+				<si:uncertaintyXMLList>NaN</si:uncertaintyXMLList>
+				<si:coverageFactorXMLList>1.96</si:coverageFactorXMLList>
+				<si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+			</si:expandedUncXMLList>
+	    </si:realListXMLList>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB802">
+	    <si:real>                       
+	        <si:value>1.023</si:value>
+	        <si:unit>\metre</si:unit>
+	        <si:significantDigit>1</si:significantDigit>
+	    </si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB803">
+	    <si:realListXMLList>
+            <si:quantityTypeQUDTXMLList>length</si:quantityTypeQUDTXMLList>                            
+	        <si:valueXMLList>1.23 3.454 0.78 9.87</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:significantDigitXMLList>-2 -3 -2 -1</si:significantDigitXMLList>
+	    </si:realListXMLList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB804">
+	    <si:real>                          
+	        <si:value>1.00</si:value>
+	        <si:unit>\metre</si:unit>
+	        <si:measurementUncertaintyUnivariate>
+				<si:standardMU>
+					<si:valueStandardMU>0.05</si:valueStandardMU>
+					<si:distribution>normal</si:distribution>
+				</si:standardMU>
+			</si:measurementUncertaintyUnivariate>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB805">
+	    <si:real>
+                           
+	        <si:value>1.00</si:value>
+	        <si:unit>\metre</si:unit>
+	        <si:measurementUncertaintyUnivariate>
+				<si:expandedMU>
+					<si:valueExpandedMU>0.10</si:valueExpandedMU>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedMU>
+			</si:measurementUncertaintyUnivariate>
+	        
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB806">
+	    <si:real>                        
+	        <si:value>1.00</si:value>
+	        <si:unit>\metre</si:unit>
+	        <si:measurementUncertaintyUnivariate>
+				<si:coverageIntervalMU>
+					<si:valueStandardMU>0.05</si:valueStandardMU>
+					<si:intervalMin>0.90</si:intervalMin>
+					<si:intervalMax>1.20</si:intervalMax>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:coverageIntervalMU>
+			</si:measurementUncertaintyUnivariate>
+	        
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB807">
+	    <si:constant>                        
+	        <si:value>1.00</si:value>
+	        <si:unit>\metre</si:unit>
+			<si:valueStandardMU>0.05</si:valueStandardMU>
+			<si:distribution>normal</si:distribution>
+			</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB808">
+	    <si:realListXMLList>                           
+	        <si:valueXMLList>1.0 2.0 3.0 4.0</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:measurementUncertaintyUnivariateXMLList>
+				<si:standardMUXMLList>
+					<si:valueStandardMUXMLList>0.1 0.1 0.1 0.1</si:valueStandardMUXMLList>
+					<si:distributionXMLList>nomral rectangular triangle student</si:distributionXMLList>
+				</si:standardMUXMLList>
+			</si:measurementUncertaintyUnivariateXMLList>
+	        
+	    </si:realListXMLList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB809">
+	    <si:realListXMLList>                           
+	        <si:valueXMLList>1.0 2.0 3.0 4.0</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:measurementUncertaintyUnivariateXMLList>
+				<si:expandedMUXMLList>
+					<si:valueExpandedMUXMLList>0.1 0.1 0.1 0.1</si:valueExpandedMUXMLList>
+					<si:coverageFactorXMLList>1.96 2.00  3.0 1.0</si:coverageFactorXMLList>
+					<si:coverageProbabilityXMLList>0.95 0.06 0.98 1.00</si:coverageProbabilityXMLList>
+					<si:distributionXMLList>normal rectangular triangle student</si:distributionXMLList>
+				</si:expandedMUXMLList>
+			</si:measurementUncertaintyUnivariateXMLList>
+	        
+	    </si:realListXMLList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB810">
+	    <si:realListXMLList>                           
+	        <si:valueXMLList>1.0 2.0 3.0 4.0</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:measurementUncertaintyUnivariateXMLList>
+				<si:coverageIntervalMUXMLList>
+					<si:valueStandardMUXMLList>0.1</si:valueStandardMUXMLList>
+					<si:intervalMinXMLList>0.0</si:intervalMinXMLList>
+					<si:intervalMaxXMLList>2.0 3.0 4.0 5.0</si:intervalMaxXMLList>
+					<si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+					<si:distributionXMLList>normal</si:distributionXMLList>
+				</si:coverageIntervalMUXMLList>
+			</si:measurementUncertaintyUnivariateXMLList>
+	       
+	    </si:realListXMLList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB811">
+	    <si:complexListXMLList>
+			<si:quantityTypeQUDTXMLList>length</si:quantityTypeQUDTXMLList>                           
+	        <si:valueRealXMLList>1.0 2.0</si:valueRealXMLList>
+	        <si:valueImagXMLList>1.0 2.0</si:valueImagXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:measurementUncertaintyBivariateXMLList>
+				<si:ellipsoidalRegionMUXMLList>
+					<si:covarianceMatrixXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+					</si:covarianceMatrixXMLList>
+					<si:coverageFactorXMLList>1.96 2.00</si:coverageFactorXMLList>
+					<si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+					<si:distributionXMLList>normal real</si:distributionXMLList>
+				</si:ellipsoidalRegionMUXMLList>
+			</si:measurementUncertaintyBivariateXMLList>
+	        
+	    </si:complexListXMLList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB812">
+	    <si:complexListXMLList>                           
+	        <si:valueMagnitudeXMLList>1.0 2.0</si:valueMagnitudeXMLList>
+	        <si:valuePhaseXMLList>1.0 2.0</si:valuePhaseXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:unitPhaseXMLList>\one</si:unitPhaseXMLList>
+	        <si:measurementUncertaintyMultivariateXMLList>
+		        <si:ellipsoidalRegionMUXMLList>
+					<si:covarianceMatrixXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\one</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\one</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\one</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\one</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+					</si:covarianceMatrixXMLList>
+					<si:coverageFactorXMLList>1.96 2.00</si:coverageFactorXMLList>
+					<si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+					<si:distributionXMLList>normal real</si:distributionXMLList>
+				</si:ellipsoidalRegionMUXMLList>
+			</si:measurementUncertaintyMultivariateXMLList>
+	    </si:complexListXMLList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="PTB813">
+	    <si:realListXMLList>                           
+	        <si:valueXMLList>1.0 2.0</si:valueXMLList>
+	        <si:unitXMLList>\metre</si:unitXMLList>
+	        <si:measurementUncertaintyMultivariateXMLList>
+		        <si:rectangularRegionMUXMLList>
+					<si:covarianceMatrixXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+						<si:columnXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.5 0.5</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+							<si:covarianceXMLList>
+								<si:valueXMLList>0.0 0.0</si:valueXMLList>
+								<si:unitXMLList>\metre\metre</si:unitXMLList>
+							</si:covarianceXMLList>
+						</si:columnXMLList>
+					</si:covarianceMatrixXMLList>
+					<si:coverageFactorXMLList>1.96</si:coverageFactorXMLList>
+					<si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+					<si:distributionXMLList>normal</si:distributionXMLList>
+				</si:rectangularRegionMUXMLList>
+			</si:measurementUncertaintyMultivariateXMLList>
+	    </si:realListXMLList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="PTB814">
+	    <si:realList>
+			<si:listQuantityTypeQUDT>length</si:listQuantityTypeQUDT>
+			<si:real>
+				<si:value>1.0</si:value>
+	        	<si:unit>\metre</si:unit>
+			</si:real>   
+			<si:real>
+				<si:value>1.0</si:value>
+	        	<si:unit>\metre</si:unit>
+			</si:real>                          
+	        
+	        
+	    </si:realList>
+	</siTest:testData>
+	
+</siTest:testDSIXML>

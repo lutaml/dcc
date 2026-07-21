@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+	
+	<!--
+		Copyright (c) 2019 - 2024 Physikalisch-Technische Bundesanstalt (PTB), all rights reserved. 
+			
+		CONTACT: 			smartcom@ptb.de
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+	
+	<siTest:metaData>
+		<siTest:testDescription>D-SI examples supporting the implementation of DCCs for acceleration measurements</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="DCC_ACCELERATION_1">
+		<!-- Frequenz 6,3 Hz  -->
+		<si:real>
+			<si:label>frequency</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>6.3</si:value>
+			<si:unit>\hertz</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.50</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_2">
+		<!-- Kreisfrequenz 39,58 s^(-1) -->
+		<si:real>
+			<si:label>angular frequency</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>39.58</si:value>
+			<si:unit>\second\tothe{-1}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>3.14</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_3">
+		<!-- Beschleunigungsamplitude (m/s^2) -->
+		<!-- z.B. Anregungsbeschleunigung  -->
+		<si:real>
+			<si:label>accelaration amplitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>98.5</si:value>
+			<si:unit>\metre\second\tothe{-2}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.50</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_4">
+		<!-- Ladungsamplitude (pC)-->
+		<si:real>
+			<si:label>charge amplitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>12.8</si:value>
+			<si:unit>\pico\coulomb</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.050</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_5">
+		<!-- Spannungsamplitude (V)-->
+		<si:real>
+			<si:label>voltage amplitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>10.8</si:value>
+			<si:unit>\milli\volt</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.054</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_6">
+		<!-- Beschleunigungsspitzenwert (Stoß) (pC) -->
+		<si:real>
+			<si:label>peak value</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>12.8</si:value>
+			<si:unit>\pico\coulomb</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.050</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<!-- Andere Spitzenwerte entsprechend mit angepassten <si:unit> Feldern -->
+	
+	<siTest:testData id="DCC_ACCELERATION_7">
+		<!-- Aufnehmer: Ladungsempfindlichkeit (pC/(m/s^2))-->
+		<!-- (nur Betrag) )-->
+		<si:real>
+			<si:label>sensitivity magnitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>0.128</si:value>
+			<si:unit>\pico\coulomb\second\tothe{2}\metre\tothe{-1}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.0007</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_8_Betrag">
+		<!-- Aufnehmer: Spannungsempfindlichkeit (V/(m/s^2)) -->
+		<!-- (Betrag und Phase )-->
+		<si:real>
+			<si:label>sensitivity magnitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>10.83</si:value>
+			<si:unit>\milli\volt\second\tothe{2}\metre\tothe{-1}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.11</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_8_Phase">
+		<si:real>
+			<si:label>sensitivity phase</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>0.2</si:value>
+			<si:unit>\degree</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.5</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_9_Betrag">
+		<!-- Ladungsverstärker  (V/pC) -->
+		<!-- (Betrag und Phase )-->
+		<si:real>
+			<si:label>sensitivity magnitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>10.001</si:value>
+			<si:unit>\volt\pico\coulomb\tothe{-1}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.03</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_9_Phase">
+		<si:real>
+			<si:label>sensitivity phase</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>0.2</si:value>
+			<si:unit>\degree</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.5</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_10_Betrag">
+		<!-- Spannungsverstärker / ICP-Verstärker (V/mV) -->
+		<!-- (Betrag und Phase )-->
+		<si:real>
+			<si:label>sensitivity magnitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>10.001</si:value>
+			<si:unit>\volt\milli\volt\tothe{-1}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.03</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_10_Phase">
+		<si:real>
+			<si:label>sensitivity phase</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>0.2</si:value>
+			<si:unit>\degree</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.5</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_11_Betrag">
+		<!-- Brückenverstärker V/(mV/V) -->
+		<!-- (Betrag und Phase ) -->
+		<si:real>
+			<si:label>sensitivity magnitude</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>10.001</si:value>
+			<si:unit>\volt\milli\volt\tothe{-1}\volt</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.03</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="DCC_ACCELERATION_11_Phase">
+		<si:real>
+			<si:label>sensitivity phase</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>0.2</si:value>
+			<si:unit>\degree</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.5</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_12">
+		<!-- Spitzenwertverhältnis (Stoß) (pC/(m/s²)) -->
+		<si:real>
+			<si:label>sensitivity peak ratio</si:label> <!-- label zur einheitlichen Erkennbarkeit der Messgröße-->
+			<si:value>1.02</si:value>
+			<si:unit>\pico\coulomb\metre\tothe{-1}\second\tothe{2}</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.050</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="DCC_ACCELERATION_13">
+		<!-- Beispiel einer ganzen Ergebniszeile -->
+		<!-- (Frequenz Anregung Betrag und Phase )-->
+		<si:realList>
+		    <si:label>results @ 6.3Hz</si:label> <!-- dieses label ist relativ frei wählbar -->
+		    <si:real>
+		    	<si:label>frequency</si:label>
+		    	<si:value>6.3</si:value>
+		    	<si:unit>\hertz</si:unit>
+		    	<si:expandedUnc>
+		    		<si:uncertainty>0.50</si:uncertainty>
+		    		<si:coverageFactor>2</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    		<si:distribution>normal</si:distribution>
+		    	</si:expandedUnc>
+		    </si:real>
+		    <si:real>
+		    	<si:label>acceleration amplitude</si:label>
+		    	<si:value>98.5</si:value>
+		    	<si:unit>\metre\second\tothe{-2}</si:unit>
+		    	<si:expandedUnc>
+		    		<si:uncertainty>0.50</si:uncertainty>
+		    		<si:coverageFactor>2</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    		<si:distribution>normal</si:distribution>
+		    	</si:expandedUnc>
+		    </si:real>
+		    <si:real>
+		    	<si:label>sensitivity magnitude</si:label>
+		    	<si:value>0.128</si:value>
+		    	<si:unit>\pico\coulomb\second\tothe{2}\metre\tothe{-1}</si:unit>
+		    	<si:expandedUnc>
+		    		<si:uncertainty>0.0007</si:uncertainty>
+		    		<si:coverageFactor>2</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    		<si:distribution>normal</si:distribution>
+		    	</si:expandedUnc>
+		    </si:real>
+		    <si:real>
+		    	<si:label>sensitivity phase</si:label>
+		    	<si:value>0.2</si:value>
+		    	<si:unit>\degree</si:unit>
+		    	<si:expandedUnc>
+		    		<si:uncertainty>0.5</si:uncertainty>
+		    		<si:coverageFactor>2</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    		<si:distribution>normal</si:distribution>
+		    	</si:expandedUnc>
+		    </si:real>
+		</si:realList>
+	</siTest:testData>
+
+	
+</siTest:testDSIXML>

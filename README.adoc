@@ -1,3 +1,69 @@
-= Ruby library for handling Digital Calibration Certificates (PTB DCC)
+= DCC
 
+A Ruby library for parsing, validating, converting, signing, and building
+PTB https://ptb.de[Digital Calibration Certificates^] (DCC) and
+https://ptb.de/d-si[D-SI^] quantity documents.
 
+Built on top of the
+https://github.com/lutaml/lutaml-model[`lutaml-model`^] framework, `dcc`
+provides a fully typed Ruby object representation of both the DCC and D-SI
+XML schemas, with per-major-version class hierarchies mirroring the approach
+used by the https://github.com/plurimath/mml[`mml`^] gem for MathML.
+
+== Highlights
+
+* Fully typed object model for DCC v2.x and v3.x (no more XPath over `lxml`)
+* Fully typed object model for D-SI v1.x and v2.x
+* Lossless round-trip XML fidelity (parsing then serializing is byte-equivalent after canonicalization)
+* Pure-Ruby Schematron engine implementing the 14 PTB Schematron patterns
+  (no Java/Saxon-HE dependency)
+* XSD validation against all 12 bundled DCC schema versions
+* JSON / YAML / CSV / HTML converters
+* MathML formula extraction with BigDecimal-based evaluation
+* XMLDSig signature signing and verification (soft dependency on `xmldsig`)
+* XSLT 1.0 transformation via Nokogiri (optional Saxon-HE bridge for XSLT 2.0/3.0)
+* Programmatic DCC builder DSL
+* Structural diff of two certificates
+* Version migration helpers
+* Thor-based CLI with `validate`, `convert`, `extract`, `signature`,
+  `transform`, `inspect`, `diff`, and `issue` commands
+
+== Quick start
+
+Install the gem:
+
+    $ gem install dcc
+
+Parse a certificate:
+
+[source,ruby]
+----
+require "dcc"
+
+dcc = Dcc.parse(File.read("certificate.xml"))
+dcc.administrative_data.core_data.unique_identifier
+dcc.measurement_results.first.results.first.data.quantities.first.value
+----
+
+Validate:
+
+[source,ruby]
+----
+result = Dcc::Validate::Xsd.call(File.read("certificate.xml"), version: "3.3.0")
+result.ok? # => true
+----
+
+Or via the CLI:
+
+    $ dcc inspect certificate.xml
+    $ dcc validate all certificate.xml
+    $ dcc convert json certificate.xml -o certificate.json
+
+== Status
+
+This gem is under active development. See `TODO.complete/` for the current
+work breakdown.
+
+== License
+
+MIT -- see link:LICENSE[LICENSE].

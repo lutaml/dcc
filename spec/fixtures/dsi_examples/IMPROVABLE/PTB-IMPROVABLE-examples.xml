@@ -1,0 +1,1770 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved. 
+			
+		CONTACT: 			smartcom@ptb.de
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class IMPROVABLE (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="PTB17">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\meter</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB18">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\liter</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB19">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\femto\one</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB20">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\one\tothe{5}</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB21">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilo\gram</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB22">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\deca\kilogram</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB23">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\deci\bel</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB24">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\deci\decibel</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB25">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\micro\mega\ampere</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB26">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kelvin\tothe{2}\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB30">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\kilogram\metre\tothe{2}\micro\ampere\tothe{-1}\hecto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB32">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kiloGram\metre\tothe{2}\ampere\tothE{-1}\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB33">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2.5}\micro\ampere\tothe{-1}\hecto\second\tothe{-2.324}</si:unit>
+		</si:real>
+	</siTest:testData>		
+	
+	<siTest:testData id="PTB35">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{{2}}\micro\ampere\tothe{{-1}\hecto\second\tothe{-2}}</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB36">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\micro\per\ampere/\hecto\second\tothe{2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB37">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2/3}\micro\ampere\tothe{-1}\hecto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB38">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\micro\ampere\tothe{\metre}\hecto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB39">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\tothe{-2}\metre\tothe{2}\micro\ampere\tothe{-1}\hecto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB40">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\micro\nano\ampere\tothe{-1}\hecto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB41">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\micro\tothe{-1}\milli\ampere\tothe{-1}\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB42">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}+\ampere\tothe{-1}-\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB43">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre\tothe{2\kilogram}\ampere\tothe{-1}\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB44">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre\\tothe{2}\ampere\tothe{-1}\\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB45">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre\tothe{0,5}\ampere\tothe{-1}\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB46">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\millimetre\tothe{2}\ampere\tothe{-1}\second^-2</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB47">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre\tothe{2}\ampere\tothe{-1}\second\tothe{-2}\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB48">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\tothe{-1}\milli\dalton\metre\tothe{{ 0,5}\micro\tothe{-1}\nanoampere\tothe{-1}\micor\hecto\second\tothe{-2/3*kg}\tothe{}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB49">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\micro\ampere\tothe{-1}\hecto\second\tothe{}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB50">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilog ram\metre\tothe {2}\micro\ampere\tothe{-1}\he cto\second\tothe{-2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB51">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2e2}\micro\ampere\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB52">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2.0 2}\micro\ampere\tothe{  -1   }</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB53">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram\metre\tothe{2.0000}\micro\ampere\tothe{-001}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB54">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>	onne</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB57">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit></si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB58">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB59">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\mmHg</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB60">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\degreeCelsius</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB62">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{2}\nano\second\tothe{1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB63">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{-1}\nano\second\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB65">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{2}\nano\second\tothe{0}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB67">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{0}\nano\second\tothe{0}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB68">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{-0}\nano\second\tothe{-0}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB69">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{+0}\nano\second\tothe{-0}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB70">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\kilogram</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB71">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\one</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB72">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\decibel</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB73">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\degreecelsius</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB74">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\mmhg</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB75">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\minute</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB76">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\hour</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB77">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\day</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB80">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\ampere\tothe{0.2}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB159">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\planckbar
+			</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB160">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\planckbar	</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB161">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\planckbar
+			</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB162">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\planckbarNUL</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB176">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase></si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB177">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\radian\radian</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB178">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\gram</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB179">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\metre</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB180">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\metre\tothe{3}</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB181">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\metre\metre</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB182">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\nano\degree</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB183">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\micro\arcminute</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB184">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\centi\arcsecond</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB193">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>-0.0</si:coverageProbability>
+				<si:distribution>a</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB195">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>+1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution></si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB196">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>+1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>	</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB197">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>+1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>
+				</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB198">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>-0.5</si:coverageProbability>
+				<si:distribution>rectangular</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB199">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>1.5</si:coverageProbability>
+				<si:distribution>rectangular</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB200">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.2</si:uncertainty>
+				<si:coverageFactor>0.5</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>rectangular</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB201">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.2</si:uncertainty>
+				<si:coverageFactor>-2.</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>rectangular</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB202">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>-1.2</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>rectangular</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB203">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>-0</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>a</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB204">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>a</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB205">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>1.1</si:uncertainty>
+				<si:coverageFactor>2.0</si:coverageFactor>
+				<si:distribution>a</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB206">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\metre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>34</si:uncertainty>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>a</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB207">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB208">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB209">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB210">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB211">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>-1</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB214">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>-0</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB216">
+		<si:real>
+			<si:value>1.50</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMin>2.0</si:intervalMin>
+				<si:intervalMax>1.0</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB219">
+		<si:real>
+			<si:value>20.10</si:value>
+			<si:unit>\metre</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution></si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB223">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.1</si:uncertainty>
+				<si:coverageFactor>0.5</si:coverageFactor>
+				<si:coverageProbability>0.5</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB226">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.1</si:uncertainty>
+				<si:coverageFactor>1.0</si:coverageFactor>
+				<si:coverageProbability>1.1</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB227">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.1</si:uncertainty>
+				<si:coverageFactor>1.0</si:coverageFactor>
+				<si:coverageProbability>-1.0</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB230">
+		<si:constant>
+			<si:label>speed of light in vacuum</si:label>
+			<si:value>299792458.0</si:value>
+			<si:unit>\metre\second\tothe{-1}</si:unit>
+			<si:uncertainty>-1</si:uncertainty>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB231">
+		<si:constant>
+			<si:label>speed of light in vacuum</si:label>
+			<si:value>299792458.0</si:value>
+			<si:unit>\metre\second\tothe{-1}</si:unit>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB232">
+		<si:constant>
+			<si:label>speed of light in vacuum</si:label>
+			<si:value>299792458.0</si:value>
+			<si:unit>\metre\second\tothe{-1}</si:unit>
+			<si:uncertainty>1</si:uncertainty>
+			<si:distribution></si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB233">
+		<si:constant>
+			<si:label>speed of light in vacuum</si:label>
+			<si:value>299792458.0</si:value>
+			<si:unit>inch</si:unit>
+			<si:uncertainty>1</si:uncertainty>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB234">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>-1.0</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:ellipsoidalRegion>
+		</si:realList>
+	</siTest:testData>
+
+	<siTest:testData id="PTB239">
+		<si:realList>
+			<si:listUnit>feet</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB244">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit></si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB245">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution></si:distribution>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB247">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>	</si:distribution>
+			</si:ellipsoidalRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB248">
+		<si:realList>
+			<si:listBivariateUnc>
+			</si:listBivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB249">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB250">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB251">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.2</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB252">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>-100.0</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB253">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>				
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB254">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB255">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>
+			</si:listUnivariateUnc>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB256">
+		<si:realList>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB257">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB258">
+		<si:realList>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB259">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB260">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB261">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:real>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB262">
+		<si:realList>
+			<si:real>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB263">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB264">
+		<si:realList>
+			<si:listUnit>\radian</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB265">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB266">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>-0.001</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB267">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>-0.001</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB268">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>0.3</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB269">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>-100.</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>				
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB270">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>-100.</si:intervalMin>
+					<si:intervalMax>-100.00000000001</si:intervalMax>
+					<si:coverageProbability>0.9</si:coverageProbability>
+				</si:coverageInterval>				
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB272">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>2.0</si:coverageProbability>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB273">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:coverageInterval>
+					<si:standardUnc>17.4</si:standardUnc>
+					<si:intervalMin>0.0</si:intervalMin>
+					<si:intervalMax>100.</si:intervalMax>
+					<si:coverageProbability>2.0</si:coverageProbability>
+				</si:coverageInterval>	
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB275">
+		<si:hybrid>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit></si:unit>
+			</si:real>
+		</si:hybrid>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB276">
+		<si:hybrid>
+		</si:hybrid>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB277">
+		<si:realList>
+		</si:realList>	
+	</siTest:testData>
+	
+	<siTest:testData id="PTB278">
+		<si:list>
+			<si:constant>
+				<si:label>speed of light in vacuum</si:label>
+				<si:value>299792458.0</si:value>
+				<si:unit>\metre\second\tothe{-1}</si:unit>
+				<si:uncertainty>1</si:uncertainty>
+				<si:distribution>normal</si:distribution>
+			</si:constant>
+		</si:list>
+	</siTest:testData>
+
+	<siTest:testData id="PTB279">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>1.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+			<si:real>
+				<si:value>1.34</si:value>
+				<si:unit>\kelvin</si:unit>
+			</si:real>
+		</si:list>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB280">
+		<si:list>
+			<si:listUnit>\metre</si:listUnit>
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+				</si:real>
+			</si:realList>
+		</si:list>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB281">
+		<si:complexList>
+			<si:listUnitPhase>\degree</si:listUnitPhase>
+			<si:list>
+				<si:complex>
+					<si:valueMagnitude>1.0</si:valueMagnitude>
+					<si:valuePhase>2.0</si:valuePhase>
+					<si:unit>\metre</si:unit>
+				</si:complex>
+			</si:list>
+			<si:list>
+				<si:complex>
+					<si:valueMagnitude>1.0</si:valueMagnitude>
+					<si:valuePhase>2.0</si:valuePhase>
+					<si:unit>\kelvin</si:unit>
+				</si:complex>
+			</si:list>
+		</si:complexList>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB282">
+		<si:list>
+			<si:realList>
+			</si:realList>
+			<si:complexList>
+			</si:complexList>
+		</si:list>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB283">
+		<si:list>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>2.0</si:uncertainty>
+					<si:coverageFactor>1.96</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB284">
+		<si:list>
+			<si:listBivariateUnc>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>1.0</si:value>
+								<si:unit>\metre\metre</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.</si:value>
+								<si:unit>\metre\metre</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>0.</si:value>
+								<si:unit>\metre\metre</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>1.0</si:value>
+								<si:unit>\metre\metre</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>1.5</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+				</si:ellipsoidalRegion>
+			</si:listBivariateUnc>	
+			<si:complexList>
+				<si:complex>
+					<si:valueReal>1.0</si:valueReal>
+					<si:valueImag>2.0</si:valueImag>
+					<si:unit>\metre</si:unit>
+				</si:complex>
+			</si:complexList>
+			<si:complexList>
+				<si:complex>
+					<si:valueReal>1.0</si:valueReal>
+					<si:valueImag>2.0</si:valueImag>
+					<si:unit>\metre</si:unit>
+				</si:complex>
+			</si:complexList>
+		</si:list>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB285">
+		<si:list>	
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\kelvin</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\ampere</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\kelvin</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>1.0</si:value>
+					<si:unit>\ampere</si:unit>
+				</si:real>
+			</si:realList>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\kelvin\kelvin</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\ampere\kelvin</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.</si:value>
+							<si:unit>\kelvin\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>1.0</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>1.5</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>	
+			</si:rectangularRegion>
+		</si:list>		
+	</siTest:testData>
+	
+	<siTest:testData id="PTB286">
+		<si:list>	
+			<si:realList>
+				<si:real>
+					<si:value>1.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>1.34</si:value>
+					<si:unit>\metre83576</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>		
+	</siTest:testData>
+
+</siTest:testDSIXML>

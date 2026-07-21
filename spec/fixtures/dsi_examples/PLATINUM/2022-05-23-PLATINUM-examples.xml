@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<siTest:testDSIXML
+    xmlns:siTest="https://ptb.de/si/examples"
+    xmlns:si="https://ptb.de/si"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+    
+    <!--
+		Copyright (c) 2022-2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved.  
+			
+		AUTHORS: 			Justin Jagieniak, Benjamin Glogeer
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+    
+    <siTest:metaData>
+        <siTest:testDescription>XML examples including quantity type for SmartCom D-SI data with quality class PLATINUM (D-SI XSD version 2.2.1)</siTest:testDescription>
+    </siTest:metaData>
+
+    <siTest:testData id="PTB703">
+	    <si:real>
+            <si:quantityTypeQUDT>length</si:quantityTypeQUDT>                            
+	        <si:value>1.0</si:value>
+	        <si:unit>\metre</si:unit>
+	    </si:real>
+	</siTest:testData>	
+
+	<siTest:testData id="PTB708">
+		<si:realList>
+		    <si:listQuantityTypeQUDT>luminous intensity</si:listQuantityTypeQUDT>
+			<si:listUnit>\candela</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+
+	<siTest:testData id="PTB710">
+		<si:constant>
+			<si:label>speed of light in vacuum</si:label>
+			<si:quantityTypeQUDT>speed</si:quantityTypeQUDT>                                                           
+			<si:value>299792458.0</si:value>
+			<si:unit>\metre\second\tothe{-1}</si:unit>
+			<si:uncertainty>0</si:uncertainty>
+		</si:constant>
+	</siTest:testData>
+
+	<siTest:testData id="PTB711">
+	    <si:complex>
+			<si:quantityTypeQUDT>length</si:quantityTypeQUDT>
+	    	<si:valueReal>-12.592</si:valueReal>
+	    	<si:valueImag>7.015</si:valueImag>
+	    	<si:unit>\metre</si:unit>
+	    </si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB712">
+	  	<si:complexList>
+			<si:complex>
+				<si:quantityTypeQUDT>electric charge</si:quantityTypeQUDT>                           
+				<si:valueReal>-10.310</si:valueReal>
+	    	    <si:valueImag>5.010</si:valueImag>
+	    	    <si:unit>\ampere</si:unit>
+			</si:complex>
+	  		<si:complex>
+				<si:quantityTypeQUDT>electric charge</si:quantityTypeQUDT>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>-2.0</si:valueImag>
+	  			<si:unit>\ampere</si:unit>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+
+	  <siTest:testData id="PTB713">
+	  	<si:complexList>
+			<si:listQuantityTypeQUDT>electric charge</si:listQuantityTypeQUDT>               
+	  		<si:listUnit>\ampere</si:listUnit>
+	  		<si:listUnitPhase>\metre\metre\tothe{-1}</si:listUnitPhase>
+	  		<si:complex>
+	  			<si:valueMagnitude>3.0</si:valueMagnitude>
+	  			<si:valuePhase>20.0</si:valuePhase>
+	  		</si:complex>
+	  		<si:complex>
+	  			<si:valueMagnitude>-1.0</si:valueMagnitude>
+	  			<si:valuePhase>35.0</si:valuePhase>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+  
+</siTest:testDSIXML>

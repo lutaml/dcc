@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2021 University of Maribour (UM), all rights reserved. 
+			
+		Authors: Bojan Acko, Rok Klobucar
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class IMPROVABLE (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="UM2">
+		<si:real>
+	        <si:value>10.865444</si:value>
+	    </si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="UM7">
+		<si:complex>
+			<si:label>spatial angle</si:label>
+			<si:valueMagnitude>11.463</si:valueMagnitude>
+			<si:valuePhase>0.000458</si:valuePhase>
+			<si:unit>\steradian</si:unit>
+			<si:unitPhase>\metre</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="UM15">
+		<si:constant>
+			<si:label>Electron mass</si:label>
+			<si:value>9.10938356e-31</si:value>
+			<si:unit>\kilogram</si:unit>
+			<si:dateTime>2016-09-01T02:30:01.20+01:00</si:dateTime>
+			<si:uncertainty>-1.2e-39</si:uncertainty>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM19">
+		<si:realList>
+			<si:listUnit>\torr</si:listUnit>
+			<si:real>
+				<si:value>2.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>3.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>4.34</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="UM20">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>4</si:coverageFactor>
+					<si:coverageProbability>1.05</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>200.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>333.34</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM25">
+		<si:complexList>
+			<si:listUnit>\kelvin</si:listUnit>
+			<si:listBivariateUnc>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\kelvin\kelvin</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\kelvin\kelvin</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\kelvin\kelvin</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\milli\kelvin\milli\kelvin</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:listBivariateUnc>
+			<si:complex>
+				<si:valueReal>10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>10.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM30">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>2.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>12.358</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>4.34</si:value>
+					<si:unit>\second</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>5.34</si:value>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM35">
+	<si:hybrid>
+			<!-- A: quantity from B converted to SI -->
+			<si:real>
+				<si:value>0,5144444</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+			<!-- B: quantity with non-SI unit -->
+			<si:real>
+				<si:value>1</si:value>
+				<si:unit>knot</si:unit>
+			</si:real>
+		</si:hybrid>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM40">
+		<si:hybrid>
+			<!-- A: quantity from B converted to SI -->
+			<si:complex>
+				<si:label>electric charge</si:label>
+				<si:valueMagnitude>41266.80</si:valueMagnitude>
+				<si:valuePhase>0.000458</si:valuePhase>
+				<si:unit>\coulomb</si:unit>
+				<si:unitPhase>\metre</si:unitPhase>
+			</si:complex>
+			<!-- B: quantity with non-SI unit -->
+			<si:complex>
+				<si:label>electric charge</si:label>
+				<si:valueMagnitude>11.463</si:valueMagnitude>
+				<si:valuePhase>0.000458</si:valuePhase>
+				<si:unit>\ampere hour</si:unit>
+				<si:unitPhase>\degree</si:unitPhase>
+			</si:complex>
+		</si:hybrid>	
+	</siTest:testData>	
+	
+	<siTest:testData id="UM44">
+		<si:hybrid>
+		
+			<si:realList>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>133.322337415</si:value>
+					<si:unit>\pascal</si:unit>
+				</si:real>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.5144444</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.02834959</si:value>
+					<si:unit>\kilogram</si:unit>
+					<si:label>mass value</si:label>
+				</si:real>
+			</si:realList>
+			
+			<si:realList>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>milimetre of mercury, conventional</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>knot</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>ounce</si:unit>
+				</si:real>
+			</si:realList>
+			
+		</si:hybrid>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM45">
+		<si:hybrid>
+			<si:realList>
+				<si:listUnit>\metre</si:listUnit>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.5144444</si:value>
+					<si:unit>\metre\second\tothe{-1}</si:unit>
+				</si:real>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.0045469</si:value>
+					<si:unit>\metre\tothe{3}</si:unit>
+				</si:real>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.02834959</si:value>
+					<si:unit>\kilogram</si:unit>
+				</si:real>	
+			</si:realList>
+			
+			<si:realList>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>knot</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>imperial gallon</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>ounce</si:unit>
+				</si:real>
+			</si:realList>
+		
+		</si:hybrid>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM50">
+		<si:hybrid>
+			<si:complexList>
+				<!-- A: quantity from B converted to SI -->
+				<si:complex>
+					<si:label>electric charge</si:label>
+					<si:valueMagnitude>41266.80</si:valueMagnitude>
+					<si:valuePhase>0.000458</si:valuePhase>
+					<si:unit>\coulomb</si:unit>
+				</si:complex>
+				<!-- A: quantity from B converted to SI -->
+				<si:complex>
+					<si:label>speed</si:label>
+					<si:valueMagnitude>162.3923374304232</si:valueMagnitude>
+					<si:valuePhase>5.1497695284288</si:valuePhase>
+					<si:unit>\metre\second\tothe{-1}</si:unit>
+					<si:unitPhase>\radian</si:unitPhase>
+				</si:complex>
+				
+			</si:complexList>
+			<si:complexList>
+				<!-- B: quantity with non-SI unit -->
+				<si:complex>
+					<si:label>electric charge</si:label>
+					<si:valueMagnitude>11.463</si:valueMagnitude>
+					<si:valuePhase>0.000458</si:valuePhase>
+					<si:unit>\ampere hour</si:unit>
+					<si:unitPhase>\degree</si:unitPhase>
+				</si:complex>
+				<!-- B: quantity with non-SI unit -->
+				<si:complex>
+					<si:label>speed</si:label>
+					<si:valueReal>315.665478</si:valueReal>
+					<si:valueImag>10.010352</si:valueImag>
+					<si:unit>\knot</si:unit>
+				</si:complex>
+			</si:complexList>
+		</si:hybrid>	
+	</siTest:testData>	
+	
+	<siTest:testData id="UM54">
+		<si:hybrid>
+		
+			<si:list>
+				<si:realList>
+					<!-- A: quantity from B converted to SI -->
+					<si:real>
+						<si:value>133.322337415</si:value>
+						<si:unit>\pascal</si:unit>
+					</si:real>
+					<!-- A: quantity from B converted to SI -->
+					<si:real>
+						<si:value>0.02834959</si:value>
+						<si:unit>\kilogram</si:unit>
+					</si:real>	
+				</si:realList>
+				
+				<si:realList>
+					<!-- A: quantity from B converted to SI -->
+					<si:real>
+						<si:value>0.5144444</si:value>
+						<si:unit>\metre</si:unit>
+					</si:real>
+					<!-- A: quantity from B converted to SI -->
+					<si:real>
+						<si:value>0.0045469</si:value>
+						<si:unit>\metre\tothe{3}</si:unit>
+					</si:real>
+				</si:realList>
+				
+				<si:realList></si:realList>
+			</si:list>
+			
+			<si:list>
+				<si:realList>
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>milimetre of mercury, conventional</si:unit>
+					</si:real>
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>imperial gallon</si:unit>
+					</si:real>
+				</si:realList>
+			
+				<si:realList>	
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>ounce</si:unit>
+					</si:real>
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>knot</si:unit>
+					</si:real>
+				</si:realList>
+			
+				<si:realList>
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>ounce</si:unit>
+					</si:real>
+					<!-- B: quantity with non-SI unit -->
+					<si:real>
+						<si:value>1</si:value>
+						<si:unit>kilowatt hour</si:unit>
+					</si:real>
+				</si:realList>
+			</si:list>
+			
+		</si:hybrid>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM55">
+		<si:realList>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.5144444</si:value>
+					<si:unit>\metre\second\tothe{-1}</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>knot</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.0045469</si:value>
+					<si:unit>\metre\tothe{3}</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>imperial gallon</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.02834959</si:value>
+					<si:unit>\ounce</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>ounce</si:unit>
+				</si:real>
+			</si:hybrid>
+		</si:realList>
+		<si:realList>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>3600000</si:value>
+					<si:unit>\joule</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>kilowatt hour</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>133.322337415</si:value>
+					<si:unit>\pascal</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>milimetre of mercury, conventional</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.0045469</si:value>
+					<si:unit>\metre\tothe{3}</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>imperial gallon</si:unit>
+				</si:real>
+			</si:hybrid>	
+		</si:realList>
+		<si:realList>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>133.322337415</si:value>
+					<si:unit>\pascal</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>milimetre of mercury, conventional</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.5144444</si:value>
+					<si:unit>\metre\second\tothe{-1}</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>knot</si:unit>
+				</si:real>
+			</si:hybrid>
+			<si:hybrid>
+				<!-- A: quantity from B converted to SI -->
+				<si:real>
+					<si:value>0.02834959</si:value>
+					<si:unit>\kilogram</si:unit>
+				</si:real>
+				<!-- B: quantity with non-SI unit -->
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>ounce</si:unit>
+				</si:real>
+			</si:hybrid>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM56">
+		<si:realList>
+		    <si:real>
+				<si:label>volume</si:label>
+				<si:value>135.22100</si:value>
+				<si:unit>\litre</si:unit>
+				<si:expandedUnc>
+					<si:uncertainty>0,01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:real>
+		</si:realList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM57">
+		<si:real>
+			<si:label>temperatur</si:label>
+			<si:value>100.32</si:value>
+			<si:unit>\teperatur</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.15</si:standardUnc>
+				<si:intervalMin>100.17</si:intervalMin>
+				<si:intervalMax>100.47</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>			
+		
+		
+		
+</siTest:testDSIXML>

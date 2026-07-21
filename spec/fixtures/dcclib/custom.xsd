@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="3.3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dcc="https://ptb.de/dcc"
+           targetNamespace="https://ptb.de/dcc"
+           elementFormDefault="qualified">
+
+
+    <xs:annotation>
+        <xs:documentation>
+            Test Schema that only checks for the root element
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="digitalCalibrationCertificate" type="dcc:digitalCalibrationCertificateType"/>
+
+    <xs:complexType name="digitalCalibrationCertificateType">
+        <xs:sequence>
+            <xs:element name="customElement"/>
+        </xs:sequence>
+        <xs:attribute name="schemaVersion" use="required"/>
+    </xs:complexType>
+</xs:schema>

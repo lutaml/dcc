@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved.  
+			
+		CONTACT: 			smartcom@ptb.de
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class GOLD (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	
+	<siTest:testData id="PTB524">
+	    <si:complex>
+	    	<si:valueMagnitude>11.463</si:valueMagnitude>
+	    	<si:valuePhase>2.689</si:valuePhase>
+	    	<si:unit>\metre</si:unit>
+	    	<si:unitPhase>\radian</si:unitPhase>
+	    	<si:ellipsoidalRegion>
+	    		<si:covarianceMatrix>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>1.0</si:value>
+	    					<si:unit>\metre\metre</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>0.</si:value>
+	    					<si:unit>\radian\metre</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>0.</si:value>
+	    					<si:unit>\metre\radian</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>1.0</si:value>
+	    					<si:unit>\radian\radian</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    		</si:covarianceMatrix>
+	    		<si:coverageFactor>1.5</si:coverageFactor>
+	    		<si:coverageProbability>0.95</si:coverageProbability>
+	    	</si:ellipsoidalRegion>
+	    </si:complex>
+	</siTest:testData>	
+	
+		
+	<siTest:testData id="PTB528">
+	    <si:complex>
+	    	<si:valueMagnitude>11.463</si:valueMagnitude>
+	    	<si:valuePhase>2.689</si:valuePhase>
+	    	<si:unit>\metre</si:unit>
+	    	<si:unitPhase>\radian</si:unitPhase>
+	    	<si:ellipsoidalRegion>
+	    		<si:covarianceMatrix>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>1.0</si:value>
+	    					<si:unit>\metre\metre</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>0.</si:value>
+	    					<si:unit>\radian\metre</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>0.</si:value>
+	    					<si:unit>\metre\radian</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>-1.e-15</si:value>
+	    					<si:unit>\radian\radian</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    		</si:covarianceMatrix>
+	    		<si:coverageFactor>1.5</si:coverageFactor>
+	    		<si:coverageProbability>0.95</si:coverageProbability>
+	    	</si:ellipsoidalRegion>
+	    </si:complex>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="PTB532">
+	    <si:complex>
+	    	<si:valueReal>-10.310</si:valueReal>
+	    	<si:valueImag>5.010</si:valueImag>
+	    	<si:unit>\volt</si:unit>
+	    </si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB537">
+	    <si:complex>
+	    	<si:valueMagnitude>-10.310</si:valueMagnitude>
+	    	<si:valuePhase>5.010</si:valuePhase>
+	    	<si:unit>\radian</si:unit>
+	    	<si:unitPhase>\radian</si:unitPhase>
+	    </si:complex>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="PTB548">
+	  	<si:complexList>
+	  		<si:listUnit>\newton</si:listUnit>
+	  		<si:complex>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>2.0</si:valueImag>
+	  		</si:complex>
+	  		<si:complex>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>2.0</si:valueImag>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+	  
+	  <siTest:testData id="PTB549">
+	  	<si:complexList>
+	  		<si:complex>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>2.0</si:valueImag>
+	  			<si:unit>\newton</si:unit>
+	  		</si:complex>
+	  		<si:complex>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>2.0</si:valueImag>
+	  			<si:unit>\metre</si:unit>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+	  
+	  <siTest:testData id="PTB550">
+	  	<si:complexList>
+	  		<si:listUnit>\metre</si:listUnit>
+	  		<si:listUnitPhase>\radian</si:listUnitPhase>
+	  		<si:complex>
+	  			<si:valueMagnitude>1.0</si:valueMagnitude>
+	  			<si:valuePhase>1.0</si:valuePhase>
+	  		</si:complex>
+	  		<si:complex>
+	  			<si:valueMagnitude>1.0</si:valueMagnitude>
+	  			<si:valuePhase>1.0</si:valuePhase>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+	  
+	  
+	  <siTest:testData id="PTB551">
+	  	<si:complexList>
+	  		<si:complex>
+	  			<si:valueMagnitude>1.0</si:valueMagnitude>
+	  			<si:valuePhase>1.0</si:valuePhase>
+	  			<si:unit>\metre</si:unit>
+	  			<si:unitPhase>\radian</si:unitPhase>
+	  		</si:complex>
+	  		<si:complex>
+	  			<si:valueReal>1.0</si:valueReal>
+	  			<si:valueImag>2.0</si:valueImag>
+	  			<si:unit>\metre</si:unit>
+	  		</si:complex>
+	  	</si:complexList>
+	  </siTest:testData>
+	  
+	   <siTest:testData id="PTB608">
+	    <si:complex>
+	    	<si:valueReal>1.0</si:valueReal>
+	    	<si:valueImag>1.0</si:valueImag>
+	    	<si:unit>\volt</si:unit>
+	    	<si:rectangularRegion>
+	    		<si:covarianceMatrix>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>0.050</si:value>
+	    					<si:unit>\volt\volt</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>-0.003</si:value>
+	    					<si:unit>\volt\volt</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    			<si:column>
+	    				<si:covariance>
+	    					<si:value>-0.003</si:value>
+	    					<si:unit>\volt\volt</si:unit>
+	    				</si:covariance>
+	    				<si:covariance>
+	    					<si:value>0.105</si:value>
+	    					<si:unit>\volt\volt</si:unit>
+	    				</si:covariance>
+	    			</si:column>
+	    		</si:covarianceMatrix>
+	    		<si:coverageFactor>1.5</si:coverageFactor>
+	    		<si:coverageProbability>0.95</si:coverageProbability>
+	    	</si:rectangularRegion>
+	    </si:complex>
+	    </siTest:testData>
+	    
+	    
+	    <siTest:testData id="PTB613">
+	    	<si:realList>
+		    	
+	    		<si:real>
+	    			<si:value>1.0</si:value>
+	    			<si:unit>\ampere</si:unit>
+	    		</si:real>
+	    		<si:real>
+	    			<si:value>1.0</si:value>
+	    			<si:unit>\radian</si:unit>
+	    		</si:real>
+	    		<si:real>
+	    			<si:value>1.0</si:value>
+	    			<si:unit>\volt</si:unit>
+	    		</si:real>
+	    		<si:real>
+	    			<si:value>1.0</si:value>
+	    			<si:unit>\degree</si:unit>
+	    		</si:real>
+
+		    	<si:rectangularRegion>
+		    		<si:covarianceMatrix>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.350</si:value>
+		    					<si:unit>\ampere\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.244</si:value>
+		    					<si:unit>\radian\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.007</si:value>
+		    					<si:unit>\volt\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.000</si:value>
+		    					<si:unit>\degree\ampere</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.244</si:value>
+		    					<si:unit>\ampere\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.305</si:value>
+		    					<si:unit>\radian\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.051</si:value>
+		    					<si:unit>\volt\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.109</si:value>
+		    					<si:unit>\degree\radian</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.007</si:value>
+		    					<si:unit>\ampere\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.051</si:value>
+		    					<si:unit>\radian\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.076</si:value>
+		    					<si:unit>\volt\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.002</si:value>
+		    					<si:unit>\degree\volt</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.000</si:value>
+		    					<si:unit>\ampere\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.109</si:value>
+		    					<si:unit>\radian\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.002</si:value>
+		    					<si:unit>\volt\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.602</si:value>
+		    					<si:unit>\degree\degree</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    		</si:covarianceMatrix>
+		    		<si:coverageFactor>1.5</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    	</si:rectangularRegion>
+	    	</si:realList>
+	</siTest:testData>	
+	
+	
+	<siTest:testData id="PTB624">
+	    	<si:complexList>
+	    		<si:complex>
+		    		<si:valueMagnitude>1.0</si:valueMagnitude>
+		    		<si:valuePhase>1.0</si:valuePhase>
+		    		<si:unit>\ampere</si:unit>
+		    		<si:unitPhase>\radian</si:unitPhase>
+		    	</si:complex>
+		    	<si:complex>
+		    		<si:valueMagnitude>1.0</si:valueMagnitude>
+		    		<si:valuePhase>1.0</si:valuePhase>
+		    		<si:unit>\volt</si:unit>
+		    		<si:unitPhase>\degree</si:unitPhase>
+		    	</si:complex>
+	    	
+		    	<si:rectangularRegion>
+		    		<si:covarianceMatrix>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.350</si:value>
+		    					<si:unit>\ampere\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.244</si:value>
+		    					<si:unit>\radian\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.007</si:value>
+		    					<si:unit>\volt\ampere</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.000</si:value>
+		    					<si:unit>\degree\ampere</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.244</si:value>
+		    					<si:unit>\ampere\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.305</si:value>
+		    					<si:unit>\radian\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.051</si:value>
+		    					<si:unit>\volt\radian</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.109</si:value>
+		    					<si:unit>\degree\radian</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.007</si:value>
+		    					<si:unit>\ampere\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.051</si:value>
+		    					<si:unit>\radian\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.076</si:value>
+		    					<si:unit>\volt\volt</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.002</si:value>
+		    					<si:unit>\degree\volt</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    			<si:column>
+		    				<si:covariance>
+		    					<si:value>0.000</si:value>
+		    					<si:unit>\ampere\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.109</si:value>
+		    					<si:unit>\radian\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.002</si:value>
+		    					<si:unit>\volt\degree</si:unit>
+		    				</si:covariance>
+		    				<si:covariance>
+		    					<si:value>0.602</si:value>
+		    					<si:unit>\degree\degree</si:unit>
+		    				</si:covariance>
+		    			</si:column>
+		    		</si:covarianceMatrix>
+		    		<si:coverageFactor>1.5</si:coverageFactor>
+		    		<si:coverageProbability>0.95</si:coverageProbability>
+		    	</si:rectangularRegion>
+	    	</si:complexList>
+	</siTest:testData>	
+	
+</siTest:testDSIXML>						

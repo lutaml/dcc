@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://intranet.ptb.de/fileadmin/dokumente/intranet/abteilungen/abteilung_1/Digitaler_Kalibrierschein/SI"
+	xmlns:si="https://intranet.ptb.de/fileadmin/dokumente/intranet/abteilungen/abteilung_1/Digitaler_Kalibrierschein/SI"
+	elementFormDefault="qualified">
+  <!-- 
+    XML-schema implementation of the unified SmartCom meta data format for the exchange of measurement data 
+    in digital ICT applications.
+	
+	##################################################################################################
+	#	STATUS: PROTOTYPE																			 #
+	#		The defined elements are supposed to be modified or deprecated in following versions.	 #
+	#		Only the definition of si:real is considered as stable element in this version.			 #
+    ##################################################################################################
+	
+    THIS SCHEMA IS A PROTOTYPE FOR THE INTERNAL USE IN EMPRI 17IND02 SMARTCOM PROJECT AND THE INTERNAL. 
+	ANY DISTRIBUTION REQUIRES THE PERMISSION BY THE SMARTCOM CONSORTIUM (smartcom@ptb.de).
+     
+    Contact:  smartcom@ptb.de
+    Version:  1.0.1
+    Date:     2018-11-20
+    DOI:      (not assigned to this version)
+    
+    Acknowledgment
+    
+    The development of the unified meta data format for the exchange of measurement data in ICT applications and 
+    its implementation using XML is funded by the joint research project EMPIR 17IND02 (title: SmartCom). 
+    The EMPIR initiative is co-funded by the European Union's Horizon 2020 research and innovation programme 
+    and the EMPIR Participating States.
+  -->
+
+  
+  
+  <!--
+  ##############################################################################################
+  First part of the XML-schema: Elements for the SI-based exchange of measured quantities.
+  ##############################################################################################
+  -->
+  <!-- 
+    Meta data element definition for a real measurement quantity. 
+    
+    The following statements of a real quantity are possible. 
+    [(m)-mandatory, (o)-optional]
+    
+    1. Basic measured quantity
+      (m) - element value
+      (m) - element unit
+	  (o) - label
+      (o) - element dateTime
+      
+    2. Measured quantity with expanded measurement uncertainty
+      (m) - element value
+      (m) - element unit
+	  (o) - label
+	  (o) - element dateTime
+      (m) - element uncertainty
+      (m) - element coverageFactor
+      (m) - element coverageProbability
+      (o) - element distribution
+      
+    3. Measured quantity with uncertainty coverage interval (probabilistic symmetric or shortest)
+      (m) - element value
+      (m) - element unit
+	  (o) - label
+	  (o) - element dateTime
+      (m) - element intervalType
+      (m) - element intervalMin
+      (m) - element intervalMax
+      (m) - element coverageProbability
+      (o) - element distribution
+	  
+	4. Measured quantity with standard uncertainty (under discussion for upcoming version)
+    
+    Example:
+    <si:real>
+      <si:value>1</si:value>
+      <si:unit>\metre</si:unit>
+    </si:real>
+  
+    Integration into external XML-schema:
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:si="https://intranet.ptb.de/fileadmin/dokumente/intranet/abteilungen/abteilung_1/Digitaler_Kalibrierschein/SI">
+      <xs:element name="individualElement">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="si:real"/>
+          </xs:sequence>
+        </xs:complexType>
+     </xs:element>
+   </xs:element>
+  -->
+  <xs:element name="real">
+    <xs:complexType>
+
+      <xs:annotation>
+        <xs:documentation>
+          Implementation of a real valued quantity.
+        </xs:documentation>
+      </xs:annotation>
+
+      <xs:sequence>
+        <!-- mandatory information -->
+        <xs:element name="value" type="xs:string"/>
+        <xs:element name="unit"  type="xs:string"/>
+
+		<!-- optional label -->
+        <xs:element name="label" type="xs:string" minOccurs="0"/>
+		
+        <!-- optional timestamp -->
+        <xs:element name="dateTime" type="xs:string" minOccurs="0"/>
+
+        <!-- optional choice of uncertainty statements -->
+		    <xs:choice minOccurs="0">
+		
+			    <!-- specific for statement of expanded measurement uncertainty -->
+	       	<xs:sequence>
+            <!-- mandatory information -->
+			      <xs:element name="uncertainty" type="xs:string"/>
+			      <xs:element name="coverageFactor" type="xs:string"/>
+			      <xs:element name="coverageProbability" type="xs:string"/>
+            <!-- optional information about distribution -->
+			      <xs:element name="distribution" type="xs:string" minOccurs="0"/>
+			    </xs:sequence>
+			
+			    <!-- specific for statement of coverage interval measurement uncertainty (probabilistic symmetric or shortest interval) -->
+			    <xs:sequence>
+            <!-- mandatory information -->
+			      <xs:element name="intervalType" type="xs:string"/>
+			      <xs:element name="intervalMin" type="xs:string"/>
+			      <xs:element name="intervalMax" type="xs:string"/>
+			      <xs:element name="coverageProbability" type="xs:string"/>
+            <!-- optional information about distribution -->
+			      <xs:element name="distribution" type="xs:string" minOccurs="0"/>
+			    </xs:sequence>
+          
+	      </xs:choice>
+        
+      </xs:sequence>
+
+    </xs:complexType> 
+  </xs:element>
+
+  
+ 
+	<!-- CS Structure for real quantity values 
+		The comma separated structure has the status of a proposal. 
+		In this version, the usage of si:real is recommended. 
+		It is planned to provide amendments and if required changes to 
+		the hybrid structure in future versions of the meta data format.
+	-->
+	<xs:element name="realCS">
+    <xs:complexType>
+      
+      <xs:annotation>
+        <xs:documentation>
+          Real comma separated values or anything else.
+		  The comma separated structure has the status of a proposal. 
+		  In this version, the usage of si:real is recommended. 
+        </xs:documentation>
+      </xs:annotation>
+      
+      <xs:sequence>
+        <xs:element name="pattern" type="xs:string"/>
+        <xs:element name="values" type="xs:string"/>
+      </xs:sequence>
+      
+    </xs:complexType>
+  </xs:element>
+ 
+ 
+	
+  
+  <!-- 
+    Meta data element definition for a list of basic measurement quantities. 
+    It is planned to provide amendments and if required changes to the list structure in future
+    versions of the meta data format.
+    
+    A list can provide the following vector structures:
+    
+    1: A list of si:real quantities
+       - optional global timestamp, global label and/or uncertainty statement
+    
+     
+    2: A recursive list of si:list elements
+      - optional global timestamp and global label
+   
+
+    
+  
+    Example (list with local units):
+    <si:list>
+      <si:real>
+        <si:value>1</si:value>
+        <si:unit>\metre</si:unit>
+      </si:real>
+      <si:real>
+        <si:value>1</si:value>
+        <si:unit>\metre</si:unit>
+      </si:real>
+      <si:real>
+        <si:value>1</si:value>
+        <si:unit>\metre</si:unit>
+      </si:real>
+    </si:list>
+    
+  
+    Integration into external XML-schema:
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:si="https://intranet.ptb.de/fileadmin/dokumente/intranet/abteilungen/abteilung_1/Digitaler_Kalibrierschein/SI">
+      <xs:element name="individualElement">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="si:list"/>
+          </xs:sequence>
+        </xs:complexType>
+     </xs:element>
+   </xs:schema>
+  -->
+  <xs:element name="list">
+    <xs:complexType>
+      
+      <xs:annotation>
+        <xs:documentation>
+          List of basic meta data structure element. Recursion with lists allowed.
+        </xs:documentation>
+      </xs:annotation>
+      
+      <xs:sequence>
+        
+        <!-- collection of measured quantities -->
+        <xs:choice>
+          
+          <!-- 
+            ### Definition 1:
+            ### list of real elements with  
+            ### - optional global timestamp and/or uncertainty statement
+          -->
+          <xs:sequence>
+            
+            <!-- mandatory list of real elements -->
+            <xs:element ref="si:real" maxOccurs="unbounded"/>
+
+			<!-- optional global label -->
+            <xs:element name="label" type="xs:string" minOccurs="0"/>
+            <!-- optional global time statement -->
+            <xs:element name="dateTime" type="xs:dateTime" minOccurs="0"/>
+            
+            <!-- optional global uncertainty statement -->
+            <xs:choice minOccurs="0">
+              <!-- specific for statement of expanded measurement uncertainty -->
+              <xs:sequence>
+                <!-- mandatory information -->
+                <xs:element name="uncertainty" type="si:uncertaintyValueType"/>
+                <xs:element name="coverageFactor" type="si:kValueType"/>
+                <xs:element name="coverageProbability" type="si:probabilityValueType"/>
+                <!-- optional information about distribution -->
+                <xs:element name="distribution" type="xs:string" minOccurs="0"/>
+              </xs:sequence>
+              <!-- specific for statement of coverage interval measurement uncertainty (probabilistic symmetric or shortest interval) -->
+              <xs:sequence>
+                <!-- mandatory information -->
+                <xs:element name="intervalType" type="si:intervalType"/>
+                <xs:element name="intervalMin" type="xs:decimal"/>
+                <xs:element name="intervalMax" type="xs:decimal"/>
+                <xs:element name="coverageProbability" type="si:probabilityValueType"/>
+                <!-- optional information about distribution -->
+                <xs:element name="distribution" type="xs:string" minOccurs="0"/>
+              </xs:sequence>
+            </xs:choice>
+          </xs:sequence>
+
+
+
+          <!-- 
+            ### Definition 2:
+            ### recursive list of lists with
+            ### - optional global timestamp and global label
+          -->
+          <!-- list of lists without global property statement -->
+          <xs:sequence>
+            <!-- mandatory statement of a list of quantities or lists -->
+            <xs:element ref="si:list" maxOccurs="unbounded"/>
+			
+			<!-- optional global label -->
+            <xs:element name="label" type="xs:string" minOccurs="0"/>
+            <!-- optional global time statement -->
+            <xs:element name="dateTime" type="xs:dateTime" minOccurs="0"/>
+          </xs:sequence>         
+          
+        </xs:choice>
+
+        <!-- optional elements for global multivariate quantities (planned for future version) -->
+        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  
+  
+  <!-- 
+    The hybrid element is a proposal for the definition of an adapter for arbitrary 
+	measurement data to the SI unit based meta data format. It is planned to provide 
+	amendments and if required changes to the hybrid structure in future versions of 
+	the meta data format.
+  
+    Example:
+    <si:hybrid>
+      <si:real>
+        <si:value>1</si:value>
+        <si:unit>\metre</si:unit>
+      </si:real>
+      <si:real>
+        <si:value>3.28084</si:value>
+        <si:unit>\feet</si:unit>
+      </si:real>
+    </si:hybrid>
+  
+    Integration into external XML-schema:
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:si="https://intranet.ptb.de/fileadmin/dokumente/intranet/abteilungen/abteilung_1/Digitaler_Kalibrierschein/SI">
+      <xs:element name="individualElement">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="si:hybrid"/>
+          </xs:sequence>
+        </xs:complexType>
+     </xs:element>
+   </xs:schema>
+  -->
+  <xs:element name="hybrid">
+    <xs:complexType>
+
+      <xs:annotation>
+        <xs:documentation>
+          Adapter for non-SI units and other XML formats.
+        </xs:documentation>
+      </xs:annotation>
+
+      <xs:sequence>
+
+        <!-- mandatory adapter for at least one SI quantity and additional (non-) SI quantities -->
+        <xs:choice>
+          <xs:element ref="si:real" minOccurs="1" maxOccurs="unbounded" />
+        </xs:choice>
+
+        <!-- optional adapter for any other user specific XML structure elements -->
+        <xs:any minOccurs="0" namespace="##other"/>
+      </xs:sequence>
+      
+    </xs:complexType>
+    </xs:element>
+  
+
+  
+
+
+  <!--
+  ##############################################################################################
+  Second part of the XML-schema: internally used simple data types.
+  ##############################################################################################
+  -->
+  
+  <xs:simpleType name="uncertaintyValueType">
+    <xs:annotation>
+      <xs:documentation>
+        Prototype: Implementation of meta data format type of uncertainty values.
+        A decimal value greater than 0.0 (IEEE 754 double precision).
+		Will be changed to a more general decimal representation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:double">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="kValueType">
+    <xs:annotation>
+      <xs:documentation>
+        Prototype: Implementation of meta data format type of coverage factors.
+        A decimal value between 0.0 and 100.0 (IEEE 754 double precision).
+		Will be changed to a more general decimal representation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:double">
+      <xs:minExclusive value="0" />
+      <xs:maxExclusive value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="probabilityValueType">
+    <xs:annotation>
+      <xs:documentation>
+        Prototype: Implementation of meta data format type for probability statements.
+        A decimal value within 0.0 and 1.0 (IEEE 754 double precision).
+		Will be changed to a more general decimal representation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:double">
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="intervalType">
+    <xs:annotation>
+      <xs:documentation>
+        Implementation of meta data format enumeration for coverage interval types.
+        Either "shortest-interval" or "probabilistic-symmetric".
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="shortest-interval"/>
+      <xs:enumeration value="probabilistic-symmetric"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+</xs:schema>

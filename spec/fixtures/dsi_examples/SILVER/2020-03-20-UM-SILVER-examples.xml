@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2021 University of Maribour (UM), all rights reserved. 
+			
+		Authors: Bojan Acko, Rok Klobucar
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class SILVER (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="UM3">
+	    <si:real>
+			<si:label>volume</si:label>
+			<si:value>135.22100</si:value>
+			<si:unit>\litre</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.01</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM5">
+		<si:real>
+			<si:label>mass</si:label>
+			<si:value>100.35</si:value>
+			<si:unit>\tonne</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.1</si:standardUnc>
+				<si:intervalMin>100.25</si:intervalMin>
+				<si:intervalMax>100.45</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="UM8">
+		<si:complex>
+			<si:valueReal>415.357215</si:valueReal>
+			<si:valueImag>5.0314</si:valueImag>
+			<si:unit>\kilo\electronvolt</si:unit>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>0.050</si:value>
+							<si:unit>\kilo\electronvolt\kilo\electronvolt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>-0.03</si:value>
+							<si:unit>\kilo\electronvolt\kilo\electronvolt</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>-0.03</si:value>
+							<si:unit>\kilo\electronvolt\kilo\electronvolt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.105</si:value>
+							<si:unit>\kilo\electronvolt\kilo\electronvolt</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>2.45</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal-bivariate</si:distribution>
+			</si:ellipsoidalRegion>
+		</si:complex>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM18">
+		<si:realList>
+			<si:real>
+				<si:value>112.34</si:value>
+				<si:unit>\henry</si:unit>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:real>
+			<si:real>
+				<si:value>0.05</si:value>
+				<si:unit>\litre</si:unit>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="UM23">
+		<si:complexList>
+			<si:listUnit>\bel</si:listUnit>
+			<si:listUnitPhase>\radian</si:listUnitPhase>
+			<si:complex>
+				<si:valueMagnitude>10.03</si:valueMagnitude>
+				<si:valuePhase>1.50</si:valuePhase>
+			</si:complex>
+			<si:complex>
+				<si:valueMagnitude>20.05</si:valueMagnitude>
+				<si:valuePhase>1.80</si:valuePhase>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM28">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>135.49</si:value>
+					<si:unit>\pascal</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>12.3579</si:value>
+					<si:unit>\hertz</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>212.34567</si:value>
+					<si:unit>\joule</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>5.34</si:value>
+					<si:unit>\hectare</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>	
+		
+</siTest:testDSIXML>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2021 University of Maribour (UM), all rights reserved. 
+			
+		Authors: 			Bojan Acko, Rok Klobucar
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class PLATINUM (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="UM1">
+	    <si:real>
+	        <si:value>400.2534</si:value>
+	        <si:unit>\second</si:unit>
+	    </si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM9">
+		<si:complex>
+			<si:label>time</si:label>
+			<si:valueMagnitude>1001.463578</si:valueMagnitude>
+			<si:valuePhase>22.689351</si:valuePhase>
+			<si:unit>\hour</si:unit>
+			<si:unitPhase>\degree</si:unitPhase>
+		</si:complex>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM11">
+		<si:constant>
+			<si:label>Euler number e</si:label>
+			<si:value>2.71828182845904523536</si:value>
+			<si:unit>\one</si:unit>
+			<si:uncertainty>0.000000000000000000005</si:uncertainty>
+			<si:distribution>rectangular</si:distribution>
+		</si:constant>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM14">
+	<si:constant>
+			<si:label>Electron mass</si:label>
+			<si:value>9.10938356e-31</si:value>
+			<si:unit>\kilogram</si:unit>
+			<si:dateTime>2016-09-01T02:30:01.20+01:00</si:dateTime>
+			<si:uncertainty>1.2e-39</si:uncertainty>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM16">
+		<si:realList>
+			<si:real>
+				<si:value>243.0003</si:value>
+				<si:unit>\kilogram</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>112.0004</si:value>
+				<si:unit>\second</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>3.55</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="UM21">
+		<si:complexList>
+			<si:complex>
+				<si:valueReal>10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+				<si:unit>\minute</si:unit>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>10.000</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+				<si:unit>\ampere</si:unit>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>-3.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+				<si:unit>\arcsecond</si:unit>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM26">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>112.333</si:value>
+					<si:unit>\hour</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>54.120</si:value>
+					<si:unit>\hour</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>90.34</si:value>
+					<si:unit>\degree</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>87.34</si:value>
+					<si:unit>\degree</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>		
+	
+</siTest:testDSIXML>

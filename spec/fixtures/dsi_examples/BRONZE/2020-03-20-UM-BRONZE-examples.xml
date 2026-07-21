@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2021 University of Maribour (UM), all rights reserved. 
+			
+		Authors:            Bojan Acko, Rok Klobucar
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class BRONZE (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="UM10">
+		<si:complex>
+			<si:label>pressure</si:label>
+			<si:valueReal>-10.310</si:valueReal>
+			<si:valueImag>5.010</si:valueImag>
+			<si:unit>\mmhg</si:unit>
+		</si:complex>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM24">
+		<si:complexList>
+			<si:listUnit>\bar</si:listUnit>
+			<si:listBivariateUnc>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\bar\bar</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\bar\bar</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\bar\bar</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\bar\bar</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:listBivariateUnc>
+			<si:complex>
+				<si:valueReal>-10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>-10.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>	
+	
+	<siTest:testData id="UM29">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>315.405</si:value>
+					<si:unit>\decibel</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>240.224</si:value>
+					<si:unit>\decibel</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>4.34</si:value>
+					<si:unit>\weber</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>5.34</si:value>
+					<si:unit>\weber</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>1.035</si:value>
+					<si:unit>\knot</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>0.9875</si:value>
+					<si:unit>\knot</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>	
+
+</siTest:testDSIXML>

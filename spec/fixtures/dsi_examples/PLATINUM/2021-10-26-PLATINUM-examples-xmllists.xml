@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<siTest:testDSIXML
+    xmlns:siTest="https://ptb.de/si/examples"
+    xmlns:si="https://ptb.de/si"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+    
+    <!--
+		Copyright (c) 2022-2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved.  
+			
+		AUTHORS: 			Justin Jagieniak, Benjamin Glogeer
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+    
+    <siTest:metaData>
+        <siTest:testDescription>XML examples for SmartCom D-SI data with quality class PLATINUM (D-SI XSD version 2.2.1)</siTest:testDescription>
+    </siTest:metaData>
+    
+    <siTest:testData id="PTB639">
+        <si:realListXMLList>
+            <si:valueXMLList>234.0003 112.0004 3.55</si:valueXMLList>
+            <si:unitXMLList>\kilogram \second \ampere</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB640">
+        <si:realListXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\candela</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB641">
+        <si:realListXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\kelvin \ampere</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB642">
+        <si:realListXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\metre</si:unitXMLList>
+            <si:expandedUncXMLList>
+                <si:uncertaintyXMLList>2.0</si:uncertaintyXMLList>
+                <si:coverageFactorXMLList>1.96</si:coverageFactorXMLList>
+                <si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+                <si:distributionXMLList>rectangular</si:distributionXMLList>
+            </si:expandedUncXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB643">
+        <si:realListXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\metre</si:unitXMLList>
+            <si:coverageIntervalXMLList>
+                <si:standardUncXMLList>17.4</si:standardUncXMLList>
+                <si:intervalMinXMLList>-100.00</si:intervalMinXMLList>
+                <si:intervalMaxXMLList>-100.</si:intervalMaxXMLList>
+                <si:coverageProbabilityXMLList>0.9</si:coverageProbabilityXMLList>
+            </si:coverageIntervalXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB644">
+        <si:realListXMLList>
+            <si:valueXMLList>1.34 1.34</si:valueXMLList>
+            <si:unitXMLList>\metre \kelvin</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB645">
+        <si:realListXMLList>
+            <si:valueXMLList>-1.55 -1.55 -1.55 -2.05 -2.05</si:valueXMLList>
+            <si:unitXMLList>\kelvin</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+    <siTest:testData id="PTB646">
+        <si:realListXMLList>
+            <si:valueXMLList>0.105 0.323 -0.199 -0.271 0.199</si:valueXMLList>
+            <si:unitXMLList>\kelvin</si:unitXMLList>
+            <si:expandedUncXMLList>
+                <si:uncertaintyXMLList>0.89</si:uncertaintyXMLList>
+                <si:coverageFactorXMLList>2</si:coverageFactorXMLList>
+                <si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+                <si:distributionXMLList>rectangle</si:distributionXMLList>
+            </si:expandedUncXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+
+    <siTest:testData id="PTB647">
+        <si:realListXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\metre\second\tothe{-1} \metre\second\tothe{-1}</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+
+    <siTest:testData id="PTB661">
+        <si:realListXMLList>
+            <si:quantityTypeQUDTXMLList>mass current</si:quantityTypeQUDTXMLList>
+            <si:valueXMLList>1.0 1.0</si:valueXMLList>
+            <si:unitXMLList>\kilogram \ampere</si:unitXMLList>
+        </si:realListXMLList>
+    </siTest:testData>
+    
+</siTest:testDSIXML>

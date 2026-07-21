@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+
+	<!--
+		Copyright (c) 2019 - 2024  Physikalisch-Technische Bundesanstalt (PTB), all rights reserved. 
+			
+		CONTACT: 			smartcom@ptb.de
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+
+	<siTest:metaData>
+		<siTest:testDescription>XML examples for SmartCom D-SI data with quality class GOLD (D-SI XSD version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	<siTest:testData id="PTB7">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\degreecelsius</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB8">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilo\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB9">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\newton</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB10">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\newton\second\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB11">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilo\metre\hour\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB12">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\nano\candela</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB15">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\gram</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB31">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\kilogram   \metre\tothe{2}   \micro    \ampere\tothe{   -1}\second \tothe{-2   }</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB64">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{2}\nano\second\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB66">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre\tothe{0}\nano\second\tothe{-1}</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB99">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\gram</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB100">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\radian</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB101">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\steradian</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB102">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\hertz</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB103">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\pascal</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB104">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\joule</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB105">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\watt</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB106">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\coulomb</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB107">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\volt</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB108">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\farad</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB109">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\ohm</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB110">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\siemens</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB111">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\weber</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB112">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\tesla</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB113">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\henry</si:unit>
+		</si:real>
+	</siTest:testData>	
+	
+	<siTest:testData id="PTB114">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\lumen</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB115">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\lux</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB116">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\becquerel</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB117">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\sievert</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB118">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\gray</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB119">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\katal</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB120">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\deca\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB121">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\hecto\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB122">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\mega\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB123">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\giga\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB124">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\tera\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB125">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\peta\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB126">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\exa\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB127">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\zetta\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB128">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\yotta\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB129">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\deci\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB130">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\centi\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB131">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\milli\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB132">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\micro\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB133">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\nano\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB134">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\pico\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB135">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\femto\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB136">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\atto\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB137">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\zepto\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB138">
+		<si:real>
+			<si:value>0.0</si:value>
+			<si:unit>\yocto\metre</si:unit>
+		</si:real>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB172">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\radian</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB173">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\micro\radian</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB174">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\radian\tothe{1}</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB175">
+		<si:complex>
+			<si:valueMagnitude>0.0</si:valueMagnitude>
+			<si:valuePhase>0.0</si:valuePhase>
+			<si:unit>\metre</si:unit>
+			<si:unitPhase>\micro\radian\tothe{1}</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB236">
+		<si:realList>
+			<si:listUnit>\newton</si:listUnit>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB241">
+		<si:realList>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\newton</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\ampere</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="PTB274">
+		<si:hybrid>
+			<si:real>
+				<si:value>1.0</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+		</si:hybrid>		
+	</siTest:testData>
+
+</siTest:testDSIXML>						

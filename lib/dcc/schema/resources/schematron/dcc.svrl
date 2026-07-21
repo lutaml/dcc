@@ -1,0 +1,2302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:transform xmlns:dcc="https://ptb.de/dcc"
+               xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+               xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+               xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+               xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+               xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+               xmlns:si="https://ptb.de/si"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               version="2.0">
+   <rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/"
+                    xmlns:dct="http://purl.org/dc/terms/"
+                    xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+      <dct:creator>
+         <dct:Agent>
+            <skos:prefLabel>SchXslt/1.9.5 SAXON/HE 12.5</skos:prefLabel>
+            <schxslt.compile.typed-variables xmlns="https://doi.org/10.5281/zenodo.1495494#">true</schxslt.compile.typed-variables>
+         </dct:Agent>
+      </dct:creator>
+      <dct:created>2024-07-29T18:42:27.469516+02:00</dct:created>
+   </rdf:Description>
+   <xsl:output indent="yes"/>
+   <xsl:variable name="REFID" select="//@refId"/>
+   <xsl:variable name="ID" select="//@id"/>
+   <xsl:variable name="vals" select="//dcc:usedLangCodeISO639_1"/>
+   <xsl:variable name="lang" select="//dcc:mandatoryLangCodeISO639_1"/>
+   <xsl:variable name="lc"
+                 select="string-join(('aa', 'ab', 'ae', 'af', 'ak', 'am', 'an', 'ar', 'as', 'av', 'ay', 'az', 'ba', 'be', 'bg', 'bi', 'bm', 'bn', 'bo', 'br', 'bs', 'ca', 'ce', 'ch', 'co', 'cr', 'cs', 'cu', 'cv', 'cy', 'da', 'de', 'dv', 'dz', 'ee', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fa', 'ff', 'fi', 'fj', 'fo', 'fr', 'fy', 'ga', 'gd', 'gl', 'gn', 'gu', 'gv', 'ha', 'he', 'hi', 'ho', 'hr', 'ht', 'hu', 'hy', 'hz', 'ia', 'id', 'ie', 'ig', 'ii', 'ik', 'io', 'is', 'it', 'iu', 'ja', 'jv', 'ka', 'kg', 'ki', 'kj', 'kk', 'kl', 'km', 'kn', 'ko', 'kr', 'ks', 'ku', 'kv', 'kw', 'ky', 'la', 'lb', 'lg', 'li', 'ln', 'lo', 'lt', 'lu', 'lv', 'mg', 'mh', 'mi', 'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'na', 'nb', 'nd', 'ne', 'ng', 'nl', 'nn', 'no', 'nr', 'nv', 'ny', 'oc', 'oj', 'om', 'or', 'os', 'pa', 'pi', 'pl', 'ps', 'pt', 'qu', 'rm', 'rn', 'ro', 'ru', 'rw', 'sa', 'sc', 'sd', 'se', 'sg', 'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'ss', 'st', 'su', 'sv', 'sw', 'ta', 'te', 'tg', 'th', 'ti', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk', 'ur', 'uz', 've', 'vi', 'vo', 'wa', 'wo', 'xh', 'yi', 'yo', 'za', 'zh', 'zu'), ' ')"/>
+   <xsl:variable name="nonSI" select="//dcc:statement/dcc:nonSIUnit"/>
+   <xsl:template match="root()">
+      <xsl:variable name="metadata" as="element()?">
+         <svrl:metadata xmlns:dct="http://purl.org/dc/terms/"
+                        xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+                        xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+            <dct:creator>
+               <dct:Agent>
+                  <skos:prefLabel>
+                     <xsl:value-of separator="/"
+                                   select="(system-property('xsl:product-name'), system-property('xsl:product-version'))"/>
+                  </skos:prefLabel>
+               </dct:Agent>
+            </dct:creator>
+            <dct:created>
+               <xsl:value-of select="current-dateTime()"/>
+            </dct:created>
+            <dct:source>
+               <rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/">
+                  <dct:creator>
+                     <dct:Agent>
+                        <skos:prefLabel>SchXslt/1.9.5 SAXON/HE 12.5</skos:prefLabel>
+                        <schxslt.compile.typed-variables xmlns="https://doi.org/10.5281/zenodo.1495494#">true</schxslt.compile.typed-variables>
+                     </dct:Agent>
+                  </dct:creator>
+                  <dct:created>2024-07-29T18:42:27.469516+02:00</dct:created>
+               </rdf:Description>
+            </dct:source>
+         </svrl:metadata>
+      </xsl:variable>
+      <xsl:variable name="report" as="element(schxslt:report)">
+         <schxslt:report>
+            <xsl:call-template name="d7e9"/>
+         </schxslt:report>
+      </xsl:variable>
+      <xsl:variable name="schxslt:report" as="node()*">
+         <xsl:sequence select="$metadata"/>
+         <xsl:for-each select="$report/schxslt:document">
+            <xsl:for-each select="schxslt:pattern">
+               <xsl:sequence select="node()"/>
+               <xsl:sequence select="../schxslt:rule[@pattern = current()/@id]/node()"/>
+            </xsl:for-each>
+         </xsl:for-each>
+      </xsl:variable>
+      <svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+         <svrl:ns-prefix-in-attribute-values prefix="dcc" uri="https://ptb.de/dcc"/>
+         <svrl:ns-prefix-in-attribute-values prefix="si" uri="https://ptb.de/si"/>
+         <xsl:sequence select="$schxslt:report"/>
+      </svrl:schematron-output>
+   </xsl:template>
+   <xsl:template match="text() | @*" mode="#all" priority="-10"/>
+   <xsl:template match="/" mode="#all" priority="-10">
+      <xsl:apply-templates mode="#current" select="node()"/>
+   </xsl:template>
+   <xsl:template match="*" mode="#all" priority="-10">
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:apply-templates mode="#current" select="node()"/>
+   </xsl:template>
+   <xsl:template name="d7e9">
+      <schxslt:document>
+         <schxslt:pattern id="d7e9">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e45">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e80">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e115">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e127">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e149">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e166">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e181">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e202">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e217">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e233">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e260">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e329">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e350">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e375">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <schxslt:pattern id="d7e386">
+            <xsl:if test="exists(base-uri(root()))">
+               <xsl:attribute name="documents" select="base-uri(root())"/>
+            </xsl:if>
+            <xsl:for-each select="root()">
+               <svrl:active-pattern xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="documents" select="base-uri(.)"/>
+               </svrl:active-pattern>
+            </xsl:for-each>
+         </schxslt:pattern>
+         <xsl:apply-templates mode="d7e9" select="root()"/>
+      </schxslt:document>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResult" priority="47" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e9']">
+            <schxslt:rule pattern="d7e9">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResult" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e9">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedMethods)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedMethods)</xsl:attribute>
+                     <svrl:text>For this measurement result, the methods used during measuring process are global declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e9')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]"
+                 priority="46"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e9']">
+            <schxslt:rule pattern="d7e9">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e9">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedMethods)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedMethods)</xsl:attribute>
+                     <svrl:text>For this list, the methods used during measuring process are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:usedMethods)=0 and count(ancestor::dcc:measurementResult/dcc:usedMethods)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:usedMethods)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:usedMethods)=0 and count(ancestor::dcc:measurementResult/dcc:usedMethods)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:usedMethods)</xsl:attribute>
+                     <svrl:text>For this list, the methods used during measuring process are NEITHER global under measurementResult NOR local under list directly NOR under local quantity child elements declared. This calibration certificate is unacceptable!!!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e9')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:result/dcc:data/dcc:quantity"
+                 priority="45"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e9']">
+            <schxslt:rule pattern="d7e9">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:result/dcc:data/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e9">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedMethods)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedMethods)</xsl:attribute>
+                     <svrl:text>For this quantity, the methods used during measuring process are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:usedMethods)=0 and count(ancestor::dcc:measurementResult/dcc:usedMethods)=0 ">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:usedMethods)=0 and count(ancestor::dcc:measurementResult/dcc:usedMethods)=0 </xsl:attribute>
+                     <svrl:text>For this quantity, the methods used during measuring process are NEITHER global unter measurementResult NOR local declared. This calibration certificate is unacceptable!!!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e9')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity"
+                 priority="44"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e9']">
+            <schxslt:rule pattern="d7e9">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e9">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedMethods)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedMethods)</xsl:attribute>
+                     <svrl:text>For this quantity, the methods used during measuring process are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e9')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResult" priority="43" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e45']">
+            <schxslt:rule pattern="d7e45">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResult" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e45">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedSoftware)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)</xsl:attribute>
+                     <svrl:text>For this measurement result, the software used during measuring process is global declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e45')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]"
+                 priority="42"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e45']">
+            <schxslt:rule pattern="d7e45">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e45">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedSoftware)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)</xsl:attribute>
+                     <svrl:text>For this list, the software used during measuring process is local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:usedSoftware)=0 and count(ancestor::dcc:measurementResult/dcc:usedSoftware)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:usedSoftware)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="warning">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)=0 and count(ancestor::dcc:measurementResult/dcc:usedSoftware)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:usedSoftware)</xsl:attribute>
+                     <svrl:text>For this list, the software used during measuring process is NEITHER global under measurementResult NOR local under list directly NOR under local quantity child elements declared.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e45')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:result/dcc:data/dcc:quantity"
+                 priority="41"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e45']">
+            <schxslt:rule pattern="d7e45">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:result/dcc:data/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e45">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedSoftware)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)</xsl:attribute>
+                     <svrl:text>For this quantity, the software used during measuring process is local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:usedSoftware)=0 and count(ancestor::dcc:measurementResult/dcc:usedSoftware)=0 ">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="warning">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)=0 and count(ancestor::dcc:measurementResult/dcc:usedSoftware)=0 </xsl:attribute>
+                     <svrl:text>For this quantity, the software used during measuring process is NEITHER global unter measurementResult NOR local declared.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e45')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity"
+                 priority="40"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e45']">
+            <schxslt:rule pattern="d7e45">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e45">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:usedSoftware)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:usedSoftware)</xsl:attribute>
+                     <svrl:text>For this quantity, the software used during measuring process is local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e45')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResult" priority="39" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e80']">
+            <schxslt:rule pattern="d7e80">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResult" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e80">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResult</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:influenceConditions)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)</xsl:attribute>
+                     <svrl:text>For this measurement result, the influence conditions are global declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e80')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]"
+                 priority="38"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e80']">
+            <schxslt:rule pattern="d7e80">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e80">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:influenceConditions)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)</xsl:attribute>
+                     <svrl:text>For this list, the influence conditions are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:influenceConditions)=0 and count(ancestor::dcc:measurementResult/dcc:influenceConditions)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:influenceConditions)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)=0 and count(ancestor::dcc:measurementResult/dcc:influenceConditions)=0 and count(dcc:quantity)&gt;count(dcc:quantity/dcc:influenceConditions)</xsl:attribute>
+                     <svrl:text>For this list, the influence conditions are NEITHER global under measurementResult NOR local under list directly NOR under local quantity child elements declared. This calibration certificate is unacceptable!!!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e80')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:result/dcc:data/dcc:quantity"
+                 priority="37"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e80']">
+            <schxslt:rule pattern="d7e80">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:result/dcc:data/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e80">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:result/dcc:data/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:influenceConditions)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)</xsl:attribute>
+                     <svrl:text>For this quantity, the influence conditions are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:influenceConditions)=0 and count(ancestor::dcc:measurementResult/dcc:influenceConditions)=0 ">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)=0 and count(ancestor::dcc:measurementResult/dcc:influenceConditions)=0 </xsl:attribute>
+                     <svrl:text>For this quantity, the influence conditions are NEITHER global unter measurementResult NOR local declared. This calibration certificate is unacceptable!!!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e80')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity"
+                 priority="36"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e80']">
+            <schxslt:rule pattern="d7e80">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e80">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:measurementResults//dcc:list[not(ancestor::dcc:metaData)]/dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:influenceConditions)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:influenceConditions)</xsl:attribute>
+                     <svrl:text>For this quantity, the influence conditions are local declared. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e80')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:digitalCalibrationCertificate" priority="35" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e115']">
+            <schxslt:rule pattern="d7e115">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:digitalCalibrationCertificate" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:digitalCalibrationCertificate</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e115">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:digitalCalibrationCertificate</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(@schemaVersion='3.3.0')">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="warning">
+                     <xsl:attribute name="test">@schemaVersion='3.3.0'</xsl:attribute>
+                     <svrl:text>You are not using the latest version of the DCC! There a version 3.3.0 available.</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e115')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:digitalCalibrationCertificate" priority="34" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e127']">
+            <schxslt:rule pattern="d7e127">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:digitalCalibrationCertificate" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:digitalCalibrationCertificate</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e127">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:digitalCalibrationCertificate</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:administrativeData)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:administrativeData)</xsl:attribute>
+                     <svrl:text>
+                All refId Attributes: <xsl:value-of select="string-join($REFID,', ')"/>
+                     </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:administrativeData)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:administrativeData)</xsl:attribute>
+                     <svrl:text>
+                All id Attributes: <xsl:value-of select="string-join($ID,', ')"/>
+                     </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e127')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//@id" priority="33" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e149']">
+            <schxslt:rule pattern="d7e149">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//@id" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@id</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e149">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@id</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(some $refid in $REFID satisfies tokenize($refid, ' ') = .)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">some $refid in $REFID satisfies tokenize($refid, ' ') = .</xsl:attribute>
+                     <svrl:text>This id is not linked to a refId.</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e149')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//@refId" priority="32" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e149']">
+            <schxslt:rule pattern="d7e149">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//@refId" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refId</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e149">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refId</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(some $refid in tokenize(., ' ') satisfies $ID = $refid)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">some $refid in tokenize(., ' ') satisfies $ID = $refid</xsl:attribute>
+                     <svrl:text>This refId is not linked to an id.</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e149')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//*" priority="31" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e166']">
+            <schxslt:rule pattern="d7e166">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//*" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//*</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e166">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//*</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(text())=0 and count(*)=0 and not(name(.) = 'dcc:metaData')">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(text())=0 and count(*)=0 and not(name(.) = 'dcc:metaData')</xsl:attribute>
+                     <svrl:text>Empty element. You cannot have an empty element. You have to enter the necessary information here.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(text())=1 and matches(text(), '^\s+$') and count(*)=0">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(text())=1 and matches(text(), '^\s+$') and count(*)=0</xsl:attribute>
+                     <svrl:text>Blank spaces. You cannot have just blank space(s) as content. You have to enter the necessary information here.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e166')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:content[@lang]" priority="30" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e181']">
+            <schxslt:rule pattern="d7e181">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:content[@lang]" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:content[@lang]</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e181">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:content[@lang]</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(@lang = $vals)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">@lang = $vals</xsl:attribute>
+                     <svrl:text>
+                Please use one of these language codes: <xsl:value-of select="string-join($vals,', ')"/>. This calibration certificate is unacceptable!!!
+            </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e181')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:content" priority="29" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e181']">
+            <schxslt:rule pattern="d7e181">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:content" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:content</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e181">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:content</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(@lang) and (count(../../dcc:name)=0 and count(../../dcc:further)=0 and count(../../dcc:referral)=0)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="warning">
+                     <xsl:attribute name="test">not(@lang) and (count(../../dcc:name)=0 and count(../../dcc:further)=0 and count(../../dcc:referral)=0)</xsl:attribute>
+                     <svrl:text>
+                The language attribute is not used for this element.
+            </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e181')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:coreData/dcc:endPerformanceDate"
+                 priority="28"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:variable name="eDate" select="xs:date(.)"/>
+      <xsl:variable name="bDate" select="xs:date(../dcc:beginPerformanceDate)"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e202']">
+            <schxslt:rule pattern="d7e202">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:coreData/dcc:endPerformanceDate" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:coreData/dcc:endPerformanceDate</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e202">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:coreData/dcc:endPerformanceDate</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not($bDate le $eDate)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">$bDate le $eDate</xsl:attribute>
+                     <svrl:text>
+                The beginning date of the calibration must be earlier than or the same day as the end date of the calibration. This calibration certificate is unacceptable!!!
+            </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e202')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:release" priority="27" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e217']">
+            <schxslt:rule pattern="d7e217">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:release" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:release</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e217">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:release</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(text(), '^[a-zA-Z]{1}( )?([0-9]{1,3}\.){0,3}([0-9]{1,3})$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(text(), '^[a-zA-Z]{1}( )?([0-9]{1,3}\.){0,3}([0-9]{1,3})$'))</xsl:attribute>
+                     <svrl:text>The release version of <xsl:value-of select="preceding-sibling::dcc:name[1]/dcc:content[1]/text()"/> is not valid.</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e217')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:usedLangCodeISO639_1" priority="26" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e233']">
+            <schxslt:rule pattern="d7e233">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:usedLangCodeISO639_1" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:usedLangCodeISO639_1</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e233">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:usedLangCodeISO639_1</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(contains($lc, text()))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">contains($lc, text())</xsl:attribute>
+                     <svrl:text>The given language code is invalid according to ISO639. </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e233')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:mandatoryLangCodeISO639_1" priority="25" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e233']">
+            <schxslt:rule pattern="d7e233">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:mandatoryLangCodeISO639_1" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:mandatoryLangCodeISO639_1</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e233">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:mandatoryLangCodeISO639_1</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(contains($lc, text()))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">contains($lc, text())</xsl:attribute>
+                     <svrl:text>The given language code is invalid according to ISO639. </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e233')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:countryCodeISO3166_1" priority="24" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:variable name="cc"
+                    select="string-join(('AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BQ', 'BA', 'BW', 'BV', 'BR', 'IO', 'BN', 'BG', 'BF', 'BI', 'CV', 'KH', 'CM', 'CA', 'KY', 'CF', 'TD', 'CL', 'CN', 'CX', 'CC', 'CO', 'KM', 'CD', 'CG', 'CK', 'CR', 'CI', 'HR', 'CU', 'CW', 'CY', 'CZ', 'DE', 'DK', 'DJ', 'DM', 'DO', 'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'SZ', 'ET', 'FK', 'FO', 'FJ', 'FI', 'FR', 'GF', 'PF', 'TF', 'GA', 'GM', 'GE', 'DE', 'GH', 'GI', 'GR', 'GL', 'GD', 'GP', 'GU', 'GT', 'GG', 'GN', 'GW', 'GY', 'HT', 'HM', 'VA', 'HN', 'HK', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ', 'IE', 'IM', 'IL', 'IT', 'JM', 'JP', 'JE', 'JO', 'KZ', 'KE', 'KI', 'KP', 'KR', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY', 'LI', 'LT', 'LU', 'MO', 'MK', 'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MQ', 'MR', 'MU', 'YT', 'MX', 'FM', 'MD', 'MC', 'MN', 'ME', 'MS', 'MA', 'MZ', 'MM', 'NA', 'NR', 'NP', 'NL', 'NC', 'NZ', 'NI', 'NE', 'NG', 'NU', 'NF', 'MP', 'NO', 'OM', 'PK', 'PW', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH', 'PN', 'PL', 'PT', 'PR', 'QA', 'RE', 'RO', 'RU', 'RW', 'BL', 'SH', 'KN', 'LC', 'MF', 'PM', 'VC', 'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SX', 'SK', 'SI', 'SB', 'SO', 'ZA', 'GS', 'SS', 'ES', 'LK', 'SD', 'SR', 'SJ', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'UM', 'US', 'UY', 'UZ', 'VU', 'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW'), ' ')"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e233']">
+            <schxslt:rule pattern="d7e233">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:countryCodeISO3166_1" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:countryCodeISO3166_1</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e233">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:countryCodeISO3166_1</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(contains($cc, text()))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">contains($cc, text())</xsl:attribute>
+                     <svrl:text>The given country code is invalid according to ISO3166-1.</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e233')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:quantity" priority="23" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:variable name="valueXMLList" select="si:realListXMLList/si:valueXMLList"/>
+      <xsl:variable name="relativeUncertaintyXmlList"
+                    select="dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList/si:valueXMLList"/>
+      <xsl:variable name="uncertaintyXMLList"
+                    select="si:realListXMLList/si:expandedUncXMLList/si:uncertaintyXMLList"/>
+      <xsl:variable name="value" select="si:real/si:value"/>
+      <xsl:variable name="relativeUncertainty"
+                    select="dcc:relativeUncertainty/dcc:relativeUncertainty/si:value"/>
+      <xsl:variable name="uncertainty" select="si:real/si:expandedUnc/si:uncertainty"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e260']">
+            <schxslt:rule pattern="d7e260">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:quantity" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:quantity</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e260">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:quantity</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1 and count(si:realListXMLList/si:expandedUncXMLList)=0">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1 and count(si:realListXMLList/si:expandedUncXMLList)=0</xsl:attribute>
+                     <svrl:text>The relative uncertainty is given without expanded uncertainty.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:real/si:expandedUnc)=0">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:real/si:expandedUnc)=0</xsl:attribute>
+                     <svrl:text>The relative uncertainty is given without expanded uncertainty.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1</xsl:attribute>
+                     <svrl:text>A relative uncertainty list is available for this quantity. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(tokenize($relativeUncertaintyXmlList, ' ')) = 1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(tokenize($relativeUncertaintyXmlList, ' ')) = 1</xsl:attribute>
+                     <svrl:text>The relative uncertainty is constant for this quantity.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:real/si:expandedUnc)=0">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:real/si:expandedUnc)=0</xsl:attribute>
+                     <svrl:text>The relative uncertainty is given without expanded uncertainty.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="information">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1</xsl:attribute>
+                     <svrl:text>The relative uncertainty is available for this quantity.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=0 and count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:realListXMLList/si:valueXMLList)=1 and count(si:real/si:value)=0">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=0 and count(dcc:relativeUncertainty/dcc:relativeUncertainty)=1 and count(si:realListXMLList/si:valueXMLList)=1 and count(si:real/si:value)=0</xsl:attribute>
+                     <svrl:text>If a list of values is given, a list of relative uncertainty must also be given.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1 and count(dcc:relativeUncertainty/dcc:relativeUncertainty)=0 and count(si:realListXMLList/si:valueXMLList)=0 and count(si:real/si:value)=1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(dcc:relativeUncertainty/dcc:relativeUncertaintyXmlList)=1 and count(dcc:relativeUncertainty/dcc:relativeUncertainty)=0 and count(si:realListXMLList/si:valueXMLList)=0 and count(si:real/si:value)=1</xsl:attribute>
+                     <svrl:text>If a single value is given, a single relative uncertainty must be given. It is not allowed to use a list for relative uncertainty value.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="($relativeUncertainty) != ($uncertainty) div ($value) and count(dcc:relativeUncertainty/dcc:relativeUncertainty/si:value) = 1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">($relativeUncertainty) != ($uncertainty) div ($value) and count(dcc:relativeUncertainty/dcc:relativeUncertainty/si:value) = 1</xsl:attribute>
+                     <svrl:text>The relative uncertainty is calculated wrong!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e260')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:relativeUncertainty" priority="22" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:variable name="relativeUncertaintyXmlList"
+                    select="dcc:relativeUncertaintyXmlList/si:valueXMLList"/>
+      <xsl:variable name="valueXMLList"
+                    select="preceding-sibling::si:realListXMLList/si:valueXMLList"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e260']">
+            <schxslt:rule pattern="d7e260">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:relativeUncertainty" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:relativeUncertainty</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e260">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:relativeUncertainty</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="(count(tokenize($valueXMLList, ' ')) != count(tokenize($relativeUncertaintyXmlList, ' '))) and (count(tokenize($relativeUncertaintyXmlList, ' ')) &gt; 1)">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">(count(tokenize($valueXMLList, ' ')) != count(tokenize($relativeUncertaintyXmlList, ' '))) and (count(tokenize($relativeUncertaintyXmlList, ' ')) &gt; 1)</xsl:attribute>
+                     <svrl:text>When the relative uncertainty is not constant, you have to enter a relative uncertainty value for every measurement data!!</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e260')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:realListXMLList" priority="21" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:variable name="uncertaintyXMLList"
+                    select="si:expandedUncXMLList/si:uncertaintyXMLList"/>
+      <xsl:variable name="valueXMLList" select="si:valueXMLList"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e260']">
+            <schxslt:rule pattern="d7e260">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:realListXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:realListXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e260">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:realListXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="(count(tokenize($valueXMLList, ' ')) != count(tokenize($uncertaintyXMLList, ' '))) and (count(tokenize($uncertaintyXMLList, ' ')) &gt; 1) and count(si:expandedUncXMLList/si:uncertaintyXMLList)=1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">(count(tokenize($valueXMLList, ' ')) != count(tokenize($uncertaintyXMLList, ' '))) and (count(tokenize($uncertaintyXMLList, ' ')) &gt; 1) and count(si:expandedUncXMLList/si:uncertaintyXMLList)=1</xsl:attribute>
+                     <svrl:text>The number of entries of the expanded uncertainty does not match with the number of data of the entries of the values. </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e260')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:real/si:unit" priority="20" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e329']">
+            <schxslt:rule pattern="d7e329">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:real/si:unit" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:real/si:unit</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e329">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:real/si:unit</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(tokenize(., ' ')) &gt; 1">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(tokenize(., ' ')) &gt; 1</xsl:attribute>
+                     <svrl:text>It is not allowed to use a space character in units.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e329')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:unitXMLList" priority="19" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e329']">
+            <schxslt:rule pattern="d7e329">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:unitXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:unitXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e329">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:unitXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="count(tokenize(., ' ')) &gt; 1 and not(count(tokenize(., ' ')) = count(tokenize(preceding-sibling::si:valueXMLList)))">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">count(tokenize(., ' ')) &gt; 1 and not(count(tokenize(., ' ')) = count(tokenize(preceding-sibling::si:valueXMLList)))</xsl:attribute>
+                     <svrl:text>If your unit is not same for all your values, you have to define a unit for every data.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+               <xsl:if test="count(tokenize(., ' ')) &gt; 1 and (every $value in tokenize(., ' ') satisfies ($value = tokenize(., ' ')))">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="warning">
+                     <xsl:attribute name="test">count(tokenize(., ' ')) &gt; 1 and (every $value in tokenize(., ' ') satisfies ($value = tokenize(., ' ')))</xsl:attribute>
+                     <svrl:text>It is not recommended to use one list element for a dataset which contain data with differing units.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e329')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:hybrid/si:real/si:unit" priority="18" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e350']">
+            <schxslt:rule pattern="d7e350">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:hybrid/si:real/si:unit" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:hybrid/si:real/si:unit</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e350">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:hybrid/si:real/si:unit</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(text()=$nonSI) and matches(text(), '^\|.+')">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">not(text()=$nonSI) and matches(text(), '^\|.+')</xsl:attribute>
+                     <svrl:text>
+                You cannot use a nonSI unit without first declaring it.
+            </svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e350')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:nonSIUnit" priority="17" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e350']">
+            <schxslt:rule pattern="d7e350">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:nonSIUnit" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:nonSIUnit</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e350">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:nonSIUnit</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(count(preceding-sibling::dcc:nonSIDefinition)=1)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">count(preceding-sibling::dcc:nonSIDefinition)=1</xsl:attribute>
+                     <svrl:text>
+                Just nonSI unit is not enough, you have to give also the definition of it.
+            </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e350')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:nonSIDefinition" priority="16" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e350']">
+            <schxslt:rule pattern="d7e350">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:nonSIDefinition" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:nonSIDefinition</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e350">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:nonSIDefinition</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not(count(following-sibling::dcc:nonSIUnit)=1)">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">count(following-sibling::dcc:nonSIUnit)=1</xsl:attribute>
+                     <svrl:text>
+                Just the definition of a nonSI unit is not enough, you have to give also the unit.
+            </svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e350')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="dcc:usedLangCodeISO639_1" priority="15" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e375']">
+            <schxslt:rule pattern="d7e375">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "dcc:usedLangCodeISO639_1" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:usedLangCodeISO639_1</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e375">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">dcc:usedLangCodeISO639_1</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="text()=preceding-sibling::dcc:usedLangCodeISO639_1/text() or text()=following-sibling::dcc:usedLangCodeISO639_1/text()">
+                  <svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          location="{schxslt:location(.)}"
+                                          role="error">
+                     <xsl:attribute name="test">text()=preceding-sibling::dcc:usedLangCodeISO639_1/text() or text()=following-sibling::dcc:usedLangCodeISO639_1/text()</xsl:attribute>
+                     <svrl:text>You cannot declare the same language code more than one time.</svrl:text>
+                  </svrl:successful-report>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e375')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:valueXMLList" priority="14" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:valueXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:valueXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:valueXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:unitXMLList" priority="13" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:unitXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:unitXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:unitXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:labelXMLList" priority="12" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:labelXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:labelXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:labelXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:dateTimeXMLList" priority="11" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:dateTimeXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:dateTimeXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:dateTimeXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:uncertaintyXMLList" priority="10" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:uncertaintyXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:uncertaintyXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:uncertaintyXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:coverageFactorXMLList" priority="9" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:coverageFactorXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:coverageFactorXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:coverageFactorXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:coverageProbabilityXMLList" priority="8" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:coverageProbabilityXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:coverageProbabilityXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:coverageProbabilityXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:distributionXMLList" priority="7" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:distributionXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:distributionXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:distributionXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:standardUncXMLList" priority="6" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:standardUncXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:standardUncXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:standardUncXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:intervalMinXMLList" priority="5" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:intervalMinXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:intervalMinXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:intervalMinXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//si:intervalMaxXMLList" priority="4" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//si:intervalMaxXMLList" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:intervalMaxXMLList</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//si:intervalMaxXMLList</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:dateTimeXMLListType" priority="3" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:dateTimeXMLListType" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:dateTimeXMLListType</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:dateTimeXMLListType</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//dcc:stringConformityStatementStatusXMLListType"
+                 priority="2"
+                 mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//dcc:stringConformityStatementStatusXMLListType" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:stringConformityStatementStatusXMLListType</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//dcc:stringConformityStatementStatusXMLListType</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//@refType" priority="1" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//@refType" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refType</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refType</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>
+                        <xsl:value-of select="name()"/> : More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:template match="//@refId" priority="0" mode="d7e9">
+      <xsl:param name="schxslt:patterns-matched" as="xs:string*"/>
+      <xsl:choose>
+         <xsl:when test="$schxslt:patterns-matched[. = 'd7e386']">
+            <schxslt:rule pattern="d7e386">
+               <xsl:comment xmlns:svrl="http://purl.oclc.org/dsdl/svrl">WARNING: Rule for context "//@refId" shadowed by preceding rule</xsl:comment>
+               <svrl:suppressed-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refId</xsl:attribute>
+               </svrl:suppressed-rule>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="$schxslt:patterns-matched"/>
+            </xsl:next-match>
+         </xsl:when>
+         <xsl:otherwise>
+            <schxslt:rule pattern="d7e386">
+               <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                  <xsl:attribute name="context">//@refId</xsl:attribute>
+               </svrl:fired-rule>
+               <xsl:if test="not((matches(., '^([^\s]+\s)*([^\s]+)$')))">
+                  <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                      location="{schxslt:location(.)}"
+                                      role="error">
+                     <xsl:attribute name="test">(matches(., '^([^\s]+\s)*([^\s]+)$'))</xsl:attribute>
+                     <svrl:text>
+                        <xsl:value-of select="name()"/> : More than one blank space in a list is not allowed!</svrl:text>
+                  </svrl:failed-assert>
+               </xsl:if>
+            </schxslt:rule>
+            <xsl:next-match>
+               <xsl:with-param name="schxslt:patterns-matched"
+                               as="xs:string*"
+                               select="($schxslt:patterns-matched, 'd7e386')"/>
+            </xsl:next-match>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <xsl:function name="schxslt:location" as="xs:string">
+      <xsl:param name="node" as="node()"/>
+      <xsl:variable name="segments" as="xs:string*">
+         <xsl:for-each select="($node/ancestor-or-self::node())">
+            <xsl:variable name="position">
+               <xsl:number level="single"/>
+            </xsl:variable>
+            <xsl:choose>
+               <xsl:when test=". instance of element()">
+                  <xsl:value-of select="concat('Q{', namespace-uri(.), '}', local-name(.), '[', $position, ']')"/>
+               </xsl:when>
+               <xsl:when test=". instance of attribute()">
+                  <xsl:value-of select="concat('@Q{', namespace-uri(.), '}', local-name(.))"/>
+               </xsl:when>
+               <xsl:when test=". instance of processing-instruction()">
+                  <xsl:value-of select="concat('processing-instruction(&#34;', name(.), '&#34;)[', $position, ']')"/>
+               </xsl:when>
+               <xsl:when test=". instance of comment()">
+                  <xsl:value-of select="concat('comment()[', $position, ']')"/>
+               </xsl:when>
+               <xsl:when test=". instance of text()">
+                  <xsl:value-of select="concat('text()[', $position, ']')"/>
+               </xsl:when>
+               <xsl:otherwise/>
+            </xsl:choose>
+         </xsl:for-each>
+      </xsl:variable>
+      <xsl:value-of select="concat('/', string-join($segments, '/'))"/>
+   </xsl:function>
+</xsl:transform>

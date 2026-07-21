@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siTest:testDSIXML 
+	xmlns:siTest="https://ptb.de/si/examples"
+	xmlns:si="https://ptb.de/si"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://ptb.de/si/examples https://www.ptb.de/si/v2.2.1/examples/SI_Format_TestData.xsd">
+	
+	<!--
+		Copyright (c) 2019 - 2024 Physikalisch-Technische Bundesanstalt (PTB), all rights reserved. 
+			
+		CONTACT: 			smartcom@ptb.de
+		DEVELOPMENT:		https://gitlab1.ptb.de/d-ptb/d-si/xsd-d-si
+		D-SI XSD VERSION:	2.2.1
+		RELEASE DATA:		2024-06-21		
+		DOI:				10.5281/zenodo.3366901
+
+		This XML file is free data: you can redistribute it and/or modify
+   		it under the terms of the Creative Commons Attribution 4.0 International License
+   		as published by the Creative Commons Corporation.
+
+    	This XML is distributed in the hope that it will be useful,
+    	but WITHOUT ANY WARRANTY; without even the implied warranty of
+   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+   		You should have received a copy of the Commons Attribution 4.0 International License
+   		along with this XML.  If not, see https://creativecommons.org/licenses/by/4.0/.
+      -->
+		
+	<siTest:metaData>
+		<siTest:testDescription>Update XML examples for SmartCom D-SI XML format (D-SI Version 2.2.1)</siTest:testDescription>
+	</siTest:metaData>
+	
+	
+	<siTest:testData id="EXAMPLE-9-D-SI-Buch">
+		<si:real>
+			<si:label>temperature</si:label>
+			<si:value>20.10</si:value>
+			<si:unit>\degreecelsius</si:unit>
+			<si:expandedUnc>
+				<si:uncertainty>0.50</si:uncertainty>
+				<si:coverageFactor>2</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:expandedUnc>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-11-2-D-SI-Buch">
+		<si:real>
+			<si:label>temperature</si:label>
+			<si:value>20.10</si:value>
+			<si:unit>\degreecelsius</si:unit>
+			<si:coverageInterval>
+				<si:standardUnc>0.25</si:standardUnc>
+				<si:intervalMin>19.60</si:intervalMin>
+				<si:intervalMax>20.60</si:intervalMax>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal</si:distribution>
+			</si:coverageInterval>
+		</si:real>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-101">
+		<si:complex>
+			<si:label>amplifier signal</si:label>
+			<si:valueReal>-10.310</si:valueReal>
+			<si:valueImag>5.010</si:valueImag>
+			<si:unit>\volt</si:unit>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-102">
+		<si:complex>
+			<si:label>amplifier signal</si:label>
+			<si:valueMagnitude>11.463</si:valueMagnitude>
+			<si:valuePhase>2.689</si:valuePhase>
+			<si:unit>\volt</si:unit>
+			<si:unitPhase>\radian</si:unitPhase>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-103">
+		<si:complex>
+			<si:valueReal>-10.310</si:valueReal>
+			<si:valueImag>5.010</si:valueImag>
+			<si:unit>\volt</si:unit>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>0.050</si:value>
+							<si:unit>\volt\volt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>-0.003</si:value>
+							<si:unit>\volt\volt</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>-0.003</si:value>
+							<si:unit>\volt\volt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.105</si:value>
+							<si:unit>\volt\volt</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>2.45</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal-bivariate</si:distribution>
+			</si:ellipsoidalRegion>
+		</si:complex>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-200">
+		<si:realList>
+			<si:real>
+				<si:value>1.00</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>1.00</si:value>
+				<si:unit>\second</si:unit>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-208">
+		<!-- list of complex quantities (option B) -->
+		<si:complexList>
+			<si:complex>
+				<si:valueReal>-10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+				<si:unit>\volt</si:unit>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>-10.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+				<si:unit>\volt</si:unit>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-211">
+		<si:list>
+			<si:realList>
+				<si:real>
+					<si:value>2.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>3.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:real>
+					<si:value>4.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>5.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>
+	
+		<siTest:testData id="EXAMPLE-201">
+			<si:realList>
+				<si:real>
+					<si:value>2.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>3.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>4.34</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-203">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:real>
+				<si:value>2.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>3.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>4.34</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-202">
+		<si:realList>
+			<si:listUnit>\metre</si:listUnit>
+			<si:listUnivariateUnc>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:listUnivariateUnc>
+			<si:real>
+				<si:value>2.34</si:value>
+			</si:real>
+			<si:real>
+				<si:value>3.34</si:value>
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-202_1">
+		<si:realList>
+			<si:real>
+				<si:value>2.34</si:value>
+				<si:unit>\metre</si:unit>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>
+			</si:real>
+			<si:real>
+				<si:value>3.34</si:value>
+				<si:unit>\metre</si:unit>
+				<si:expandedUnc>
+					<si:uncertainty>0.01</si:uncertainty>
+					<si:coverageFactor>2</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal</si:distribution>
+				</si:expandedUnc>	
+			</si:real>
+		</si:realList>
+	</siTest:testData>
+	
+	
+	<!-- Testbeispiele für Elemente mit Konstanten -->
+	<siTest:testData id="EXAMPLE-500">
+		<si:constant>
+			<si:label>pi in single precision format</si:label>
+			<si:value>3.1415927</si:value>
+			<si:unit>\one</si:unit>
+			<si:uncertainty>0.000000051</si:uncertainty>
+			<si:distribution>rectangular</si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-501">
+		<si:constant>
+			<si:label>Planck constant</si:label>
+			<si:value>6.626070040e-34</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\second\tothe{-1}</si:unit>
+			<si:dateTime>2018-11-16T12:30:01.67-01:00</si:dateTime>
+			<si:uncertainty>8.1e-42</si:uncertainty>
+			<si:distribution>normal</si:distribution>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-501-2">
+		<si:constant>
+			<si:label>Planck constant</si:label>
+			<si:value>6.62607015e-34</si:value>
+			<si:unit>\kilogram\metre\tothe{2}\second\tothe{-1}</si:unit>
+			<si:dateTime>2019-05-21T02:00:00.10-01:00</si:dateTime>
+		</si:constant>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-205-1">
+		<si:realList>
+			<si:real>
+				<si:value>2.340</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>3.340</si:value>
+				<si:unit>\second</si:unit>
+			</si:real>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>0.212</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\second\metre</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\metre\second</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.101</si:value>
+							<si:unit>\second\second</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>2.45</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal-multivariate</si:distribution>
+			</si:ellipsoidalRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-206">
+		<si:realList>
+			<si:real>
+				<si:value>2.340</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+			<si:real>
+				<si:value>3.340</si:value>
+				<si:unit>\second</si:unit>
+			</si:real>
+			<si:rectangularRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>0.212</si:value>
+							<si:unit>\metre\metre</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\second\metre</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\metre\second</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.101</si:value>
+							<si:unit>\second\second</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>2.24</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal-multivariate</si:distribution>
+			</si:rectangularRegion>
+		</si:realList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-208-2">
+		<si:complexList>
+			<si:complex>
+				<si:valueMagnitude>-10.30</si:valueMagnitude>
+				<si:valuePhase>1.50</si:valuePhase>
+				<si:unit>\ampere</si:unit>
+				<si:unitPhase>\radian</si:unitPhase>
+			</si:complex>
+			<si:complex>
+				<si:valueMagnitude>-12.30</si:valueMagnitude>
+				<si:valuePhase>1.80</si:valuePhase>
+				<si:unit>\ampere</si:unit>
+				<si:unitPhase>\radian</si:unitPhase>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-208-3">
+		<si:complexList>
+			<si:listUnit>\ampere</si:listUnit>
+			<si:listUnitPhase>\radian</si:listUnitPhase>
+			<si:complex>
+				<si:valueMagnitude>-10.0</si:valueMagnitude>
+				<si:valuePhase>1.50</si:valuePhase>
+			</si:complex>
+			<si:complex>
+				<si:valueMagnitude>-12.30</si:valueMagnitude>
+				<si:valuePhase>1.80</si:valuePhase>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-209-3">
+		<si:complexList>
+			<si:complex>
+				<si:valueReal>-10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+				<si:unit>\volt</si:unit>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>-10.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+				<si:unit>\volt</si:unit>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-209-4">
+		<si:complexList>
+			<si:listUnit>\volt</si:listUnit>
+			<si:listBivariateUnc>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:listBivariateUnc>
+			<si:complex>
+				<si:valueReal>-10.310</si:valueReal>
+				<si:valueImag>5.010</si:valueImag>
+			</si:complex>
+			<si:complex>
+				<si:valueReal>-10.510</si:valueReal>
+				<si:valueImag>5.510</si:valueImag>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-209-5">
+		<si:complexList>
+			<si:listUnit>\volt</si:listUnit>
+			<si:listUnitPhase>\radian</si:listUnitPhase>
+			<si:listBivariateUnc>
+				<si:ellipsoidalRegion>
+					<si:covarianceMatrix>
+						<si:column>
+							<si:covariance>
+								<si:value>0.050</si:value>
+								<si:unit>\volt\volt</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\radian\volt</si:unit>
+							</si:covariance>
+						</si:column>
+						<si:column>
+							<si:covariance>
+								<si:value>-0.003</si:value>
+								<si:unit>\volt\radian</si:unit>
+							</si:covariance>
+							<si:covariance>
+								<si:value>0.105</si:value>
+								<si:unit>\radian\radian</si:unit>
+							</si:covariance>
+						</si:column>
+					</si:covarianceMatrix>
+					<si:coverageFactor>2.45</si:coverageFactor>
+					<si:coverageProbability>0.95</si:coverageProbability>
+					<si:distribution>normal-bivariate</si:distribution>
+				</si:ellipsoidalRegion>
+			</si:listBivariateUnc>
+			<si:complex>
+				<si:valueMagnitude>11.463</si:valueMagnitude>
+				<si:valuePhase>2.689</si:valuePhase>
+			</si:complex>
+			<si:complex>
+				<si:valueMagnitude>10.543</si:valueMagnitude>
+				<si:valuePhase>1.937</si:valuePhase>
+			</si:complex>
+		</si:complexList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-210">
+		<si:complexList>
+			<si:complex>
+				<si:valueMagnitude>11.463</si:valueMagnitude>
+				<si:valuePhase>2.689</si:valuePhase>
+				<si:unit>\ampere</si:unit>
+				<si:unitPhase>\radian</si:unitPhase>
+			</si:complex>
+			<si:complex>
+				<si:valueMagnitude>10.543</si:valueMagnitude>
+				<si:valuePhase>1.937</si:valuePhase>
+				<si:unit>\volt</si:unit>
+				<si:unitPhase>\degree</si:unitPhase>
+			</si:complex>
+			<si:ellipsoidalRegion>
+				<si:covarianceMatrix>
+					<si:column>
+						<si:covariance>
+							<si:value>0.050</si:value>
+							<si:unit>\ampere\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.00244</si:value>
+							<si:unit>\radian\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.007</si:value>
+							<si:unit>\volt\ampere</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.000</si:value>
+							<si:unit>\degree\ampere</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.00244</si:value>
+							<si:unit>\ampere\radian</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.105</si:value>
+							<si:unit>\radian\radian</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\volt\radian</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.109</si:value>
+							<si:unit>\degree\radian</si:unit>
+						</si:covariance>
+					</si:column>
+					<si:column>
+						<si:covariance>
+							<si:value>0.007</si:value>
+							<si:unit>\ampere\volt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.051</si:value>
+							<si:unit>\radian\volt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.076</si:value>
+							<si:unit>\volt\volt</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.002</si:value>
+							<si:unit>\degree\volt</si:unit>
+						</si:covariance>
+					</si:column>	
+					<si:column>
+						<si:covariance>
+							<si:value>0.000</si:value>
+							<si:unit>\ampere\degree</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.109</si:value>
+							<si:unit>\radian\degree</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.002</si:value>
+							<si:unit>\volt\degree</si:unit>
+						</si:covariance>
+						<si:covariance>
+							<si:value>0.602</si:value>
+							<si:unit>\degree\degree</si:unit>
+						</si:covariance>
+					</si:column>
+				</si:covarianceMatrix>
+				<si:coverageFactor>3.08</si:coverageFactor>
+				<si:coverageProbability>0.95</si:coverageProbability>
+				<si:distribution>normal-multivariate</si:distribution>
+			</si:ellipsoidalRegion>
+		</si:complexList>
+	</siTest:testData>
+	
+	
+	<siTest:testData id="EXAMPLE-1001">
+		<!--
+		###################################
+		Monte Carlo Method results
+		###################################
+	 -->
+	<si:list>
+			<si:label>Monte Carlo Simulation Data</si:label>
+			<si:realList>
+				<si:label>Simulation Result</si:label>
+				<si:real>
+					<si:value>0.998714286</si:value>
+					<si:unit>\metre</si:unit>
+					<si:coverageInterval>
+						<si:standardUnc>0.003450328</si:standardUnc>
+						<si:intervalMin>0.997</si:intervalMin>
+						<si:intervalMax>1.002</si:intervalMax>
+						<si:coverageProbability>0.95</si:coverageProbability>
+					</si:coverageInterval>
+				</si:real>
+			</si:realList>
+			<si:realList>
+				<si:label>Monte Carlo Samples</si:label>
+				<si:real>
+					<si:value>1.002</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>1.001</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>0.998</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>1.001</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>0.997</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>0.992</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+				<si:real>
+					<si:value>1.000</si:value>
+					<si:unit>\metre</si:unit>
+				</si:real>
+			</si:realList>
+		</si:list>
+	</siTest:testData>
+	
+	<siTest:testData id="EXAMPLE-2001">
+		<si:hybrid>
+			<!-- A: length from B converted to SI -->
+			<si:real>
+				<si:value>0.3048006</si:value>
+				<si:unit>\metre</si:unit>
+			</si:real>
+			<!-- B: length with imperial unit foot -->
+			<si:real>
+				<si:value>1</si:value>
+				<si:unit>ft(U.S. survey)</si:unit>
+			</si:real>
+		</si:hybrid>
+	</siTest:testData>
+
+	<siTest:testData id="EXAMPLE-2002">
+		<si:hybrid>
+			<!-- A: list from B converted to SI -->
+			<si:realList>
+				<si:real>
+					<si:value>0.00454609</si:value>
+					<si:unit>\metre\tothe{3}</si:unit>
+				</si:real>
+				<si:real>
+					<si:label>hardness Rockwell C scale</si:label>
+					<si:value>63.00</si:value>
+					<si:unit>\metre\metre\tothe{-1}</si:unit>
+
+					<si:expandedUnc>
+						<si:uncertainty>1.56</si:uncertainty>
+						<si:coverageFactor>2</si:coverageFactor>
+						<si:coverageProbability>0.95</si:coverageProbability>
+					</si:expandedUnc>
+				</si:real>
+			</si:realList>
+			<!-- B: list with non-SI units -->
+			<si:realList>
+				<si:real>
+					<si:value>1</si:value>
+					<si:unit>gallon(U.K.)</si:unit>
+				</si:real>
+				<si:real>
+					<si:label>hardness Rockwell C scale</si:label>
+					<si:value>63.00</si:value>
+					<si:unit>HRC</si:unit>
+					<si:expandedUnc>
+						<si:uncertainty>1.56</si:uncertainty>
+						<si:coverageFactor>2</si:coverageFactor>
+						<si:coverageProbability>0.95</si:coverageProbability>
+					</si:expandedUnc>
+				</si:real>
+			</si:realList>
+		</si:hybrid>
+	</siTest:testData>
+	
+</siTest:testDSIXML>
