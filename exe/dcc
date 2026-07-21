@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "dcc"
 require "dcc/cli/cli"
 
 Dcc::Cli::Cli.start(ARGV)
