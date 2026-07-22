@@ -132,6 +132,7 @@ module Dcc
     def load_all!
       V2.load_all!
       V3.load_all!
+      Si::V1.load_all!
       Si::V2.load_all!
       true
     end

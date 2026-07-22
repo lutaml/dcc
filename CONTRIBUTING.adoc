@@ -1,0 +1,64 @@
+= Contributing to the dcc gem
+
+Thank you for your interest in improving the `dcc` gem! This document
+covers setup, code style, and the contribution workflow.
+
+== Setup
+
+    $ git clone https://github.com/lutaml/dcc.git
+    $ cd dcc
+    $ bundle install
+
+Run the test suite:
+
+    $ bundle exec rake
+
+(That runs `bundle exec rspec` then `bundle exec rubocop`.)
+
+== Branch policy
+
+* All changes go through PRs. Never commit to `main`.
+* Branch naming: `feat/<short-description>`,
+  `fix/<short-description>`, `docs/<short-description>`.
+* Squash-merge or rebase-merge into `main`.
+
+== Code quality rules
+
+The project enforces strict rules inherited from Ribose's
+https://github.com/riboseinc/oss-guides[OSS guides] plus project-specific
+constraints:
+
+=== Forbidden
+* `require_relative` inside `lib/` — use Ruby `autoload` instead.
+* `require "dcc/..."` with internal paths — autoload only.
+* `send` to call private methods — redesign the API boundary.
+* `instance_variable_set` / `instance_variable_get` — use accessors.
+* `respond_to?` for type checking — use `is_a?` or model the type hierarchy.
+* Nokogiri anywhere outside `lib/dcc/validate/xsd.rb`.
+* Doubles in specs — use real model instances.
+* Hand-rolled `to_h`/`from_h` on model classes — use lutaml-model mappings.
+
+=== Required
+* `# frozen_string_literal: true` at the top of every Ruby file.
+* `module_eval`/`class_eval` blocks should reference fully-qualified
+  constants (e.g. `::Dcc::Namespace::Dcc`).
+* Output models (`Dcc::Validate::Result`, `Dcc::Convert::Result`,
+  `Dcc::Inspect::Report`, `Dcc::Diff::Result`) must respond to
+  `to_s`, `to_json`, and `to_yaml`.
+* Public API surfaces should carry YARD `# @param` / `# @return`
+  annotations.
+
+== Testing
+
+* Every public method has specs.
+* Round-trip specs run over every PTB reference fixture under
+  `spec/fixtures/`.
+* Schematron rules each have at least one negative spec.
+
+== Commit messages
+
+* Imperative mood: "Add X", "Fix Y", "Document Z".
+* First line ≤ 72 characters.
+* Body wraps at 72 columns.
+* No `Co-authored-by:` trailers for AI tools (per project policy).
+* No "Generated with Claude" or similar AI-acknowledgment footers.

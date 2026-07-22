@@ -1,0 +1,54 @@
+= Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
+and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+== [Unreleased]
+
+=== Added
+* YARD-style documentation throughout the public API
+* Performance memoization for hot paths
+* Plugin system for custom validators and converters
+
+== [0.1.0] — 2026-07-22
+
+=== Added
+* Initial public release of the `dcc` gem.
+* Fully typed object model for DCC v2.x and v3.x with per-major-version
+  type registries (mirrors the plurimath/mml pattern).
+* D-SI v1.x and v2.x quantity models (real, complex, constant, lists,
+  hybrid, uncertainties).
+* XSD validation against all 12 bundled DCC schemas.
+* Pure-Ruby Schematron engine implementing 14 PTB patterns.
+* Ruby-side business rule validators (signer coverage, unique IDs).
+* Format converters: JSON, YAML, CSV, HTML.
+* File extraction with ring-aware iteration.
+* MathML content-MathML parser with BigDecimal evaluator (REXML-based).
+* XMLDSig signature sign/verify (soft-dep on xmldsig).
+* XSLT transform via xsltproc or Saxon-HE bridge.
+* Builder DSL for programmatic DCC construction.
+* Structural diff of two certificates.
+* Version migration (same-major rewrite, cross-major reparse).
+* BigDecimal-based quantity math with uncertainty propagation
+  (RSS / fractional / derivative).
+* SmartCom-style quantity formatting (short / long / LaTeX).
+* Thor-based CLI with 8 subcommands.
+* Optional Sinatra REST API mirroring PTB dcclib endpoints.
+* i18n navigation helpers for multilingual content.
+* Streaming pull parser for large documents.
+* Plugin registry for third-party extensions.
+* 229 specs, 0 failures.
+* 45 PTB reference fixtures covering DCC + D-SI examples by tier.
+* AsciiDoc documentation + 5 runnable example scripts.
+
+=== Quality gates met
+* No `require_relative` in `lib/`.
+* No `require "dcc/..."` with internal paths.
+* No `send` / `instance_variable_set` / `instance_variable_get`.
+* No `respond_to?` for type checking.
+* No Nokogiri outside `lib/dcc/validate/xsd.rb`.
+* No doubles in specs.
+* `frozen_string_literal: true` everywhere.
+* OCP/MECE/DRY throughout.
