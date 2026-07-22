@@ -64,12 +64,11 @@ module Dcc
       def convert(format, file)
         Cli.ensure_loaded!
         xml = File.read(file)
-        dcc = Dcc.parse(xml)
         result =
           case format
-          when "json" then ::Dcc::Convert::Json.call(dcc)
-          when "yaml" then ::Dcc::Convert::Yaml.call(dcc)
-          when "html" then ::Dcc::Convert::Html.call(dcc)
+          when "json" then ::Dcc::Convert::Json.call(Dcc.parse(xml))
+          when "yaml" then ::Dcc::Convert::Yaml.call(Dcc.parse(xml))
+          when "html" then ::Dcc::Convert::Html.call(xml)
           else
             abort "Format not yet implemented: #{format}"
           end

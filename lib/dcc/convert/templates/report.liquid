@@ -121,25 +121,43 @@
   </div>
 
   <!-- Items -->
-  {% for item in admin.items.item | dcc_items %}
+  {% assign items_data = admin.items.item %}
+  {% if items_data %}
   <div class="card">
     <div class="card-header"><div class="card-icon">&#9776;</div><span class="card-title">Calibrated Item</span></div>
     <div class="card-body">
-      <div class="data-grid">
-        <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ item.name.content | dcc_text | default: "—" }}</div></div>
-        {% if item.model %}<div class="data-cell"><div class="data-label">Model</div><div class="data-value">{{ item.model }}</div></div>{% endif %}
-        {% if item.manufacturer %}<div class="data-cell"><div class="data-label">Manufacturer</div><div class="data-value">{{ item.manufacturer.name.content | dcc_text }}</div></div>{% endif %}
-      </div>
-      {% if item.identifications %}
-      {% for id in item.identifications.identification | dcc_items %}
-      {% if forloop.first %}<table class="data-table" style="margin-top:0.75rem;"><thead><tr><th>Identification</th><th>Issuer</th></tr></thead><tbody>{% endif %}
-        <tr><td class="mono">{{ id.value }}</td><td>{{ id.issuer }}</td></tr>
-      {% if forloop.last %}</tbody></table>{% endif %}
-      {% endfor %}
+      {% if items_data.name %}
+        {% assign item = items_data %}
+        <div class="data-grid">
+          <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ item.name.content | dcc_text | default: "—" }}</div></div>
+          {% if item.model %}<div class="data-cell"><div class="data-label">Model</div><div class="data-value">{{ item.model }}</div></div>{% endif %}
+          {% if item.manufacturer %}<div class="data-cell"><div class="data-label">Manufacturer</div><div class="data-value">{{ item.manufacturer.name.content | dcc_text }}</div></div>{% endif %}
+        </div>
+        {% if item.identifications %}
+        <table class="data-table" style="margin-top:0.75rem;">
+          <thead><tr><th>Identification</th><th>Issuer</th></tr></thead>
+          <tbody>
+          {% assign ids = item.identifications.identification %}
+          {% if ids.name %}
+            <tr><td class="mono">{{ ids.value }}</td><td>{{ ids.issuer }}</td></tr>
+          {% else %}
+            {% for id in ids %}<tr><td class="mono">{{ id.value }}</td><td>{{ id.issuer }}</td></tr>{% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+        {% endif %}
+      {% else %}
+        {% for item in items_data %}
+        <div class="data-grid">
+          <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ item.name.content | dcc_text | default: "—" }}</div></div>
+          {% if item.model %}<div class="data-cell"><div class="data-label">Model</div><div class="data-value">{{ item.model }}</div></div>{% endif %}
+          {% if item.manufacturer %}<div class="data-cell"><div class="data-label">Manufacturer</div><div class="data-value">{{ item.manufacturer.name.content | dcc_text }}</div></div>{% endif %}
+        </div>
+        {% endfor %}
       {% endif %}
     </div>
   </div>
-  {% endfor %}
+  {% endif %}
 
   <!-- Calibration Laboratory -->
   {% if lab.contact %}
