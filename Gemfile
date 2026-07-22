@@ -18,3 +18,6 @@ group :optional do
   gem "sinatra"      # Dcc::Server REST API
   gem "tty-prompt"   # dcc issue (interactive builder)
 end
+
+gem "rackup", "~> 2.3"
+gem "puma", "~> 8.0"

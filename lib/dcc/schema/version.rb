@@ -56,7 +56,7 @@ module Dcc
         # from the XML body.
         def resolve_dcc(version, xml: nil)
           v = normalize(version)
-          return detect_from_xml(xml) if v.nil? || v == "auto"
+          return detect_from_xml(xml) || DCC_LATEST if v.nil? || v == "auto"
           return DCC_LATEST if v == "latest"
 
           unless dcc?(v)
