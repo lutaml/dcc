@@ -42,6 +42,7 @@ module Dcc
   autoload :Signature, "dcc/signature"
   autoload :Transform, "dcc/transform"
   autoload :Validate, "dcc/validate"
+  autoload :Server, "dcc/server"
   autoload :Si, "dcc/si"
 
   autoload :V2, "dcc/v2"
