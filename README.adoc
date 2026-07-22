@@ -14,15 +14,14 @@ used by the https://github.com/plurimath/mml[`mml`^] gem for MathML.
 
 * Fully typed object model for DCC v2.x and v3.x (no more XPath over `lxml`)
 * Fully typed object model for D-SI v1.x and v2.x
-* Lossless round-trip XML fidelity (parsing then serializing is byte-equivalent after canonicalization)
+* Lossless round-trip XML fidelity (parsing then serializing is byte-equivalent after canonicalization via `moxml`)
 * Pure-Ruby Schematron engine implementing the 14 PTB Schematron patterns
   (no Java/Saxon-HE dependency)
 * XSD validation against all 12 bundled DCC schema versions
 * JSON / YAML / CSV / HTML converters
-* MathML formula extraction with BigDecimal-based evaluation
-* XMLDSig signature signing and verification (soft dependency on `xmldsig`)
-* XSLT 1.0 transformation via Nokogiri (optional Saxon-HE bridge for XSLT 2.0/3.0)
-* Programmatic DCC builder DSL
+* MathML formula support via the `mml` gem (typed model, not raw strings)
+* XMLDSig signature signing and verification via `moxml` native Signature
+* Programmatic DCC builder DSL for issuing new certificates
 * Structural diff of two certificates
 * Version migration helpers
 * Thor-based CLI with `validate`, `convert`, `extract`, `signature`,
@@ -42,7 +41,7 @@ require "dcc"
 
 dcc = Dcc.parse(File.read("certificate.xml"))
 dcc.administrative_data.core_data.unique_identifier
-dcc.measurement_results.first.results.first.data.quantities.first.value
+dcc.measurement_results.measurement_result.first.results.result.first.data.first.quantity.first.name
 ----
 
 Validate:
@@ -53,11 +52,119 @@ result = Dcc::Validate::Xsd.call(File.read("certificate.xml"), version: "3.3.0")
 result.ok? # => true
 ----
 
-Or via the CLI:
+== Building a new DCC
+
+Use the builder DSL to issue a certificate programmatically:
+
+[source,ruby]
+----
+require "dcc"
+
+dcc = Dcc.build(version: 3) do
+  administrative_data do
+    core_data do
+      unique_identifier "urn:uuid:00000000-0000-0000-0000-000000000001"
+      country_code "DE"
+      used_lang "en"
+      mandatory_lang "en"
+      begin_performance_date Date.today
+      end_performance_date Date.today
+    end
+
+    items do
+      item(model: "Pt100", manufacturer: "ACME Sensors") do
+        name { content lang: "en", value: "Resistance Thermometer" }
+      end
+    end
+
+    calibration_laboratory do
+      calibration_laboratory_code "PTB-123"
+      contact do
+        name { content lang: "en", value: "Calibration Lab" }
+        e_mail "lab@example.org"
+        location do
+          city "Berlin"
+          country_code "DE"
+        end
+      end
+    end
+
+    resp_persons do
+      resp_person do
+        person do
+          name { content lang: "en", value: "Dr. Jane Doe" }
+          e_mail "jane@example.org"
+        end
+        main_signer true
+      end
+    end
+
+    customer do
+      name { content lang: "en", value: "Acme Corp" }
+    end
+  end
+
+  measurement_results do
+    measurement_result do
+      name { content lang: "en", value: "Resistance at 0 °C" }
+      results do
+        result do
+          name { content lang: "en", value: "R(0 °C)" }
+          data do
+            quantity do
+              name { content lang: "en", value: "Measured resistance" }
+              # D-SI quantity element (si:real) is wired via the typed model
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+puts dcc.to_xml
+----
+
+== Signing a DCC
+
+Sign with an X.509 certificate and RSA private key:
+
+[source,ruby]
+----
+require "dcc"
+
+cert_pem = File.read("cert.pem")
+key_pem  = File.read("cert.key")
+
+signed_xml = Dcc::Signature::Signer.call(
+  File.read("certificate.xml"),
+  cert_pem: cert_pem,
+  key_pem: key_pem,
+)
+
+File.write("certificate_signed.xml", signed_xml)
+----
+
+Verify a signed certificate:
+
+[source,ruby]
+----
+result = Dcc::Signature::Verifier.call(
+  File.read("certificate_signed.xml"),
+  ca_cert_pem: cert_pem,
+)
+result.valid? # => true
+----
+
+== CLI
 
     $ dcc inspect certificate.xml
     $ dcc validate all certificate.xml
     $ dcc convert json certificate.xml -o certificate.json
+    $ dcc extract files certificate.xml
+    $ dcc signature sign cert.pem key.pem certificate.xml -o signed.xml
+    $ dcc signature verify cert.pem signed.xml
+    $ dcc diff a.xml b.xml
 
 == Status
 
