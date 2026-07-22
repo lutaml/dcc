@@ -6,6 +6,7 @@
 module Dcc
   module Validate
     module Schematron
+      autoload :Rule, "dcc/validate/schematron/rule"
       autoload :Profile, "dcc/validate/schematron/profile"
       autoload :Rules, "dcc/validate/schematron/rules"
 

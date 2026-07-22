@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../rule"
 
 module Dcc
   module Validate
