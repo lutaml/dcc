@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
+require "mml"
+
 module Dcc
   module Base
-    # `dcc:formulaType` — formula expression. v3.4 supports both `latex`
-    # and `mathml`; older versions used `siunitx`.
-    #
-    # The `mathml` attribute stores the raw MathML XML as a string for
-    # round-trip serialization safety. Call `.mathml_object` to lazily
-    # parse it into a typed `Mml::V3::Math` via the `mml` gem.
+    # `dcc:formulaType` — formula expression. Contains `latex` string,
+    # `mathml` (a typed `Mml::V3::Math` model), or legacy `siunitx`.
     module Formula
       def self.included(klass)
         klass.class_eval do
@@ -15,7 +13,7 @@ module Dcc
           attribute :ref_id, :string
           attribute :ref_type, :string
           attribute :latex, :string
-          attribute :mathml, :string
+          attribute :mathml, ::Mml::V3::Math
           attribute :siunitx, :string
 
           xml do
@@ -27,17 +25,6 @@ module Dcc
             map_element "latex", to: :latex
             map_element "mathml", to: :mathml
             map_element "siunitx", to: :siunitx
-          end
-
-          # Lazily parse the raw MathML string into a typed Mml::V3::Math
-          # object via the `mml` gem. Returns nil if mathml is empty.
-          define_method(:mathml_object) do
-            raw = mathml
-            return nil unless raw && !raw.to_s.empty?
-
-            ::Mml.parse(raw.to_s)
-          rescue ::StandardError
-            nil
           end
         end
       end

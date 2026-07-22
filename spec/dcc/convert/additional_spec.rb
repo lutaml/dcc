@@ -14,8 +14,8 @@ RSpec.describe Dcc::Convert::Yaml do
   end
 
   it "includes schema_version" do
-    parsed = ::YAML.safe_load(described_class.call(dcc).payload, permitted_classes: [::Date, ::Time, ::DateTime])
-    expect(parsed["schema_version"]).to eq("3.3.0")
+    parsed = ::YAML.safe_load(described_class.call(dcc).payload)
+    expect(parsed["schemaVersion"]).to eq("3.3.0")
   end
 end
 

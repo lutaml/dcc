@@ -22,8 +22,8 @@ RSpec.describe Dcc::Convert::Json do
 
     it "includes key fields" do
       parsed = ::JSON.parse(described_class.call(dcc).payload)
-      admin = parsed["administrative_data"]
-      expect(admin["core_data"]["unique_identifier"]).to eq("1234")
+      admin = parsed["administrativeData"]
+      expect(admin["coreData"]["uniqueIdentifier"]).to eq("1234")
     end
 
     it "supports pretty and compact modes" do
@@ -35,8 +35,8 @@ RSpec.describe Dcc::Convert::Json do
     it "round-trips through JSON" do
       payload = described_class.call(dcc).payload
       parsed = ::JSON.parse(payload)
-      admin = parsed["administrative_data"]
-      expect(admin["core_data"]["country_code_iso_3166_1"]).to eq("DE")
+      admin = parsed["administrativeData"]
+      expect(admin["coreData"]["countryCodeISO3166_1"]).to eq("DE")
     end
   end
 end
