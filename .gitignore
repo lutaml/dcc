@@ -14,3 +14,7 @@
 # Local scratchpads
 TODO.scratch/
 *.gem
+
+# Web (npm)
+web/node_modules/
+web/dist/
