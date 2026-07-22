@@ -26,6 +26,18 @@ export interface DccSigner {
   mainSigner: boolean;
 }
 
+export interface DccSignature {
+  present: boolean;
+  method?: string;
+  digestMethod?: string;
+  signatureValue?: string;
+  certificateHash?: string;
+  certificateSubject?: string;
+  verified: boolean;
+  verificationResult?: boolean;
+  verificationError?: string;
+}
+
 export interface DccCert {
   schemaVersion: string;
   uniqueId: string;
@@ -39,6 +51,7 @@ export interface DccCert {
   coreData: { label: string; value: string }[];
   signers: DccSigner[];
   measurements: DccMeasurementResult[];
+  signature: DccSignature;
 }
 
 export interface ValidationIssue {
@@ -54,6 +67,7 @@ export interface ValidationResult {
 
 const DCC_NS = "https://ptb.de/dcc";
 const SI_NS = "https://ptb.de/si";
+const DSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
 
 function localName(tag: string): string {
   return tag.includes(":") ? tag.split(":").pop()! : tag;
@@ -184,7 +198,64 @@ export function parseDcc(xml: string): DccCert {
     coreData,
     signers,
     measurements,
+    signature: detectSignature(doc),
   };
+}
+
+function detectSignature(doc: Document): DccSignature {
+  const sigEl = doc.getElementsByTagNameNS(DSIG_NS, "Signature")[0];
+  if (!sigEl) {
+    return { present: false, verified: false };
+  }
+
+  const signedInfo = sigEl.getElementsByTagNameNS(DSIG_NS, "SignedInfo")[0];
+  const sigMethod = signedInfo?.getElementsByTagNameNS(DSIG_NS, "SignatureMethod")[0];
+  const ref = signedInfo?.getElementsByTagNameNS(DSIG_NS, "Reference")[0];
+  const digestMethod = ref?.getElementsByTagNameNS(DSIG_NS, "DigestMethod")[0];
+  const sigValue = sigEl.getElementsByTagNameNS(DSIG_NS, "SignatureValue")[0];
+  const x509 = sigEl.getElementsByTagNameNS(DSIG_NS, "X509Certificate")[0];
+
+  let certHash: string | undefined;
+  if (x509?.textContent?.trim()) {
+    try {
+      const der = atob(x509.textContent.trim());
+      let hash = 0;
+      for (let i = 0; i < der.length; i++) {
+        hash = ((hash << 5) - hash + der.charCodeAt(i)) | 0;
+      }
+      certHash = Math.abs(hash).toString(16).padStart(8, "0").toUpperCase();
+    } catch {}
+  }
+
+  return {
+    present: true,
+    method: sigMethod?.getAttribute("Algorithm") || undefined,
+    digestMethod: digestMethod?.getAttribute("Algorithm") || undefined,
+    signatureValue: sigValue?.textContent?.trim()?.substring(0, 40) + "..." || undefined,
+    certificateHash: certHash,
+    verified: false,
+  };
+}
+
+export async function verifySignature(xml: string): Promise<DccSignature> {
+  const { SignedXml } = await import("xmldsigjs");
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
+  const sigEl = doc.getElementsByTagNameNS(DSIG_NS, "Signature")[0];
+
+  if (!sigEl) {
+    return { present: false, verified: false };
+  }
+
+  const base = detectSignature(doc);
+
+  try {
+    const signed = new SignedXml(doc);
+    await signed.LoadXml(sigEl);
+    const ok = await signed.Verify();
+    return { ...base, verified: true, verificationResult: ok };
+  } catch (e) {
+    return { ...base, verified: true, verificationResult: false, verificationError: (e as Error).message };
+  }
 }
 
 export function validateDcc(xml: string): ValidationResult {

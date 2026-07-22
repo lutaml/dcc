@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { parseDcc, validateDcc, type DccCert, type ValidationResult } from "./lib/dcc";
+import { parseDcc, validateDcc, verifySignature, type DccCert, type ValidationResult } from "./lib/dcc";
 
 const cert = ref<DccCert | null>(null);
 const validation = ref<ValidationResult>({ ok: true, issues: [] });
@@ -8,16 +8,30 @@ const loading = ref(false);
 const dragActive = ref(false);
 const showXml = ref(false);
 const rawXml = ref("");
+const sigVerifying = ref(false);
+const sigResult = ref<{ verified: boolean; result?: boolean; error?: string } | null>(null);
 
 const errors = computed(() => validation.value.issues.filter((i) => i.severity === "error"));
 const warnings = computed(() => validation.value.issues.filter((i) => i.severity === "warning"));
 
-function processXml(xml: string) {
+async function processXml(xml: string) {
   loading.value = true;
   rawXml.value = xml;
+  sigResult.value = null;
   try {
     validation.value = validateDcc(xml);
     cert.value = parseDcc(xml);
+
+    if (cert.value?.signature?.present) {
+      sigVerifying.value = true;
+      try {
+        const sig = await verifySignature(xml);
+        sigResult.value = { verified: true, result: sig.verificationResult, error: sig.verificationError };
+      } catch (e) {
+        sigResult.value = { verified: false, error: (e as Error).message };
+      }
+      sigVerifying.value = false;
+    }
   } catch (e) {
     validation.value = { ok: false, issues: [{ severity: "error", message: (e as Error).message }] };
     cert.value = null;
@@ -273,6 +287,54 @@ function initials(name: string): string {
                 <div v-if="s.email" class="font-mono text-xs text-slate-500">{{ s.email }}</div>
               </div>
               <span v-if="s.mainSigner" class="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider text-green-400 border border-green-500/20 bg-green-500/10">Main</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature -->
+      <div v-if="cert.signature?.present" class="slide-up rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-800 flex items-center gap-2">
+          <span class="text-slate-500">🔏</span>
+          <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Digital Signature</span>
+        </div>
+        <div class="p-5">
+          <!-- Verifying -->
+          <div v-if="sigVerifying" class="flex items-center gap-3">
+            <div class="inline-block w-5 h-5 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
+            <span class="text-sm text-slate-400">Verifying signature with Web Crypto...</span>
+          </div>
+          <!-- Verified result -->
+          <div v-else-if="sigResult?.verified" class="flex items-center gap-4">
+            <div :class="['w-10 h-10 rounded-lg flex items-center justify-center text-xl',
+                 sigResult.result ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400']">
+              {{ sigResult.result ? '✓' : '✕' }}
+            </div>
+            <div class="flex-1">
+              <div :class="['font-medium', sigResult.result ? 'text-green-400' : 'text-red-400']">
+                {{ sigResult.result ? 'Signature Valid' : 'Signature Invalid' }}
+              </div>
+              <div v-if="sigResult.error" class="text-xs text-red-400/60 mt-0.5">{{ sigResult.error }}</div>
+              <div class="text-xs text-slate-600 mt-0.5">Verified via xmldsigjs + Web Crypto API</div>
+            </div>
+          </div>
+          <!-- Not verified -->
+          <div v-else class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-xl text-amber-400">⚠</div>
+            <div class="flex-1">
+              <div class="font-medium text-amber-400">Signature Present — NOT Verified</div>
+              <div class="text-xs text-slate-600 mt-0.5">Cryptographic verification was not performed</div>
+            </div>
+          </div>
+          <!-- Sig details -->
+          <div class="mt-4 grid grid-cols-2 gap-px bg-slate-800/50 rounded-lg overflow-hidden" v-if="cert.signature.method || cert.signature.certificateHash">
+            <div v-if="cert.signature.method" class="bg-slate-900 p-3">
+              <div class="text-[10px] uppercase tracking-wider text-slate-600 mb-0.5">Signature Algorithm</div>
+              <div class="font-mono text-xs text-slate-300 truncate">{{ cert.signature.method.split("/").pop() }}</div>
+            </div>
+            <div v-if="cert.signature.certificateHash" class="bg-slate-900 p-3">
+              <div class="text-[10px] uppercase tracking-wider text-slate-600 mb-0.5">Certificate Hash</div>
+              <div class="font-mono text-xs text-slate-300">{{ cert.signature.certificateHash }}</div>
             </div>
           </div>
         </div>

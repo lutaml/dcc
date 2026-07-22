@@ -9,7 +9,8 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.0",
+    "xmldsigjs": "^2.8.7"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
