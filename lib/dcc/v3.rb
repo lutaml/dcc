@@ -97,5 +97,15 @@ module Dcc
         Configuration.register_model(klass, id: id)
       end
     end
+
+    # Re-export Mml type registrations into the DCC v3 context so
+    # `Mml::V3::Math` children resolve when formula.mathml is serialized.
+    def self.register_mml_types!
+      ::Mml::V3::Configuration.populate_context!
+      ::Mml::V3::Configuration.registered_model_ids.each do |id|
+        klass = ::Mml::V3::Configuration.registered_model_class(id)
+        Configuration.register_model(klass, id: id)
+      end
+    end
   end
 end

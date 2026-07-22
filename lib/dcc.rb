@@ -2,6 +2,7 @@
 
 require "lutaml/model"
 require "lutaml/xml"
+require "mml"
 
 Lutaml::Model::Config.xml_adapter_type = :nokogiri
 
@@ -44,7 +45,6 @@ module Dcc
   autoload :Validate, "dcc/validate"
   autoload :Server, "dcc/server"
   autoload :I18n, "dcc/i18n"
-  autoload :Streaming, "dcc/streaming"
   autoload :Plugin, "dcc/plugin"
   autoload :TypeGuards, "dcc/type_guards"
   autoload :Si, "dcc/si"

@@ -13,6 +13,7 @@ module Dcc
     autoload :StringWithLang, "dcc/base/string_with_lang"
     autoload :ByteData, "dcc/base/byte_data"
     autoload :Formula, "dcc/base/formula"
+    autoload :Mathml, "dcc/base/mathml"
     autoload :RichContent, "dcc/base/rich_content"
     autoload :XmlBlob, "dcc/base/xml_blob"
     autoload :Comment, "dcc/base/comment"
