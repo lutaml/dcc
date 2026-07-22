@@ -1,0 +1,67 @@
+= CLI Reference
+
+The `dcc` executable ships with the gem and exposes the following
+subcommands. All commands default to human-readable output; pass
+`--format json` or `--format yaml` for machine-readable output.
+
+== validate
+
+    $ dcc validate xsd FILE [--version 3.3.0|auto]
+    $ dcc validate schematron FILE
+    $ dcc validate all FILE
+
+Validates a DCC XML file. `xsd` checks against the bundled XSD of the
+chosen version. `schematron` runs the 14 PTB patterns in pure Ruby.
+`all` chains both. Exits 0 on success, 1 on failure.
+
+== convert
+
+    $ dcc convert json|yaml|csv|html FILE [-o OUTPUT]
+
+Converts a DCC XML file to the requested format. Default writes to
+stdout; use `-o PATH` to write to a file.
+
+== extract
+
+    $ dcc extract files FILE [INDEX] [-o OUTPUT] [-r RING]
+    $ dcc extract formulae FILE [-v KEY=VAL[,VAL...]]...
+
+Lists or extracts embedded files (`files`), or evaluates MathML
+formulae (`formulae`). For `files`, `INDEX` returns the binary payload
+of one file; `-r` filters by ring (`administrativeData`,
+`measurementResults`, `comment`, `document`).
+
+== inspect
+
+    $ dcc inspect FILE [--format text|json|yaml]
+
+Prints a summary of a DCC: schema version, unique identifier, country,
+languages, counts of items / measurement results / quantities / lists /
+embedded files / signers, and signature presence.
+
+== diff
+
+    $ dcc diff A.xml B.xml [--format text|json]
+
+Compares two DCC files structurally and reports additions, removals,
+and modifications.
+
+== signature (soft-dep on xmldsig)
+
+    $ dcc signature sign CERT KEY FILE [-o OUTPUT]
+    $ dcc signature verify CA_CERT FILE [-o OUTPUT]
+
+Signs or verifies a DCC using XMLDSig enveloped signatures.
+
+== transform
+
+    $ dcc transform xslt FILE XSLT [-o OUTPUT] [--engine xsltproc|saxon]
+
+Applies an XSLT stylesheet. Uses the system `xsltproc` for XSLT 1.0,
+or `java -jar $SAXON_JAR` for XSLT 2.0/3.0 when `SAXON_JAR` is set.
+
+== version
+
+    $ dcc version
+
+Prints the installed gem version.

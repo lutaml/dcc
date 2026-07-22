@@ -45,6 +45,7 @@ module Dcc
   autoload :Server, "dcc/server"
   autoload :I18n, "dcc/i18n"
   autoload :Streaming, "dcc/streaming"
+  autoload :Plugin, "dcc/plugin"
   autoload :Si, "dcc/si"
 
   autoload :V2, "dcc/v2"

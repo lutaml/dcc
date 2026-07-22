@@ -1,0 +1,117 @@
+= Getting Started with the dcc gem
+
+This guide walks through the basics of parsing, validating, and converting
+PTB Digital Calibration Certificates (DCC) in Ruby.
+
+== Prerequisites
+
+* Ruby 3.2 or newer
+* The `dcc` gem installed (`gem install dcc`)
+
+== Parsing your first DCC
+
+[source,ruby]
+----
+require "dcc"
+
+xml = File.read("certificate.xml")
+dcc = Dcc.parse(xml)
+
+puts dcc.class.name
+# => Dcc::V3::DigitalCalibrationCertificate
+
+puts dcc.schema_version
+# => 3.3.0
+
+puts dcc.administrative_data.core_data.unique_identifier
+----
+
+`Dcc.parse` auto-detects the schema version from the `schemaVersion`
+attribute and routes to the correct major-version context
+(`Dcc::V2::*` or `Dcc::V3::*`). Each major version has its own type
+registry, so the two can coexist in one process.
+
+== Validating
+
+Three validators ship with the gem:
+
+[source,ruby]
+----
+# XSD validation against the bundled v3.3.0 schema
+result = Dcc::Validate::Xsd.call(xml, version: "3.3.0")
+puts result.ok?  # => true
+puts result.errors.size
+
+# Pure-Ruby Schematron (14 PTB patterns)
+result = Dcc::Validate::Schematron.call(dcc)
+
+# Ruby-side business rules (signer coverage, etc.)
+result = Dcc::Validate::BusinessRules.call(dcc)
+----
+
+Every validator returns a `Dcc::Validate::Result` model with `to_s`,
+`to_json`, and `to_yaml` for rendering.
+
+== Converting
+
+Four formats out of the box:
+
+[source,ruby]
+----
+Dcc::Convert::Json.call(dcc).to_s   # PTB-compatible JSON
+Dcc::Convert::Yaml.call(dcc).to_s   # YAML
+Dcc::Convert::Csv.call(dcc).to_s    # tabular CSV of quantities
+Dcc::Convert::Html.call(dcc).to_s   # human-readable HTML report
+----
+
+== Extracting
+
+[source,ruby]
+----
+# Iterate embedded files (Ring-aware)
+Dcc::Extract::File.each(dcc) do |f|
+  puts "#{f.file_name} (#{f.ring}): #{f.data.bytesize} bytes"
+end
+
+# Parse MathML formulae to a Ruby AST
+asts = Dcc::Extract::Formula.call(dcc)
+asts.first.evaluate(T: BigDecimal("42.0"))
+----
+
+== Building
+
+Construct a DCC programmatically with the Builder DSL:
+
+[source,ruby]
+----
+dcc = Dcc.build(version: 3) do
+  administrative_data do
+    core_data do
+      unique_identifier "urn:uuid:abc-123"
+      country_code "DE"
+      used_lang "en"
+      mandatory_lang "en"
+    end
+    items { item(model: "Pt100") }
+  end
+end
+
+puts dcc.to_xml
+----
+
+== CLI
+
+    $ dcc validate xsd cert.xml
+    $ dcc convert json cert.xml -o cert.json
+    $ dcc inspect cert.xml
+    $ dcc extract files cert.xml
+    $ dcc diff a.xml b.xml
+    $ dcc version
+
+== What's next
+
+* `Dcc::QuantityMath` — BigDecimal arithmetic with uncertainty propagation
+* `Dcc::QuantityFormat` — SmartCom-style pretty-printing
+* `Dcc::Streaming::Reader` — pull-parser for large documents
+* `Dcc::Server::App` — optional Sinatra REST API
+* `Dcc::Plugin` — registry for custom validators / converters

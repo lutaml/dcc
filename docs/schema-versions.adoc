@@ -1,0 +1,65 @@
+= Schema Versions
+
+The dcc gem ships bundled XSD and Schematron resources for every PTB
+DCC release. Use `Dcc::Schema::Version` to query the registry.
+
+== Bundled DCC XSDs
+
+* v2.1.0, v2.1.1, v2.2.0, v2.3.0, v2.4.0
+* v3.0.0, v3.1.0, v3.1.1, v3.1.2, v3.2.0, v3.2.1, v3.3.0
+
+== Bundled D-SI XSDs
+
+* v1.0.1, v1.3.0, v1.3.1
+* v2.0.0, v2.1.0, v2.2.1
+
+== Per-major-version class hierarchy
+
+The gem follows the registry-aware pattern proven in `plurimath/mml`:
+each major DCC version gets its own module namespace and type registry.
+
+* `Dcc::V2::*` registers in `:dcc_v2` — legacy, no `refId`/`refType`,
+  imports D-SI v1.x
+* `Dcc::V3::*` registers in `:dcc_v3` — modern, with `refId`/`refType`
+  and D-SI v2.x. Includes v3.4.0-rc.2 features as optional attributes.
+
+The two registries are isolated, so a single Ruby process can parse
+both v2 and v3 documents without symbol clashes.
+
+== D-SI namespaces
+
+* `Dcc::Si::V1::*` registers in `:dsi_v1`
+* `Dcc::Si::V2::*` registers in `:dsi_v2`
+
+When parsing a v3 DCC, the v3 context re-exports D-SI v2 types so that
+`dcc:quantity` children (`si:real`, `si:hybrid`, `si:realListXMLList`,
+etc.) resolve to their typed classes without a context switch.
+
+== Resolving versions programmatically
+
+[source,ruby]
+----
+Dcc::Schema::Version::DCC_LATEST    # => "3.3.0"
+Dcc::Schema::Version::DSI_LATEST    # => "2.2.1"
+Dcc::Schema::Version.dcc?("3.3.0")  # => true
+Dcc::Schema::Version.major("2.3.0") # => 2
+
+# Auto-detect from XML
+xml = File.read("cert.xml")
+Dcc::Schema::Version.resolve_dcc(:auto, xml: xml) # => "3.3.0"
+----
+
+== Migration
+
+Use `Dcc.migrate` to upgrade or downgrade between schema versions:
+
+[source,ruby]
+----
+dcc = Dcc.parse(File.read("v3.xml"))
+migrated = Dcc.migrate(dcc, from: "3.3.0", to: "3.2.1")
+puts migrated.schema_version # => 3.2.1
+----
+
+Cross-major migration (e.g. v2 → v3) serializes the source DCC and
+re-parses it under the target version's context. Same-major just
+rewrites the `schemaVersion` attribute in place.
