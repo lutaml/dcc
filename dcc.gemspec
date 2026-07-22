@@ -38,5 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "lutaml-model", "~> 0.8"
   spec.add_dependency "moxml", "~> 0.1.26"
   spec.add_dependency "mml", "~> 2.4.0"
+  spec.add_dependency "liquid"
   spec.add_dependency "thor"
 end

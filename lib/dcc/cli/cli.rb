@@ -69,6 +69,7 @@ module Dcc
           case format
           when "json" then ::Dcc::Convert::Json.call(dcc)
           when "yaml" then ::Dcc::Convert::Yaml.call(dcc)
+          when "html" then ::Dcc::Convert::Html.call(dcc)
           else
             abort "Format not yet implemented: #{format}"
           end
