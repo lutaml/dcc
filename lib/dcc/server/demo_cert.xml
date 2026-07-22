@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcc:digitalCalibrationCertificate
+    xmlns:dcc="https://ptb.de/dcc"
+    xmlns:si="https://ptb.de/si"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/dcc https://ptb.de/dcc/v3.3.0/dcc.xsd"
+    schemaVersion="3.3.0">
+
+  <dcc:administrativeData>
+    <dcc:dccSoftware>
+      <dcc:software>
+        <dcc:name>
+          <dcc:content lang="en">DCC Builder Demo</dcc:content>
+        </dcc:name>
+        <dcc:release>0.2.0</dcc:release>
+      </dcc:software>
+    </dcc:dccSoftware>
+
+    <dcc:coreData>
+      <dcc:countryCodeISO3166_1>NL</dcc:countryCodeISO3166_1>
+      <dcc:usedLangCodeISO639_1>en</dcc:usedLangCodeISO639_1>
+      <dcc:usedLangCodeISO639_1>de</dcc:usedLangCodeISO639_1>
+      <dcc:mandatoryLangCodeISO639_1>en</dcc:mandatoryLangCodeISO639_1>
+      <dcc:uniqueIdentifier>R117-2019-NL1-22.10-Rev2</dcc:uniqueIdentifier>
+      <dcc:identifications>
+        <dcc:identification>
+          <dcc:issuer>calibrationLaboratory</dcc:issuer>
+          <dcc:value>OIML-CS-R117-22.10</dcc:value>
+        </dcc:identification>
+      </dcc:identifications>
+      <dcc:beginPerformanceDate>2024-03-15</dcc:beginPerformanceDate>
+      <dcc:endPerformanceDate>2024-03-15</dcc:endPerformanceDate>
+    </dcc:coreData>
+
+    <dcc:items>
+      <dcc:name>
+        <dcc:content lang="en">Coriolis Mass Flow Transducer</dcc:content>
+        <dcc:content lang="de">Coriolis-Massendurchfluss-Messumformer</dcc:content>
+      </dcc:name>
+      <dcc:item id="promass-f-300">
+        <dcc:name>
+          <dcc:content lang="en">Promass F 300</dcc:content>
+        </dcc:name>
+        <dcc:equipmentClass>
+          <dcc:reference>OIML R117</dcc:reference>
+          <dcc:classID>Measurement transducer</dcc:classID>
+        </dcc:equipmentClass>
+        <dcc:manufacturer>
+          <dcc:name>
+            <dcc:content lang="en">Endress+Hauser Flowtec AG</dcc:content>
+          </dcc:name>
+          <dcc:location>
+            <dcc:street>Kägenstrasse</dcc:street>
+            <dcc:streetNo>7</dcc:streetNo>
+            <dcc:postCode>4153</dcc:postCode>
+            <dcc:city>Reinach</dcc:city>
+            <dcc:countryCode>CH</dcc:countryCode>
+          </dcc:location>
+        </dcc:manufacturer>
+        <dcc:model>Promass F 300 DNx</dcc:model>
+      </dcc:item>
+    </dcc:items>
+
+    <dcc:calibrationLaboratory>
+      <dcc:calibrationLaboratoryCode>NL1</dcc:calibrationLaboratoryCode>
+      <dcc:contact>
+        <dcc:name>
+          <dcc:content lang="en">NMi Certin B.V.</dcc:content>
+        </dcc:name>
+        <dcc:eMail>info@nmi.nl</dcc:eMail>
+        <dcc:location>
+          <dcc:countryCode>NL</dcc:countryCode>
+        </dcc:location>
+      </dcc:contact>
+    </dcc:calibrationLaboratory>
+
+    <dcc:respPersons>
+      <dcc:respPerson>
+        <dcc:person>
+          <dcc:name>
+            <dcc:content lang="en">M. Schmidt, Ph.D.</dcc:content>
+          </dcc:name>
+          <dcc:eMail>m.schmidt@nmi.nl</dcc:eMail>
+        </dcc:person>
+        <dcc:description>
+          <dcc:content lang="en">Person responsible</dcc:content>
+        </dcc:description>
+        <dcc:mainSigner>true</dcc:mainSigner>
+      </dcc:respPerson>
+    </dcc:respPersons>
+
+    <dcc:customer>
+      <dcc:name>
+        <dcc:content lang="en">Endress+Hauser Flowtec AG</dcc:content>
+      </dcc:name>
+      <dcc:location>
+        <dcc:street>Kägenstrasse</dcc:street>
+        <dcc:streetNo>7</dcc:streetNo>
+        <dcc:postCode>4153</dcc:postCode>
+        <dcc:city>Reinach</dcc:city>
+        <dcc:countryCode>CH</dcc:countryCode>
+      </dcc:location>
+    </dcc:customer>
+
+    <dcc:statements>
+      <dcc:statement refType="OIML_R117_conformity">
+        <dcc:countryCodeISO3166_1>NL</dcc:countryCodeISO3166_1>
+        <dcc:convention>OIML-CS</dcc:convention>
+        <dcc:declaration>
+          <dcc:content lang="en">The certified type conforms to OIML R 117 (2019).</dcc:content>
+        </dcc:declaration>
+        <dcc:valid>true</dcc:valid>
+      </dcc:statement>
+    </dcc:statements>
+  </dcc:administrativeData>
+
+  <dcc:measurementResults>
+    <dcc:measurementResult>
+      <dcc:name>
+        <dcc:content lang="en">Mass flow calibration — DN25</dcc:content>
+      </dcc:name>
+      <dcc:results>
+        <dcc:result>
+          <dcc:name>
+            <dcc:content lang="en">Maximum flow rate</dcc:content>
+          </dcc:name>
+          <dcc:data>
+            <dcc:quantity>
+              <dcc:name>
+                <dcc:content lang="en">Max mass flow</dcc:content>
+              </dcc:name>
+              <si:real>
+                <si:label>maxFlow</si:label>
+                <si:value>300</si:value>
+                <si:unit>\kilogram\per\minute</si:unit>
+                <si:expandedMU>
+                  <si:valueExpandedMU>0.15</si:valueExpandedMU>
+                  <si:coverageFactor>2</si:coverageFactor>
+                  <si:coverageProbability>0.95</si:coverageProbability>
+                </si:expandedMU>
+              </si:real>
+            </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+        <dcc:result>
+          <dcc:name>
+            <dcc:content lang="en">Density range</dcc:content>
+          </dcc:name>
+          <dcc:data>
+            <dcc:quantity>
+              <dcc:name>
+                <dcc:content lang="en">Density min</dcc:content>
+              </dcc:name>
+              <si:real>
+                <si:label>densityMin</si:label>
+                <si:value>300</si:value>
+                <si:unit>\kilogram\per\metre\tothe{3}</si:unit>
+              </si:real>
+            </dcc:quantity>
+            <dcc:quantity>
+              <dcc:name>
+                <dcc:content lang="en">Density max</dcc:content>
+              </dcc:name>
+              <si:real>
+                <si:label>densityMax</si:label>
+                <si:value>1400</si:value>
+                <si:unit>\kilogram\per\metre\tothe{3}</si:unit>
+              </si:real>
+            </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+        <dcc:result>
+          <dcc:name>
+            <dcc:content lang="en">Temperature range</dcc:content>
+          </dcc:name>
+          <dcc:data>
+            <dcc:quantity>
+              <dcc:name>
+                <dcc:content lang="en">Temperature min</dcc:content>
+              </dcc:name>
+              <si:real>
+                <si:label>tempMin</si:label>
+                <si:value>-40</si:value>
+                <si:unit>\degreeCelsius</si:unit>
+              </si:real>
+            </dcc:quantity>
+            <dcc:quantity>
+              <dcc:name>
+                <dcc:content lang="en">Temperature max</dcc:content>
+              </dcc:name>
+              <si:real>
+                <si:label>tempMax</si:label>
+                <si:value>55</si:value>
+                <si:unit>\degreeCelsius</si:unit>
+              </si:real>
+            </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+        <dcc:result>
+          <dcc:name>
+            <dcc:content lang="en">Accuracy classes</dcc:content>
+          </dcc:name>
+          <dcc:data>
+            <dcc:list>
+              <dcc:name>
+                <dcc:content lang="en">Accuracy class ratings</dcc:content>
+              </dcc:name>
+              <dcc:quantity>
+                <dcc:name>
+                  <dcc:content lang="en">Class 0.3</dcc:content>
+                </dcc:name>
+                <si:real>
+                  <si:label>accuracyClass1</si:label>
+                  <si:value>0.3</si:value>
+                  <si:unit>\percent</si:unit>
+                </si:real>
+              </dcc:quantity>
+              <dcc:quantity>
+                <dcc:name>
+                  <dcc:content lang="en">Class 0.5</dcc:content>
+                </dcc:name>
+                <si:real>
+                  <si:label>accuracyClass2</si:label>
+                  <si:value>0.5</si:value>
+                  <si:unit>\percent</si:unit>
+                </si:real>
+              </dcc:quantity>
+              <dcc:quantity>
+                <dcc:name>
+                  <dcc:content lang="en">Class 1.0</dcc:content>
+                </dcc:name>
+                <si:real>
+                  <si:label>accuracyClass3</si:label>
+                  <si:value>1.0</si:value>
+                  <si:unit>\percent</si:unit>
+                </si:real>
+              </dcc:quantity>
+            </dcc:list>
+          </dcc:data>
+        </dcc:result>
+      </dcc:results>
+    </dcc:measurementResult>
+  </dcc:measurementResults>
+</dcc:digitalCalibrationCertificate>

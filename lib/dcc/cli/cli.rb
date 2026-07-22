@@ -125,6 +125,16 @@ module Dcc
         ::Dcc::Cli::Formatters.print(diff, format: options[:format])
       end
 
+      desc "serve", "Start the DCC web validator (http://localhost:4567)"
+      method_option :port, type: :numeric, default: 4567, desc: "Port"
+      method_option :bind, type: :string, default: "0.0.0.0", desc: "Bind address"
+      def serve
+        require "dcc/server"
+        ::Dcc.load_all!
+        puts "Starting DCC Validator on http://localhost:#{options[:port]}"
+        ::Dcc::Server::App.run!(port: options[:port], bind: options[:bind])
+      end
+
       desc "version", "Print the dcc gem version"
       def version
         puts "dcc #{::Dcc::VERSION}"

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DCC Validator</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<style>
+[v-cloak] { display: none; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.slide-up { animation: slideUp 0.4s ease-out both; }
+.slide-up:nth-child(2) { animation-delay: .06s; }
+.slide-up:nth-child(3) { animation-delay: .12s; }
+.slide-up:nth-child(4) { animation-delay: .18s; }
+.slide-up:nth-child(5) { animation-delay: .24s; }
+.pulse-dot { animation: pd 2s ease-in-out infinite; }
+@keyframes pd { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+</style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans antialiased min-h-screen" style="font-family: 'Inter', system-ui, sans-serif;">
+<div id="app" v-cloak>
+
+<!-- Header bar -->
+<div class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+  <div class="max-w-5xl mx-auto px-6 py-3 flex items-center gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+        <span class="text-cyan-400 text-lg font-bold">D</span>
+      </div>
+      <span class="font-semibold text-slate-100">DCC Validator</span>
+      <span class="text-xs text-slate-500 hidden sm:inline">v{{ version }}</span>
+    </div>
+    <div class="flex-1"></div>
+    <button @click="loadDemo" class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-700 hover:border-cyan-500/50 hover:text-cyan-400 transition-colors">
+      Load Demo Certificate
+    </button>
+    <label class="cursor-pointer px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 transition-colors">
+      Upload DCC XML
+      <input type="file" accept=".xml,.dcc" class="hidden" @change="onUpload($event)">
+    </label>
+  </div>
+</div>
+
+<!-- Drop zone (when no cert loaded) -->
+<div v-if="!cert && !loading" class="max-w-2xl mx-auto px-6 pt-24">
+  <div
+    @dragover.prevent="dragActive = true"
+    @dragleave.prevent="dragActive = false"
+    @drop.prevent="onDrop($event)"
+    :class="['border-2 border-dashed rounded-2xl p-16 text-center transition-all', dragActive ? 'border-cyan-500 bg-cyan-500/5' : 'border-slate-800']"
+  >
+    <div class="text-5xl mb-4 opacity-30">📋</div>
+    <p class="text-slate-400 mb-1">Drag a DCC XML file here</p>
+    <p class="text-slate-600 text-sm">or click upload above</p>
+    <button @click="loadDemo" class="mt-6 px-4 py-2 text-sm font-medium rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 transition-colors">
+      Try a demo certificate →
+    </button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div v-if="loading" class="max-w-2xl mx-auto px-6 pt-32 text-center">
+  <div class="inline-block w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mb-4"></div>
+  <p class="text-slate-400 text-sm">Validating certificate...</p>
+</div>
+
+<!-- Certificate view -->
+<div v-if="cert && !loading" class="max-w-5xl mx-auto px-6 py-8 space-y-4">
+
+  <!-- Validity banner -->
+  <div :class="['rounded-2xl p-5 border slide-up flex items-center gap-4',
+       validation.ok ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20']">
+    <div :class="['w-12 h-12 rounded-xl flex items-center justify-center text-2xl',
+         validation.ok ? 'bg-green-500/10' : 'bg-red-500/10']">
+      {{ validation.ok ? '✓' : '✕' }}
+    </div>
+    <div class="flex-1">
+      <div :class="['font-semibold text-lg', validation.ok ? 'text-green-400' : 'text-red-400']">
+        {{ validation.ok ? 'Certificate Valid' : 'Validation Failed' }}
+      </div>
+      <div class="text-sm text-slate-500">
+        {{ validation.errors.length }} error{{ validation.errors.length === 1 ? '' : 's' }},
+        {{ validation.warnings.length }} warning{{ validation.warnings.length === 1 ? '' : 's' }}
+        <span v-if="cert.schemaVersion"> · Schema v{{ cert.schemaVersion }}</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium"
+         :class="validation.ok ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'">
+      <span class="w-1.5 h-1.5 rounded-full pulse-dot" :class="validation.ok ? 'bg-green-400' : 'bg-red-400'"></span>
+      {{ validation.ok ? 'VALID' : 'INVALID' }}
+    </div>
+  </div>
+
+  <!-- Errors list -->
+  <div v-if="validation.errors.length" class="slide-up rounded-xl border border-red-500/15 bg-red-500/[0.03] overflow-hidden">
+    <div class="px-5 py-3 border-b border-red-500/10 text-xs font-semibold uppercase tracking-wide text-red-400/80">Validation Errors</div>
+    <div class="divide-y divide-red-500/5">
+      <div v-for="e in validation.errors" :key="e.line" class="px-5 py-3 flex gap-3">
+        <span class="text-red-500/50 text-xs font-mono pt-0.5">{{ e.line ? 'L'+e.line : '—' }}</span>
+        <span class="text-sm text-slate-300">{{ e.message }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate identity -->
+  <div class="slide-up rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden">
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800/50 p-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl"></div>
+      <div class="relative flex justify-between items-start gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border border-cyan-500/30 text-cyan-400 bg-cyan-500/5 mb-3">
+            <span class="w-1 h-1 rounded-full bg-cyan-400 pulse-dot"></span>
+            Digital Calibration Certificate
+          </div>
+          <h1 class="text-2xl font-bold text-slate-100 mb-1">{{ cert.itemName || 'Calibration Certificate' }}</h1>
+          <p class="text-slate-400">{{ cert.labName || '' }}</p>
+          <p class="font-mono text-xs text-slate-600 mt-1.5">ID: {{ cert.uniqueId || '—' }}</p>
+        </div>
+        <div class="text-right border-l border-slate-700 pl-6">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Schema</div>
+          <div class="font-mono text-green-400 font-medium">v{{ cert.schemaVersion }}</div>
+          <div class="mt-2 text-[10px] uppercase tracking-wider text-slate-500">Country</div>
+          <div class="font-mono text-lg">{{ cert.country || '—' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core data -->
+  <div v-if="cert.coreData" class="slide-up rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+    <div class="px-5 py-3 border-b border-slate-800 flex items-center gap-2">
+      <span class="text-slate-500">⚙</span>
+      <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Core Data</span>
+    </div>
+    <div class="p-5 grid grid-cols-2 sm:grid-cols-3 gap-px bg-slate-800/50">
+      <div class="bg-slate-900 p-3" v-for="f in cert.coreData">
+        <div class="text-[10px] uppercase tracking-wider text-slate-600 mb-0.5">{{ f.label }}</div>
+        <div class="font-mono text-sm text-slate-200">{{ f.value }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Measurement results -->
+  <div v-if="cert.measurements && cert.measurements.length" class="slide-up rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+    <div class="px-5 py-3 border-b border-slate-800 flex items-center gap-2">
+      <span class="text-slate-500">⚡</span>
+      <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Measurement Results</span>
+    </div>
+    <div class="p-5 space-y-3">
+      <div v-for="mr in cert.measurements" :key="mr.name" class="rounded-lg border border-slate-800 bg-slate-800/40 p-4">
+        <div class="font-medium text-slate-200 mb-3">{{ mr.name }}</div>
+        <div v-if="mr.results && mr.results.length" class="space-y-2">
+          <div v-for="r in mr.results" :key="r.name" class="flex items-center justify-between py-2 border-l-2 border-cyan-500/30 pl-3 bg-cyan-500/[0.03] rounded-r-lg">
+            <span class="text-sm text-slate-400">{{ r.name }}</span>
+            <span v-if="r.values" class="font-mono text-sm">
+              <span v-for="(v, i) in r.values" :key="i" class="ml-2">
+                <span class="text-green-400">{{ v.value }}</span>
+                <span class="text-slate-600"> {{ v.unit }}</span>
+                <span v-if="v.uncertainty" class="text-amber-400/60 text-xs"> ±{{ v.uncertainty }}</span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lab / Signer -->
+  <div class="slide-up grid sm:grid-cols-2 gap-4">
+    <div v-if="cert.lab" class="rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-800 text-xs font-semibold uppercase tracking-wide text-slate-500">Calibration Laboratory</div>
+      <div class="p-5">
+        <div class="font-medium text-slate-200 mb-1">{{ cert.lab.name }}</div>
+        <div v-if="cert.lab.email" class="font-mono text-xs text-slate-500">{{ cert.lab.email }}</div>
+        <div v-if="cert.lab.address" class="text-sm text-slate-400 mt-2">{{ cert.lab.address }}</div>
+      </div>
+    </div>
+    <div v-if="cert.signers && cert.signers.length" class="rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-800 text-xs font-semibold uppercase tracking-wide text-slate-500">Responsible Persons</div>
+      <div class="p-5 space-y-2">
+        <div v-for="s in cert.signers" :key="s.name" class="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-800/40 px-3 py-2">
+          <div class="w-8 h-8 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center text-xs font-bold">{{ initials(s.name) }}</div>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-slate-200">{{ s.name }}</div>
+            <div v-if="s.email" class="font-mono text-xs text-slate-500">{{ s.email }}</div>
+          </div>
+          <span v-if="s.main" class="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider text-green-400 border border-green-500/20 bg-green-500/10">Main</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- XML source -->
+  <div class="slide-up rounded-xl border border-slate-800 bg-slate-900 overflow-hidden">
+    <button @click="showXml = !showXml" class="w-full px-5 py-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-500 hover:bg-slate-800/50 transition-colors">
+      <span>XML Source</span>
+      <span>{{ showXml ? '▲' : '▼' }}</span>
+    </button>
+    <div v-if="showXml" class="p-5 overflow-auto max-h-96">
+      <pre class="text-xs text-slate-400 font-mono whitespace-pre-wrap">{{ rawXml }}</pre>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function() {
+  const { createApp, ref, computed } = Vue;
+
+  createApp({
+    setup() {
+      const cert = ref(null);
+      const loading = ref(false);
+      const dragActive = ref(false);
+      const showXml = ref(false);
+      const rawXml = ref('');
+      const validation = ref({ ok: true, errors: [], warnings: [] });
+      const version = ref('0.2.0');
+
+      async function validate(xml) {
+        loading.value = true;
+        try {
+          const res = await fetch('/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/xml' },
+            body: xml,
+          });
+          const data = await res.json();
+          cert.value = data.cert;
+          validation.value = data.validation;
+          rawXml.value = xml;
+        } catch (e) {
+          validation.value = { ok: false, errors: [{ line: null, message: 'Server error: ' + e.message }], warnings: [] };
+        }
+        loading.value = false;
+      }
+
+      async function loadDemo() {
+        loading.value = true;
+        try {
+          const res = await fetch('/demo.xml');
+          const xml = await res.text();
+          await validate(xml);
+        } catch (e) {
+          loading.value = false;
+        }
+      }
+
+      function onUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => validate(ev.target.result);
+        reader.readAsText(file);
+      }
+
+      function onDrop(e) {
+        dragActive.value = false;
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => validate(ev.target.result);
+        reader.readAsText(file);
+      }
+
+      function initials(name) {
+        if (!name) return '?';
+        const parts = name.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0][0].toUpperCase();
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+
+      return { cert, loading, dragActive, showXml, rawXml, validation, version,
+               loadDemo, onUpload, onDrop, initials };
+    }
+  }).mount('#app');
+})();
+</script>
+</body>
+</html>
