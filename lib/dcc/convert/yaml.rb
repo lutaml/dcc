@@ -7,7 +7,7 @@ module Dcc
     module Yaml
       class << self
         def call(dcc)
-          hash = ::Dcc::Convert::Json.send(:xml_to_hash, dcc.to_xml)
+          hash = ::Dcc::Convert::Json.xml_to_hash(dcc.to_xml)
           ::Dcc::Convert::Result.new(
             format: :yaml,
             payload: ::YAML.dump(hash),
