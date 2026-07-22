@@ -63,7 +63,7 @@ RSpec.describe Dcc::Cli::Cli do
       _exit_code, output = capture_stdout_and_exit do
         described_class.start(["version"])
       end
-      expect(output).to include("dcc 0.2.0")
+      expect(output).to include("dcc #{Dcc::VERSION}")
     end
   end
 
