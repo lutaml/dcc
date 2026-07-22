@@ -57,8 +57,8 @@ module Dcc
         # Both objects
         keys = (a.class.attributes.keys | b.class.attributes.keys)
         keys.each do |key|
-          av = a.respond_to?(key) ? a.public_send(key) : nil
-          bv = b.respond_to?(key) ? b.public_send(key) : nil
+          av = Dcc::TypeGuards.has_attribute?(a, key) ? a.public_send(key) : nil
+          bv = Dcc::TypeGuards.has_attribute?(b, key) ? b.public_send(key) : nil
           collect_differences(av, bv, "#{path}/#{key}", changes)
         end
       end

@@ -130,7 +130,7 @@ module Dcc
       def apply_attrs(target, attrs)
         attrs.each do |k, v|
           setter = :"#{k}="
-          target.public_send(setter, v) if target.respond_to?(setter)
+          target.public_send(setter, v) if Dcc::TypeGuards.has_attribute?(target, setter)
         end
       end
 

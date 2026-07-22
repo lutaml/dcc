@@ -63,7 +63,7 @@ module Dcc
 
           def extract_non_si_unit(node, accumulator)
             %i[unit unit_xml_list].each do |attr|
-              next unless node.respond_to?(attr)
+              next unless Dcc::TypeGuards.has_attribute?(node, attr)
 
               v = node.public_send(attr)
               next if v.nil? || v.to_s.empty?

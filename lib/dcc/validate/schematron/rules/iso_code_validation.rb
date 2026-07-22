@@ -10,13 +10,13 @@ module Dcc
         # flag empties that escaped earlier casts.
         class IsoCodeValidation < Base
           def check_on(dcc)
-            return [] unless dcc.respond_to?(:administrative_data)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
             core = safe_attr(dcc.administrative_data, :core_data)
             return [] if core.nil?
 
             issues = []
-            country = core.respond_to?(:country_code_iso_3166_1) ? core.country_code_iso_3166_1 : nil
+            country = Dcc::TypeGuards.has_attribute?(core, :country_code_iso_3166_1) ? core.country_code_iso_3166_1 : nil
             if country.nil? || country.to_s.empty?
               issues << issue(
                 severity: :error,
@@ -24,13 +24,13 @@ module Dcc
               )
             end
 
-            used = core.respond_to?(:used_lang_code_iso_639_1) ? Array(core.used_lang_code_iso_639_1) : []
+            used = Dcc::TypeGuards.has_attribute?(core, :used_lang_code_iso_639_1) ? Array(core.used_lang_code_iso_639_1) : []
             issues << issue(
               severity: :error,
               message: "dcc:usedLangCodeISO639_1 must have at least one entry",
             ) if used.empty?
 
-            mandatory = core.respond_to?(:mandatory_lang_code_iso_639_1) ? Array(core.mandatory_lang_code_iso_639_1) : []
+            mandatory = Dcc::TypeGuards.has_attribute?(core, :mandatory_lang_code_iso_639_1) ? Array(core.mandatory_lang_code_iso_639_1) : []
             issues << issue(
               severity: :error,
               message: "dcc:mandatoryLangCodeISO639_1 must have at least one entry",
@@ -42,7 +42,7 @@ module Dcc
           private
 
           def safe_attr(parent, attr)
-            return nil unless parent&.respond_to?(attr)
+            return nil unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             parent.public_send(attr)
           end

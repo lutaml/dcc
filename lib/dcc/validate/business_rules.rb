@@ -68,13 +68,13 @@ module Dcc
       # Require exactly one respPerson with mainSigner = true.
       class MainSignerSingle < Rule
         def check_on(dcc)
-          return [] unless dcc.respond_to?(:administrative_data)
+          return [] unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
           admin = dcc.administrative_data
-          return [] unless admin&.respond_to?(:resp_persons) && admin.resp_persons
+          return [] unless admin && Dcc::TypeGuards.has_attribute?(admin, :resp_persons) && admin.resp_persons
 
           resp_persons = Array(admin.resp_persons.resp_person)
-          main_signers = resp_persons.select { |p| p.respond_to?(:main_signer) && p.main_signer }
+          main_signers = resp_persons.select { |p| Dcc::TypeGuards.has_attribute?(p, :main_signer) && p.main_signer }
           return [] if main_signers.size == 1
 
           [
@@ -89,7 +89,7 @@ module Dcc
       # Require non-empty uniqueIdentifier.
       class UniqueIdentifierPresent < Rule
         def check_on(dcc)
-          return [] unless dcc.respond_to?(:administrative_data)
+          return [] unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
           core = dcc.administrative_data&.core_data
           return [issue(severity: :error, message: "coreData is missing")] unless core
@@ -111,7 +111,7 @@ module Dcc
           issues = Registry.all.flat_map { |rule_class| rule_class.new.check_on(dcc) }
           Result.new(
             issues: issues,
-            schema_version: dcc.respond_to?(:schema_version) ? dcc.schema_version.to_s : nil,
+            schema_version: Dcc::TypeGuards.has_attribute?(dcc, :schema_version) ? dcc.schema_version.to_s : nil,
             source: "business_rule",
           )
         end

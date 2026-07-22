@@ -31,15 +31,15 @@ module Dcc
 
         def collect_quantities(dcc)
           rows = []
-          return rows unless dcc.respond_to?(:measurement_results)
+          return rows unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
 
           Array(dcc.measurement_results.measurement_result).each do |mr|
             mr_name = name_of(mr)
-            next unless mr.respond_to?(:results)
+            next unless Dcc::TypeGuards.has_attribute?(mr, :results)
 
             Array(mr.results.result).each do |r|
               result_name = name_of(r)
-              next unless r.respond_to?(:data)
+              next unless Dcc::TypeGuards.has_attribute?(r, :data)
 
               Array(r.data).each do |d|
                 walk_data(d, mr_name, result_name, rows)
@@ -71,14 +71,14 @@ module Dcc
         end
 
         def name_of(node)
-          return "" unless node&.respond_to?(:name)
+          return "" unless node && Dcc::TypeGuards.has_attribute?(node, :name)
           return "" unless node.name
 
-          content = node.name.respond_to?(:content) ? node.name.content : []
+          content = Dcc::TypeGuards.has_attribute?(node.name, :content) ? node.name.content : []
           first = Array(content).first
           return "" unless first
 
-          vals = first.respond_to?(:value) ? first.value : []
+          vals = Dcc::TypeGuards.has_attribute?(first, :value) ? first.value : []
           Array(vals).first.to_s
         end
 

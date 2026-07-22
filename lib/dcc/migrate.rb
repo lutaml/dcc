@@ -31,7 +31,7 @@ module Dcc
       private
 
       def rewrite_schema_version(dcc, version)
-        return dcc unless dcc.respond_to?(:schema_version=)
+        return dcc unless Dcc::TypeGuards.has_writer?(dcc, :schema_version)
 
         dcc.schema_version = version
         dcc

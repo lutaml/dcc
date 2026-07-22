@@ -19,7 +19,7 @@ module Dcc
           def check_string_list_attribute(node, issues, attr, label)
             return unless node.is_a?(::Lutaml::Model::Serializable)
 
-            if node.respond_to?(attr)
+            if Dcc::TypeGuards.has_attribute?(node, attr)
               value = node.public_send(attr)
               value = value.to_s if value
               if value && !value.empty? && (value.start_with?(" ") || value.end_with?(" ") || value.match?(/\s\s/))

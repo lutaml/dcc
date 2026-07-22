@@ -19,14 +19,14 @@ module Dcc
 
           def check_on(dcc)
             issues = []
-            return issues unless dcc.respond_to?(:administrative_data)
+            return issues unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
             admin = dcc.administrative_data
             return [issue(severity: :error, message: "administrativeData is missing")] unless admin
 
             REQUIRED_SECTIONS.each do |attr, label|
-              value = admin.respond_to?(attr) ? admin.public_send(attr) : nil
-              next unless value.nil? || (value.respond_to?(:empty?) && value.empty?)
+              value = Dcc::TypeGuards.has_attribute?(admin, attr) ? admin.public_send(attr) : nil
+              next unless value.nil? || ((value.is_a?(::String) || value.is_a?(::Array)) && value.empty?)
 
               issues << issue(
                 severity: :error,

@@ -58,10 +58,10 @@ module Dcc
         end
 
         def administrative_section(dcc)
-          return "" unless dcc.respond_to?(:administrative_data) && dcc.administrative_data
+          return "" unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data) && dcc.administrative_data
 
           admin = dcc.administrative_data
-          items = admin.respond_to?(:items) && admin.items ? Array(admin.items.item) : []
+          items = Dcc::TypeGuards.has_attribute?(admin, :items) && admin.items ? Array(admin.items.item) : []
           <<~HTML
             <section>
               <h2>Items (#{items.size})</h2>
@@ -73,7 +73,7 @@ module Dcc
         end
 
         def measurement_section(dcc)
-          return "" unless dcc.respond_to?(:measurement_results) && dcc.measurement_results
+          return "" unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results) && dcc.measurement_results
 
           mrs = Array(dcc.measurement_results.measurement_result)
           <<~HTML
@@ -87,28 +87,28 @@ module Dcc
         end
 
         def unique_identifier_of(dcc)
-          dcc.respond_to?(:administrative_data) &&
-            dcc.administrative_data.respond_to?(:core_data) &&
+          Dcc::TypeGuards.has_attribute?(dcc, :administrative_data) &&
+            Dcc::TypeGuards.has_attribute?(dcc.administrative_data, :core_data) &&
             dcc.administrative_data.core_data &&
             dcc.administrative_data.core_data.unique_identifier.to_s
         end
 
         def country_of(dcc)
-          dcc.respond_to?(:administrative_data) &&
-            dcc.administrative_data.respond_to?(:core_data) &&
+          Dcc::TypeGuards.has_attribute?(dcc, :administrative_data) &&
+            Dcc::TypeGuards.has_attribute?(dcc.administrative_data, :core_data) &&
             dcc.administrative_data.core_data &&
             dcc.administrative_data.core_data.country_code_iso_3166_1.to_s
         end
 
         def name_of(node)
-          return "" unless node&.respond_to?(:name)
+          return "" unless node && Dcc::TypeGuards.has_attribute?(node, :name)
           return "" unless node.name
 
-          content = node.name.respond_to?(:content) ? node.name.content : []
+          content = Dcc::TypeGuards.has_attribute?(node.name, :content) ? node.name.content : []
           first = Array(content).first
           return "" unless first
 
-          vals = first.respond_to?(:value) ? first.value : []
+          vals = Dcc::TypeGuards.has_attribute?(first, :value) ? first.value : []
           Array(vals).first.to_s
         end
 

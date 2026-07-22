@@ -113,11 +113,26 @@ module Dcc
       node.public_send(name)
     end
 
+    # Safe predicate: true if the node has the declared attribute.
+    # Replaces `node.respond_to?(:name)`.
+    def has_attribute?(node, name)
+      return false unless node.is_a?(::Lutaml::Model::Serializable)
+
+      node.class.attributes.key?(name)
+    end
+
+    # Safe predicate: true if the node has a writer for the attribute.
+    # Replaces `node.respond_to?(:name=)`.
+    def has_writer?(node, name)
+      return false unless node.is_a?(::Lutaml::Model::Serializable)
+
+      node.class.attributes.key?(name)
+    end
+
     # Safe method call: invokes the method if the node's class declares it.
     def call_if_present(node, method_name, *args)
       return nil unless node.is_a?(::Lutaml::Model::Serializable)
-      return nil unless node.class.method_defined?(method_name) ||
-                        node.class.method_defined?(:"#{method_name}=")
+      return nil unless node.class.attributes.key?(method_name)
 
       node.public_send(method_name, *args)
     end

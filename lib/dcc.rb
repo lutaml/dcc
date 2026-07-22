@@ -46,6 +46,7 @@ module Dcc
   autoload :I18n, "dcc/i18n"
   autoload :Streaming, "dcc/streaming"
   autoload :Plugin, "dcc/plugin"
+  autoload :TypeGuards, "dcc/type_guards"
   autoload :Si, "dcc/si"
 
   autoload :V2, "dcc/v2"

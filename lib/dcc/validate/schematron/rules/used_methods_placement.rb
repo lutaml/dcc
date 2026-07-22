@@ -10,13 +10,13 @@ module Dcc
         class UsedMethodsPlacement < Base
           def check_on(dcc)
             issues = []
-            return issues unless dcc.respond_to?(:measurement_results)
+            return issues unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
 
             mr_list = safe_attr(dcc.measurement_results, :measurement_result)
             return issues if mr_list.empty?
 
             any_used = mr_list.any? do |mr|
-              mr.respond_to?(:used_methods) && !mr.used_methods.nil? ||
+              Dcc::TypeGuards.has_attribute?(mr, :used_methods) && !mr.used_methods.nil? ||
                 mr_has_descendant?(mr, :used_methods)
             end
 
@@ -31,7 +31,7 @@ module Dcc
           private
 
           def mr_has_descendant?(mr, attr_name)
-            return false unless mr.respond_to?(:results) && mr.results
+            return false unless Dcc::TypeGuards.has_attribute?(mr, :results) && mr.results
 
             result = safe_attr(mr.results, :result)
             result.any? { |r| descendant_has?(r, attr_name) }
@@ -40,7 +40,7 @@ module Dcc
           def descendant_has?(node, attr_name)
             return false unless node.is_a?(::Lutaml::Model::Serializable)
 
-            if node.respond_to?(attr_name) && !node.public_send(attr_name).nil?
+            if Dcc::TypeGuards.has_attribute?(node, attr_name) && !node.public_send(attr_name).nil?
               return true
             end
 
@@ -54,7 +54,7 @@ module Dcc
           end
 
           def safe_attr(parent, attr)
-            return [] unless parent&.respond_to?(attr)
+            return [] unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             Array(parent.public_send(attr))
           end

@@ -9,16 +9,16 @@ module Dcc
         # quantity level). Error if missing.
         class InfluenceConditionsPlacement < Base
           def check_on(dcc)
-            return [] unless dcc.respond_to?(:measurement_results)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
 
             mr_list = safe_attr(dcc.measurement_results, :measurement_result)
             return [] if mr_list.empty?
 
             any_present = mr_list.any? do |mr|
-              next false unless mr.respond_to?(:influence_conditions)
+              next false unless Dcc::TypeGuards.has_attribute?(mr, :influence_conditions)
               next true unless mr.influence_conditions.nil?
 
-              mr.respond_to?(:results) && mr.results &&
+              Dcc::TypeGuards.has_attribute?(mr, :results) && mr.results &&
                 has_in_descendants?(mr.results)
             end
 
@@ -35,7 +35,7 @@ module Dcc
           def has_in_descendants?(node)
             return false unless node.is_a?(::Lutaml::Model::Serializable)
 
-            if node.respond_to?(:influence_conditions) && !node.influence_conditions.nil?
+            if Dcc::TypeGuards.has_attribute?(node, :influence_conditions) && !node.influence_conditions.nil?
               return true
             end
 
@@ -47,7 +47,7 @@ module Dcc
           end
 
           def safe_attr(parent, attr)
-            return [] unless parent&.respond_to?(attr)
+            return [] unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             Array(parent.public_send(attr))
           end

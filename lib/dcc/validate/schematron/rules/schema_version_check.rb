@@ -12,7 +12,7 @@ module Dcc
           end
 
           def check_on(dcc)
-            return [] unless dcc.respond_to?(:schema_version)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :schema_version)
 
             current = dcc.schema_version.to_s
             latest = ::Dcc::Schema::Version::DCC_LATEST

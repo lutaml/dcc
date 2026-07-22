@@ -12,13 +12,13 @@ module Dcc
           end
 
           def check_on(dcc)
-            return [] unless dcc.respond_to?(:measurement_results)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
 
             mr_list = safe_attr(dcc.measurement_results, :measurement_result)
             return [] if mr_list.empty?
 
             present = mr_list.any? do |mr|
-              mr.respond_to?(:used_software) && !mr.used_software.nil?
+              Dcc::TypeGuards.has_attribute?(mr, :used_software) && !mr.used_software.nil?
             end
 
             present ? [] : [
@@ -32,7 +32,7 @@ module Dcc
           private
 
           def safe_attr(parent, attr)
-            return [] unless parent&.respond_to?(attr)
+            return [] unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             Array(parent.public_send(attr))
           end

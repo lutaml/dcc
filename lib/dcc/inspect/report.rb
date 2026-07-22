@@ -76,42 +76,42 @@ module Dcc
         private
 
         def admin_data(dcc)
-          dcc.respond_to?(:administrative_data) ? dcc.administrative_data : nil
+          Dcc::TypeGuards.has_attribute?(dcc, :administrative_data) ? dcc.administrative_data : nil
         end
 
         def core_data(dcc)
           ad = admin_data(dcc)
-          ad&.respond_to?(:core_data) ? ad.core_data : nil
+          ad && Dcc::TypeGuards.has_attribute?(ad, :core_data) ? ad.core_data : nil
         end
 
         def items(dcc)
           ad = admin_data(dcc)
-          return [] unless ad&.respond_to?(:items) && ad.items&.respond_to?(:item)
+          return [] unless ad && Dcc::TypeGuards.has_attribute?(ad, :items) && ad.items && Dcc::TypeGuards.has_attribute?(ad.items, :item)
 
           Array(ad.items.item)
         end
 
         def measurement_results(dcc)
-          dcc.respond_to?(:measurement_results) && dcc.measurement_results&.respond_to?(:measurement_result) ?
+          Dcc::TypeGuards.has_attribute?(dcc, :measurement_results) && dcc.measurement_results && Dcc::TypeGuards.has_attribute?(dcc.measurement_results, :measurement_result) ?
             Array(dcc.measurement_results.measurement_result) : []
         end
 
         def count_quantities(mr_list)
           mr_list.sum do |mr|
-            next 0 unless mr.respond_to?(:results) && mr.results&.respond_to?(:result)
+            next 0 unless Dcc::TypeGuards.has_attribute?(mr, :results) && mr.results && Dcc::TypeGuards.has_attribute?(mr.results, :result)
 
             Array(mr.results.result).sum do |r|
-              r.respond_to?(:data) && r.data&.respond_to?(:quantity) ? Array(r.data.quantity).size : 0
+              Dcc::TypeGuards.has_attribute?(r, :data) && r.data && Dcc::TypeGuards.has_attribute?(r.data, :quantity) ? Array(r.data.quantity).size : 0
             end
           end
         end
 
         def count_lists(mr_list)
           mr_list.sum do |mr|
-            next 0 unless mr.respond_to?(:results) && mr.results&.respond_to?(:result)
+            next 0 unless Dcc::TypeGuards.has_attribute?(mr, :results) && mr.results && Dcc::TypeGuards.has_attribute?(mr.results, :result)
 
             Array(mr.results.result).sum do |r|
-              r.respond_to?(:data) && r.data&.respond_to?(:list) ? Array(r.data.list).size : 0
+              Dcc::TypeGuards.has_attribute?(r, :data) && r.data && Dcc::TypeGuards.has_attribute?(r.data, :list) ? Array(r.data.list).size : 0
             end
           end
         end
@@ -125,13 +125,13 @@ module Dcc
 
         def resp_persons(dcc)
           ad = admin_data(dcc)
-          return [] unless ad&.respond_to?(:resp_persons) && ad.resp_persons&.respond_to?(:resp_person)
+          return [] unless ad && Dcc::TypeGuards.has_attribute?(ad, :resp_persons) && ad.resp_persons && Dcc::TypeGuards.has_attribute?(ad.resp_persons, :resp_person)
 
           Array(ad.resp_persons.resp_person)
         end
 
         def signature_present?(dcc)
-          dcc.respond_to?(:document) && dcc.document
+          Dcc::TypeGuards.has_attribute?(dcc, :document) && dcc.document
         end
       end
     end

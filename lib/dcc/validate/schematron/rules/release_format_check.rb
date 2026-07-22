@@ -11,13 +11,13 @@ module Dcc
 
           def check_on(dcc)
             issues = []
-            return issues unless dcc.respond_to?(:administrative_data)
+            return issues unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
             software_list = safe_attr(dcc.administrative_data, :dcc_software)
             return issues if software_list.nil?
 
             Array(safe_attr(software_list, :software)).each do |sw|
-              release = sw.respond_to?(:release) ? sw.release : nil
+              release = Dcc::TypeGuards.has_attribute?(sw, :release) ? sw.release : nil
               next if release.nil? || release.empty?
               next if release.match?(PATTERN)
 
@@ -33,7 +33,7 @@ module Dcc
           private
 
           def safe_attr(parent, attr)
-            return nil unless parent&.respond_to?(attr)
+            return nil unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             parent.public_send(attr)
           end

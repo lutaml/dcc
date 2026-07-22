@@ -26,7 +26,7 @@ module Dcc
 
         # TTY::Table calls ioctl which fails on StringIO / pipes. Fall back
         # to a plain-text rendering when stdout isn't a real terminal.
-        if $stdout.respond_to?(:tty?) && !$stdout.tty?
+        if $stdout.is_a?(::IO) && !$stdout.tty?
           print_files_plain(files)
           return
         end

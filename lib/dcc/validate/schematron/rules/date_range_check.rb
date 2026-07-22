@@ -8,13 +8,13 @@ module Dcc
         # Errors if `endPerformanceDate` precedes `beginPerformanceDate`.
         class DateRangeCheck < Base
           def check_on(dcc)
-            return [] unless dcc.respond_to?(:administrative_data)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
 
             core = safe_attr(dcc.administrative_data, :core_data)
             return [] if core.nil?
 
-            begin_d = core.respond_to?(:begin_performance_date) ? core.begin_performance_date : nil
-            end_d = core.respond_to?(:end_performance_date) ? core.end_performance_date : nil
+            begin_d = Dcc::TypeGuards.has_attribute?(core, :begin_performance_date) ? core.begin_performance_date : nil
+            end_d = Dcc::TypeGuards.has_attribute?(core, :end_performance_date) ? core.end_performance_date : nil
 
             return [] if begin_d.nil? || end_d.nil?
             return [] unless end_d < begin_d
@@ -30,7 +30,7 @@ module Dcc
           private
 
           def safe_attr(parent, attr)
-            return nil unless parent&.respond_to?(attr)
+            return nil unless parent && parent.is_a?(::Lutaml::Model::Serializable) && parent.class.attributes.key?(attr)
 
             parent.public_send(attr)
           end
