@@ -6,321 +6,99 @@
 <title>DCC {{ dcc.administrativeData.coreData.uniqueIdentifier | default: "Certificate" }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --surface-2: #1a2236;
-    --border: #1e293b;
-    --border-hi: #334155;
-    --text: #e2e8f0;
-    --text-dim: #94a3b8;
-    --text-mute: #64748b;
-    --accent: #38bdf8;
-    --accent-glow: rgba(56, 189, 248, 0.15);
-    --green: #4ade80;
-    --amber: #fbbf24;
-    --red: #f87171;
-    --purple: #a78bfa;
+    --bg: #0a0e1a; --surface: #111827; --surface-2: #1a2236;
+    --border: #1e293b; --border-hi: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --text-mute: #64748b;
+    --accent: #38bdf8; --accent-glow: rgba(56,189,248,0.12);
+    --green: #4ade80; --amber: #fbbf24; --red: #f87171;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  .mono { font-family: 'IBM Plex Mono', monospace; }
-  .display { font-family: 'DM Sans', sans-serif; letter-spacing: -0.02em; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  .display { font-family:'DM Sans',sans-serif; letter-spacing:-0.02em; }
+  .page { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
 
-  /* Layout */
-  .page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .header { position:relative; border:1px solid var(--border); border-radius:16px; padding:2.5rem; background:linear-gradient(135deg,var(--surface),var(--surface-2)); overflow:hidden; margin-bottom:1.5rem; }
+  .header::before { content:''; position:absolute; top:-50%; right:-20%; width:60%; height:200%; background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 60%); pointer-events:none; }
+  .header::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:0.5; }
+  .header-grid { display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:start; position:relative; z-index:1; }
+  .badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.35rem 0.8rem; border:1px solid var(--accent); border-radius:100px; font-size:0.7rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); background:var(--accent-glow); margin-bottom:1rem; }
+  .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+  .header h1 { font-size:2.2rem; font-weight:700; line-height:1.1; margin-bottom:0.5rem; background:linear-gradient(180deg,#f8fafc,#94a3b8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .header .subtitle { color:var(--text-dim); font-size:0.95rem; }
+  .header .uid { font-family:'IBM Plex Mono',monospace; font-size:0.85rem; color:var(--text-mute); margin-top:0.75rem; }
+  .header-side { text-align:right; border-left:1px solid var(--border-hi); padding-left:2rem; }
+  .version-tag { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; font-weight:500; color:var(--green); }
+  .version-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-mute); }
 
-  /* Header */
-  .header {
-    position: relative;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.5rem;
-    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -50%; right: -20%;
-    width: 60%; height: 200%;
-    background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.5;
-  }
-  .header-grid {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: start;
-    position: relative;
-    z-index: 1;
-  }
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.8rem;
-    border: 1px solid var(--accent);
-    border-radius: 100px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-glow);
-    margin-bottom: 1rem;
-  }
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .card { border:1px solid var(--border); border-radius:12px; background:var(--surface); overflow:hidden; animation:slideUp 0.5s ease-out both; }
+  .card + .card { margin-top:1.5rem; }
+  .card:nth-child(2) { animation-delay:0.08s; }
+  .card:nth-child(3) { animation-delay:0.16s; }
+  .card:nth-child(4) { animation-delay:0.24s; }
+  .card:nth-child(5) { animation-delay:0.32s; }
+  .card:nth-child(6) { animation-delay:0.4s; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  .card-header { padding:1.25rem 1.5rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.75rem; }
+  .card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; border:1px solid var(--border-hi); background:var(--surface-2); }
+  .card-title { font-size:0.85rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+  .card-body { padding:1.5rem; }
 
-  .header h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(180deg, #f8fafc 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .header .subtitle { color: var(--text-dim); font-size: 0.95rem; }
-  .header .uid {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text-mute);
-    margin-top: 0.75rem;
-  }
+  .data-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .data-cell { background:var(--surface); padding:1rem 1.25rem; }
+  .data-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-mute); margin-bottom:0.25rem; }
+  .data-value { font-size:0.95rem; color:var(--text); }
+  .data-value.mono { font-family:'IBM Plex Mono',monospace; font-size:0.9rem; }
 
-  .header-side {
-    text-align: right;
-    border-left: 1px solid var(--border-hi);
-    padding-left: 2rem;
-  }
-  .version-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--green);
-  }
-  .version-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-mute); }
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th { text-align:left; padding:0.6rem 1rem; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mute); font-weight:500; border-bottom:1px solid var(--border-hi); }
+  .data-table td { padding:0.75rem 1rem; border-bottom:1px solid var(--border); font-size:0.875rem; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--surface-2); }
 
-  /* Cards */
-  .card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface);
-    overflow: hidden;
-  }
-  .card + .card { margin-top: 1.5rem; }
-  .card-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .card-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    border: 1px solid var(--border-hi);
-    background: var(--surface-2);
-  }
-  .card-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  .card-body { padding: 1.5rem; }
+  .signer { display:flex; align-items:center; gap:0.75rem; padding:0.75rem 1rem; border:1px solid var(--border); border-radius:8px; background:var(--surface-2); }
+  .signer + .signer { margin-top:0.5rem; }
+  .signer-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.8rem; color:var(--surface); background:var(--accent); flex-shrink:0; }
+  .signer-name { font-weight:500; font-size:0.875rem; }
+  .signer-role { font-size:0.75rem; color:var(--text-mute); }
+  .signer-main { margin-left:auto; padding:0.2rem 0.6rem; border-radius:100px; font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--green); border:1px solid var(--green); background:rgba(74,222,128,0.1); }
 
-  /* Data grid */
-  .data-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .data-cell { background: var(--surface); padding: 1rem 1.25rem; }
-  .data-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-mute); margin-bottom: 0.25rem; }
-  .data-value { font-size: 0.95rem; color: var(--text); font-weight: 400; }
-  .data-value.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; }
+  .mr-block { border:1px solid var(--border); border-radius:8px; padding:1.25rem; background:var(--surface-2); }
+  .mr-block + .mr-block { margin-top:0.75rem; }
+  .mr-title { font-weight:500; margin-bottom:0.75rem; }
 
-  /* Tables */
-  .data-table { width: 100%; border-collapse: collapse; }
-  .data-table th {
-    text-align: left;
-    padding: 0.6rem 1rem;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-mute);
-    font-weight: 500;
-    border-bottom: 1px solid var(--border-hi);
-  }
-  .data-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.875rem;
-  }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: var(--surface-2); }
-
-  /* Signer badges */
-  .signer {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface-2);
-  }
-  .signer + .signer { margin-top: 0.5rem; }
-  .signer-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600;
-    font-size: 0.8rem;
-    color: var(--surface);
-    background: var(--accent);
-    flex-shrink: 0;
-  }
-  .signer-name { font-weight: 500; font-size: 0.875rem; }
-  .signer-role { font-size: 0.75rem; color: var(--text-mute); }
-  .signer-main {
-    margin-left: auto;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--green);
-    border: 1px solid var(--green);
-    background: rgba(74, 222, 128, 0.1);
-  }
-
-  /* Quantity readout */
-  .readout {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--green);
-    letter-spacing: -0.02em;
-  }
-  .readout-unit { font-size: 1rem; color: var(--text-dim); }
-
-  /* File list */
-  .file-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-  .file-item + .file-item { margin-top: 0.5rem; }
-  .file-size { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-mute); }
-
-  /* Section divider */
-  .section-gap { height: 1.5rem; }
-
-  /* Two-column */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } .header-grid { grid-template-columns: 1fr; } .header-side { border-left: none; border-top: 1px solid var(--border-hi); padding-left: 0; padding-top: 1rem; text-align: left; } }
-
-  /* Animated entrance */
-  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .card { animation: slideUp 0.5s ease-out both; }
-  .card:nth-child(2) { animation-delay: 0.08s; }
-  .card:nth-child(3) { animation-delay: 0.16s; }
-  .card:nth-child(4) { animation-delay: 0.24s; }
-  .card:nth-child(5) { animation-delay: 0.32s; }
-
-  /* Text helpers */
-  .text-dim { color: var(--text-dim); }
-  .text-mute { color: var(--text-mute); }
-  .text-sm { font-size: 0.8rem; }
-  .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; }
-  .pb-1 { padding-bottom: 0.5rem; }
+  @media (max-width:700px) { .header-grid { grid-template-columns:1fr; } .header-side { border-left:none; border-top:1px solid var(--border-hi); padding-left:0; padding-top:1rem; text-align:left; } }
 </style>
 </head>
 <body>
 <div class="page">
 
-  {% assign admin = dcc.adminativeData %}
-  {% assign core = dcc.administrativeData.coreData %}
-  {% assign items = dcc.administrativeData.items %}
-  {% assign lab = dcc.administrativeData.calibrationLaboratory %}
-  {% assign persons = dcc.administrativeData.respPersons %}
-  {% assign customer = dcc.administrativeData.customer %}
+  {% assign admin = dcc.administrativeData %}
+  {% assign core = admin.coreData %}
+  {% assign lab = admin.calibrationLaboratory %}
   {% assign results = dcc.measurementResults %}
-  {% assign sv = dcc.schemaVersion %}
 
   <!-- Header -->
   <div class="header">
     <div class="header-grid">
       <div>
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Digital Calibration Certificate
-        </div>
-        {% assign item_name = items.item.name %}
-        {% if item_name %}
-          {% if item_name.content %}
-            {% if item_name.content.first.first %}
-              <h1 class="display">{{ item_name.content.first.last }}</h1>
-            {% else %}
-              <h1 class="display">{{ item_name.content._text | default: item_name.content }}</h1>
-            {% endif %}
-          {% else %}
-            <h1 class="display">{{ item_name }}</h1>
-          {% endif %}
-        {% else %}
-          <h1 class="display">Calibration Certificate</h1>
-        {% endif %}
-        <p class="subtitle">
-          {% if lab.contact.name.content %}
-            {% if lab.contact.name.content.first %}
-              {{ lab.contact.name.content.first.last }}
-            {% else %}
-              {{ lab.contact.name.content }}
-            {% endif %}
-          {% endif %}
-        </p>
+        <div class="badge"><span class="badge-dot"></span> Digital Calibration Certificate</div>
+        {% assign item_obj = admin.items.item %}
+        <h1 class="display">{{ item_obj.name.content | dcc_text | default: "Calibration Certificate" }}</h1>
+        <p class="subtitle">{{ lab.contact.name.content | dcc_text | default: "" }}</p>
         <p class="uid mono">ID: {{ core.uniqueIdentifier | default: "—" }}</p>
       </div>
       <div class="header-side">
         <div class="version-label">Schema</div>
-        <div class="version-tag mono">v{{ sv }}</div>
+        <div class="version-tag mono">v{{ dcc.schemaVersion }}</div>
         {% if core.countryCodeISO3166_1 %}
-        <div class="mt-2">
+        <div style="margin-top:0.5rem;">
           <div class="version-label">Country</div>
-          <div class="mono text-lg" style="font-size: 1.1rem;">{{ core.countryCodeISO3166_1 }}</div>
+          <div class="mono" style="font-size:1.1rem;">{{ core.countryCodeISO3166_1 }}</div>
         </div>
         {% endif %}
       </div>
@@ -329,145 +107,55 @@
 
   <!-- Core Data -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#9881;</div>
-      <span class="card-title">Core Data</span>
-    </div>
+    <div class="card-header"><div class="card-icon">&#9881;</div><span class="card-title">Core Data</span></div>
     <div class="card-body">
       <div class="data-grid">
-        <div class="data-cell">
-          <div class="data-label">Unique ID</div>
-          <div class="data-value mono">{{ core.uniqueIdentifier | default: "—" }}</div>
-        </div>
-        {% if core.receiptDate %}
-        <div class="data-cell">
-          <div class="data-label">Receipt Date</div>
-          <div class="data-value mono">{{ core.receiptDate }}</div>
-        </div>
-        {% endif %}
-        {% if core.beginPerformanceDate %}
-        <div class="data-cell">
-          <div class="data-label">Performance Begin</div>
-          <div class="data-value mono">{{ core.beginPerformanceDate }}</div>
-        </div>
-        {% endif %}
-        {% if core.endPerformanceDate %}
-        <div class="data-cell">
-          <div class="data-label">Performance End</div>
-          <div class="data-value mono">{{ core.endPerformanceDate }}</div>
-        </div>
-        {% endif %}
-        {% if core.usedLangCodeISO639_1 %}
-        <div class="data-cell">
-          <div class="data-label">Languages</div>
-          <div class="data-value mono">{{ core.usedLangCodeISO639_1 | join: ", " }}</div>
-        </div>
-        {% endif %}
-        {% if core.mandatoryLangCodeISO639_1 %}
-        <div class="data-cell">
-          <div class="data-label">Mandatory Language</div>
-          <div class="data-value mono">{{ core.mandatoryLangCodeISO639_1 }}</div>
-        </div>
-        {% endif %}
+        <div class="data-cell"><div class="data-label">Unique ID</div><div class="data-value mono">{{ core.uniqueIdentifier | default: "—" }}</div></div>
+        {% if core.receiptDate %}<div class="data-cell"><div class="data-label">Receipt Date</div><div class="data-value mono">{{ core.receiptDate }}</div></div>{% endif %}
+        {% if core.beginPerformanceDate %}<div class="data-cell"><div class="data-label">Performance Begin</div><div class="data-value mono">{{ core.beginPerformanceDate }}</div></div>{% endif %}
+        {% if core.endPerformanceDate %}<div class="data-cell"><div class="data-label">Performance End</div><div class="data-value mono">{{ core.endPerformanceDate }}</div></div>{% endif %}
+        {% if core.usedLangCodeISO639_1 %}<div class="data-cell"><div class="data-label">Languages</div><div class="data-value mono">{{ core.usedLangCodeISO639_1 | dcc_items | join: ", " }}</div></div>{% endif %}
+        {% if core.mandatoryLangCodeISO639_1 %}<div class="data-cell"><div class="data-label">Mandatory Language</div><div class="data-value mono">{{ core.mandatoryLangCodeISO639_1 }}</div></div>{% endif %}
       </div>
     </div>
   </div>
 
   <!-- Items -->
-  {% assign item_list = items.item %}
-  {% if item_list %}
+  {% for item in admin.items.item | dcc_items %}
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#9776;</div>
-      <span class="card-title">Calibrated Item{{ item_list | size | times: 1 | minus: 1 | remove: "-" | prepend: "s" | remove_first: "s0s" | remove_first: "s-1s" }}</span>
-    </div>
-    <div class="card-body">
-      {% for item_hash in item_list %}
-        {% assign item = item_hash[1] | default: item_hash %}
-        <div class="data-grid">
-          {% if item.model %}
-          <div class="data-cell">
-            <div class="data-label">Model</div>
-            <div class="data-value">{{ item.model }}</div>
-          </div>
-          {% endif %}
-          {% if item.manufacturer %}
-          <div class="data-cell">
-            <div class="data-label">Manufacturer</div>
-            <div class="data-value">
-              {% if item.manufacturer.name.content._text %}
-                {{ item.manufacturer.name.content._text }}
-              {% elsif item.manufacturer.name.content.first %}
-                {{ item.manufacturer.name.content.first.last }}
-              {% else %}
-                {{ item.manufacturer.name.content }}
-              {% endif %}
-            </div>
-          </div>
-          {% endif %}
-        </div>
-        {% if item.identifications %}
-        <table class="data-table mt-2">
-          <thead><tr><th>Identification Issuer</th><th>Value</th></tr></thead>
-          <tbody>
-          {% assign ids = item.identifications.identification %}
-          {% for id_hash in ids %}
-            {% assign id = id_hash[1] | default: id_hash %}
-            {% if id.issuer %}
-            <tr><td>{{ id.issuer }}</td><td class="mono">{{ id.value }}</td></tr>
-            {% endif %}
-          {% endfor %}
-          </tbody>
-        </table>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- Calibration Laboratory -->
-  {% assign lab_contact = lab.contact %}
-  {% if lab_contact %}
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#9745;</div>
-      <span class="card-title">Calibration Laboratory</span>
-    </div>
+    <div class="card-header"><div class="card-icon">&#9776;</div><span class="card-title">Calibrated Item</span></div>
     <div class="card-body">
       <div class="data-grid">
-        <div class="data-cell">
-          <div class="data-label">Name</div>
-          <div class="data-value">
-            {% if lab_contact.name.content._text %}
-              {{ lab_contact.name.content._text }}
-            {% elsif lab_contact.name.content.first %}
-              {{ lab_contact.name.content.first.last }}
-            {% else %}
-              {{ lab_contact.name.content }}
-            {% endif %}
-          </div>
-        </div>
-        {% if lab_contact.eMail %}
-        <div class="data-cell">
-          <div class="data-label">Email</div>
-          <div class="data-value mono">{{ lab_contact.eMail }}</div>
-        </div>
-        {% endif %}
-        {% if lab_contact.phone %}
-        <div class="data-cell">
-          <div class="data-label">Phone</div>
-          <div class="data-value mono">{{ lab_contact.phone }}</div>
-        </div>
-        {% endif %}
-        {% if lab_contact.location %}
-        <div class="data-cell">
-          <div class="data-label">Address</div>
-          <div class="data-value">
-            {% if lab_contact.location.street %}{{ lab_contact.location.street }} {{ lab_contact.location.streetNo }}{% endif %}
-            {% if lab_contact.location.postCode %}<br>{{ lab_contact.location.postCode }} {{ lab_contact.location.city }}{% endif %}
-            {% if lab_contact.location.countryCode %}<br>{{ lab_contact.location.countryCode }}{% endif %}
-          </div>
-        </div>
+        <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ item.name.content | dcc_text | default: "—" }}</div></div>
+        {% if item.model %}<div class="data-cell"><div class="data-label">Model</div><div class="data-value">{{ item.model }}</div></div>{% endif %}
+        {% if item.manufacturer %}<div class="data-cell"><div class="data-label">Manufacturer</div><div class="data-value">{{ item.manufacturer.name.content | dcc_text }}</div></div>{% endif %}
+      </div>
+      {% if item.identifications %}
+      {% for id in item.identifications.identification | dcc_items %}
+      {% if forloop.first %}<table class="data-table" style="margin-top:0.75rem;"><thead><tr><th>Identification</th><th>Issuer</th></tr></thead><tbody>{% endif %}
+        <tr><td class="mono">{{ id.value }}</td><td>{{ id.issuer }}</td></tr>
+      {% if forloop.last %}</tbody></table>{% endif %}
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Calibration Laboratory -->
+  {% if lab.contact %}
+  <div class="card">
+    <div class="card-header"><div class="card-icon">&#9745;</div><span class="card-title">Calibration Laboratory</span></div>
+    <div class="card-body">
+      <div class="data-grid">
+        <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ lab.contact.name.content | dcc_text }}</div></div>
+        {% if lab.contact.eMail %}<div class="data-cell"><div class="data-label">Email</div><div class="data-value mono">{{ lab.contact.eMail }}</div></div>{% endif %}
+        {% if lab.contact.phone %}<div class="data-cell"><div class="data-label">Phone</div><div class="data-value mono">{{ lab.contact.phone }}</div></div>{% endif %}
+        {% if lab.contact.location %}
+        <div class="data-cell"><div class="data-label">Address</div><div class="data-value">
+          {% if lab.contact.location.street %}{{ lab.contact.location.street }} {{ lab.contact.location.streetNo }}{% endif %}
+          {% if lab.contact.location.postCode %}<br>{{ lab.contact.location.postCode }} {{ lab.contact.location.city }}{% endif %}
+          {% if lab.contact.location.countryCode %}<br>{{ lab.contact.location.countryCode }}{% endif %}
+        </div></div>
         {% endif %}
       </div>
     </div>
@@ -475,137 +163,65 @@
   {% endif %}
 
   <!-- Responsible Persons -->
-  {% assign person_list = persons.respPerson %}
-  {% if person_list %}
+  {% assign persons = admin.respPersons.respPerson | dcc_items %}
+  {% if persons.size > 0 %}
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#9794;</div>
-      <span class="card-title">Responsible Persons</span>
-    </div>
+    <div class="card-header"><div class="card-icon">&#9794;</div><span class="card-title">Responsible Persons</span></div>
     <div class="card-body">
-      {% for person_hash in person_list %}
-        {% assign person = person_hash[1] | default: person_hash %}
-        {% if person.person %}
-        <div class="signer">
-          <div class="signer-avatar">
-            {% assign pname = "" %}
-            {% if person.person.name.content._text %}
-              {% assign pname = person.person.name.content._text %}
-            {% elsif person.person.name.content.first %}
-              {% assign pname = person.person.name.content.first.last %}
-            {% else %}
-              {% assign pname = person.person.name.content %}
-            {% endif %}
-            {{ pname | split: " " | last | truncate: 2, "" | upcase }}
-          </div>
-          <div>
-            <div class="signer-name">{{ pname }}</div>
-            {% if person.person.eMail %}<div class="signer-role mono">{{ person.person.eMail }}</div>{% endif %}
-          </div>
-          {% if person.mainSigner %}<span class="signer-main">Main Signer</span>{% endif %}
+      {% for p in persons %}
+      {% assign pname = p.person.name.content | dcc_text %}
+      <div class="signer">
+        <div class="signer-avatar">{{ pname | dcc_initials }}</div>
+        <div>
+          <div class="signer-name">{{ pname }}</div>
+          {% if p.person.eMail %}<div class="signer-role mono">{{ p.person.eMail }}</div>{% endif %}
         </div>
-        {% endif %}
+        {% if p.mainSigner %}<span class="signer-main">Main Signer</span>{% endif %}
+      </div>
       {% endfor %}
     </div>
   </div>
   {% endif %}
 
   <!-- Measurement Results -->
-  {% assign mr_list = results.measurementResult %}
-  {% if mr_list %}
+  {% assign mrs = results.measurementResult | dcc_items %}
+  {% if mrs.size > 0 %}
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#9889;</div>
-      <span class="card-title">Measurement Results</span>
-    </div>
+    <div class="card-header"><div class="card-icon">&#9889;</div><span class="card-title">Measurement Results</span></div>
     <div class="card-body">
-      {% for mr_hash in mr_list %}
-        {% assign mr = mr_hash[1] | default: mr_hash %}
-        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; background: var(--surface-2);">
-          <div style="font-weight: 500; margin-bottom: 0.75rem;">
-            {% if mr.name.content._text %}
-              {{ mr.name.content._text }}
-            {% elsif mr.name.content.first %}
-              {{ mr.name.content.first.last }}
-            {% else %}
-              {{ mr.name.content }}
+      {% for mr in mrs %}
+      <div class="mr-block">
+        <div class="mr-title">{{ mr.name.content | dcc_text | default: "Untitled Result" }}</div>
+        {% if mr.usedMethods %}
+          {% for method in mr.usedMethods.usedMethod | dcc_items %}
+            {% if method.name %}
+            <div style="color:var(--text-dim); font-size:0.8rem; padding-bottom:0.25rem;">{{ method.name.content | dcc_text }}</div>
             {% endif %}
-          </div>
-          {% if mr.usedMethods %}
-            {% assign methods = mr.usedMethods.usedMethod %}
-            {% for method_hash in methods %}
-              {% assign method = method_hash[1] | default: method_hash %}
-              {% if method.name %}
-                <div class="text-sm text-dim pb-1">
-                  {% if method.name.content._text %}
-                    {{ method.name.content._text }}
-                  {% elsif method.name.content.first %}
-                    {{ method.name.content.first.last }}
-                  {% else %}
-                    {{ method.name.content }}
-                  {% endif %}
-                </div>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-          {% if mr.results %}
-            {% assign result_list = mr.results.result %}
-            {% if result_list %}
-            <table class="data-table mt-1">
-              <thead><tr><th>Result</th></tr></thead>
-              <tbody>
-              {% for r_hash in result_list %}
-                {% assign r = r_hash[1] | default: r_hash %}
-                {% if r.name %}
-                <tr><td>
-                  {% if r.name.content._text %}
-                    {{ r.name.content._text }}
-                  {% elsif r.name.content.first %}
-                    {{ r.name.content.first.last }}
-                  {% else %}
-                    {{ r.name.content }}
-                  {% endif %}
-                </td></tr>
-                {% endif %}
-              {% endfor %}
-              </tbody>
-            </table>
+          {% endfor %}
+        {% endif %}
+        {% if mr.results %}
+          {% for r in mr.results.result | dcc_items %}
+            {% if r.name %}
+            <div style="padding:0.5rem 0.75rem; border-left:2px solid var(--accent); margin-top:0.5rem; background:rgba(56,189,248,0.05); border-radius:0 6px 6px 0;">
+              {{ r.name.content | dcc_text }}
+            </div>
             {% endif %}
-          {% endif %}
-        </div>
-        {% unless forloop.last %}<div style="height: 0.75rem;"></div>{% endunless %}
+          {% endfor %}
+        {% endif %}
+      </div>
       {% endfor %}
     </div>
   </div>
   {% endif %}
 
   <!-- Customer -->
-  {% if customer %}
+  {% if admin.customer %}
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">&#10148;</div>
-      <span class="card-title">Customer</span>
-    </div>
+    <div class="card-header"><div class="card-icon">&#10148;</div><span class="card-title">Customer</span></div>
     <div class="card-body">
       <div class="data-grid">
-        <div class="data-cell">
-          <div class="data-label">Name</div>
-          <div class="data-value">
-            {% if customer.name.content._text %}
-              {{ customer.name.content._text }}
-            {% elsif customer.name.content.first %}
-              {{ customer.name.content.first.last }}
-            {% else %}
-              {{ customer.name.content }}
-            {% endif %}
-          </div>
-        </div>
-        {% if customer.eMail %}
-        <div class="data-cell">
-          <div class="data-label">Email</div>
-          <div class="data-value mono">{{ customer.eMail }}</div>
-        </div>
-        {% endif %}
+        <div class="data-cell"><div class="data-label">Name</div><div class="data-value">{{ admin.customer.name.content | dcc_text }}</div></div>
+        {% if admin.customer.eMail %}<div class="data-cell"><div class="data-label">Email</div><div class="data-value mono">{{ admin.customer.eMail }}</div></div>{% endif %}
       </div>
     </div>
   </div>

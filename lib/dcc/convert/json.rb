@@ -45,15 +45,18 @@ module Dcc
             return hash
           end
 
+          grouped = {}
           children.each do |child|
             name = child.name.to_s.split(":").last
-            value = element_to_hash(child)
-            if hash.key?(name)
-              hash[name] = Array(hash[name]) << value
-            else
-              hash[name] = value
-            end
+            grouped[name] ||= []
+            grouped[name] << child
           end
+
+          grouped.each do |name, child_list|
+            values = child_list.map { |c| element_to_hash(c) }
+            hash[name] = values.size == 1 ? values.first : values
+          end
+          hash["_text"] = combined_text unless combined_text.empty?
           hash
         end
       end

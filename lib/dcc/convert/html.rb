@@ -23,7 +23,10 @@ module Dcc
 
         def render_template(hash, lang:)
           template = ::Liquid::Template.parse(File.read(TEMPLATE_PATH))
-          template.render("dcc" => hash, "page_lang" => lang)
+          template.assigns["dcc"] = hash
+          template.assigns["page_lang"] = lang
+          context = ::Liquid::Context.new(template.assigns, {}, { filters: [::Dcc::Convert::LiquidFilters] })
+          template.render(context)
         end
       end
     end
