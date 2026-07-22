@@ -1,6 +1,6 @@
 # 20 — XMLDSig signature (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Sign a DCC with XMLDSig (enveloped RSA-SHA-256) and verify signed DCCs against a CA certificate.

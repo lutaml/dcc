@@ -1,6 +1,6 @@
 # 17 — JSON converter (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Convert a parsed DCC into JSON. Two styles: `:ptb_compatible` (matches PTB `JSONConverter` output) and `:lutaml` (uses lutaml-model's JSON mapping DSL directly).

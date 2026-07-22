@@ -1,6 +1,6 @@
 # 31 — REST API server (P3, optional)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Rack/Sinatra REST API matching PTB's endpoints: `/dccs`, `/dccs/:id/validate/{xsd,schematron}`, `/dccs/:id/convert/json`, `/dccs/:id/extract/{files,formulae}`, `/dccs/:id/signature`, `/dccs/:id/transform/xslt`.

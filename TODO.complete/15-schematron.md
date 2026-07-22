@@ -1,6 +1,6 @@
 # 15 — Pure-Ruby Schematron (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Reimplement PTB's 14 Schematron patterns as `Lutaml::Model::Validation::Rule` subclasses operating on the parsed object tree. No Saxon-HE, no JVM.

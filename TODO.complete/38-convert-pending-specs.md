@@ -1,6 +1,6 @@
 # 38 — Convert pending specs to real passing specs (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 5 specs use `pending`/`skip`. Convert each to a real, passing spec or

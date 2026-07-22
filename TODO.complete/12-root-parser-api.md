@@ -1,6 +1,6 @@
 # 12 — Root parser public API (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Finalize the public parse entry points: `Dcc.parse`, `Dcc::V2.parse`, `Dcc::V3.parse`. Verify auto-version detection works end-to-end.

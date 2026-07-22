@@ -1,6 +1,6 @@
 # 32 — i18n / multilingual navigation helpers (P3)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Pick the best language from `dcc:textType`, validate language coverage, and provide fallback rules for multilingual content.

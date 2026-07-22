@@ -1,6 +1,6 @@
 # 10 — D-SI model (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Build `Dcc::Si::V1::*` and `Dcc::Si::V2::*` covering all D-SI quantity types, uncertainty types, and supporting types (column, covariance, region). Same registry pattern as DCC.

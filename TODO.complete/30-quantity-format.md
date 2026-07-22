@@ -1,6 +1,6 @@
 # 30 — Quantity pretty-printing (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 SmartCom-style human-readable formatting of D-SI quantities with proper significant digits and unit composition.

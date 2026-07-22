@@ -1,6 +1,6 @@
 # 22 — Inspection report (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Produce a human-readable summary of a DCC: counts, signature status, validity, languages, key identifiers.

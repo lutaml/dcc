@@ -1,6 +1,6 @@
 # 18 — File extraction (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Walk a parsed DCC and enumerate every embedded file (`dcc:byteDataType` element) with its ring (administrativeData / measurementResults / comment / document).

@@ -1,6 +1,6 @@
 # 25 — YAML/CSV/HTML converters (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Additional output formats beyond JSON: YAML (Ruby-friendly), CSV (tabular quantity export), HTML (human-readable report).

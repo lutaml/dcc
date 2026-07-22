@@ -1,6 +1,6 @@
 # 35 — Documentation (P3)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Polished documentation for users and contributors: README, examples, YARD docs, getting-started guide.

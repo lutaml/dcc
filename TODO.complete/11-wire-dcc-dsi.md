@@ -1,6 +1,6 @@
 # 11 — Wire DCC ↔ D-SI (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Connect `dcc:quantityType` to D-SI quantity classes and finalize the `dcc:dataType` choice model.

@@ -1,6 +1,6 @@
 # 39 — Complete Dcc::Si::V1 wrappers (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 `Dcc::Si::V1` currently has only the configuration and common_elements

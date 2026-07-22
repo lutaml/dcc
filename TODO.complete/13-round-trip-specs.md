@@ -1,6 +1,6 @@
 # 13 — Round-trip fidelity specs (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Lossless round-trip on every PTB fixture: parse → serialize → canonically compare with the original.

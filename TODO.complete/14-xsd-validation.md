@@ -1,6 +1,6 @@
 # 14 — XSD validation (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 `Dcc::Validate::Xsd.call(xml, version:)` validates against any of the 12 bundled DCC XSDs. Auto-detect version when `version: :auto` or nil.

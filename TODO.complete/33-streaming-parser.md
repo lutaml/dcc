@@ -1,6 +1,6 @@
 # 33 — Streaming parser for large documents (P3)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Lazy enumeration of items / results / quantities for multi-MB DCC documents using Nokogiri::XML::Reader.

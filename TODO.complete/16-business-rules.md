@@ -1,6 +1,6 @@
 # 16 — Business rule validators (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Ruby-side semantic checks beyond what Schematron covers — cross-section consistency, signature presence, template coherence.

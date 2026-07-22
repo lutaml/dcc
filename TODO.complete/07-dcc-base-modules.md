@@ -1,6 +1,6 @@
 # 07 — DCC base mapping modules (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Create `lib/dcc/base/*.rb` — one shared XML mapping module per DCC element type. Each module uses `self.included(klass)` to inject `attribute` declarations and an `xml do ... end` mapping block. The version wrappers (`Dcc::V2::*`, `Dcc::V3::*`) include these modules and add version-specific extras.

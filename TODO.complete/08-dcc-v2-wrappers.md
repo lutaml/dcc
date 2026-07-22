@@ -1,6 +1,6 @@
 # 08 — Dcc::V2 wrappers (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Thin wrapper classes for every DCC element under `Dcc::V2::*`, each including the appropriate `Dcc::Base::*` module and registering in the `:dcc_v2` context.

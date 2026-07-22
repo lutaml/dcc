@@ -1,6 +1,6 @@
 # 42 — Add CHANGELOG + CONTRIBUTING + LICENSE note (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Project-level docs for users and contributors.

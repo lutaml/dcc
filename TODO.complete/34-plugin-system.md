@@ -1,6 +1,6 @@
 # 34 — Plugin system (P3)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Registry-based plugin system for custom validators, converters, and CLI commands.

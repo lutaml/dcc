@@ -1,6 +1,6 @@
 # 09 — Dcc::V3 wrappers (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Thin wrapper classes for every DCC element under `Dcc::V3::*`, including v3 extras (`refId`, `refType`, v3.4.0-rc.2 features as optional attributes), registering in `:dcc_v3`.

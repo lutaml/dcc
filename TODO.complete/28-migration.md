@@ -1,6 +1,6 @@
 # 28 — Version migration (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 `Dcc.migrate(dcc, from:, to:)` upgrades or downgrades a DCC between schema versions, applying the necessary field renames and D-SI version transitions.

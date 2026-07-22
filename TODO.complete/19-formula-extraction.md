@@ -1,6 +1,6 @@
 # 19 — Formula extraction and evaluation (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Extract MathML `<ml:apply>` formula trees from `dcc:formula`, build a Ruby AST, and evaluate numerically with BigDecimal precision.

@@ -1,6 +1,6 @@
 # 41 — Add YARD documentation throughout (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Add YARD-style `# @!method` and `# @param`/`# @return` annotations to

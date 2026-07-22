@@ -1,6 +1,6 @@
 # 21 — XSLT transform (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Apply XSLT stylesheets to DCC XML. Default engine: Nokogiri (XSLT 1.0). Optional `:saxon` engine shells out to Saxon-HE for XSLT 2.0/3.0.

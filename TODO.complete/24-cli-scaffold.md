@@ -1,6 +1,6 @@
 # 24 — CLI scaffold (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Thor-based CLI dispatching to all Dcc services with human-readable default output and `--format json|yaml` switches.

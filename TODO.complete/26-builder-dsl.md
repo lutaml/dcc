@@ -1,6 +1,6 @@
 # 26 — Builder DSL (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Programmatic DCC creation: `Dcc.build(version: 3) { administrative_data { ... } }` returns a `Dcc::V3::DigitalCalibrationCertificate` instance ready to serialize.

@@ -1,6 +1,6 @@
 # 37 — Implement stub Schematron rules (P1)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Four Schematron rules currently return `[]` unconditionally. Implement

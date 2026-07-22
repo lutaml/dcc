@@ -1,6 +1,6 @@
 # 36 — Remove require_relative violations in Schematron rules (P0)
 
-**Status:** IN PROGRESS
+**Status:** COMPLETED
 
 ## Goal
 The Schematron rule files (`lib/dcc/validate/schematron/rules/*.rb`) and

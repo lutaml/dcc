@@ -1,6 +1,6 @@
 # 23 — Output models with format transforms (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Establish the pattern: every command/service returns a model object that responds to `to_s` (human-readable), `to_json` (machine), `to_yaml` (Ruby). The CLI picks the formatter based on `--format`.

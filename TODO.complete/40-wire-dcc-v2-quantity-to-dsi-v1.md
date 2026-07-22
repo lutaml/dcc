@@ -1,6 +1,6 @@
 # 40 — Wire Dcc::V2::Quantity to D-SI v1 (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 `Dcc::V3::Quantity` already wires D-SI v2 elements (`:real`, `:hybrid`,

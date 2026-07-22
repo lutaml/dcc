@@ -1,6 +1,6 @@
 # 27 — DCC diff tool (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 Structural diff of two DCCs — what items/quantities/results were added, removed, or modified.

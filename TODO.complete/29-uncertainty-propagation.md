@@ -1,6 +1,6 @@
 # 29 — Uncertainty propagation (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 BigDecimal-based arithmetic on D-SI quantities that propagates uncertainty via root-sum-square (RSS) for add/sub and fractional for mul/div.

@@ -1,6 +1,6 @@
 # 43 — Performance: memoize schema lookups (P2)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
 ## Goal
 `Dcc::Validate::Xsd` already memoizes the loaded schema, but other
