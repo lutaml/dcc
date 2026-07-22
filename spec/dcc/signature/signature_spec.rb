@@ -3,13 +3,6 @@
 require "spec_helper"
 
 RSpec.describe Dcc::Signature do
-  describe "soft-dependency" do
-    it "is available because xmldsig is in the Gemfile" do
-      require "xmldsig"
-      expect(defined?(::Xmldsig)).to be_truthy
-    end
-  end
-
   describe Dcc::Signature::Result do
     it "renders valid result" do
       r = described_class.new(valid: true, certificate_pem: "TEST")
@@ -28,6 +21,30 @@ RSpec.describe Dcc::Signature do
       r = described_class.new(valid: true, certificate_pem: "PEM")
       payload = JSON.parse(r.to_json)
       expect(payload["valid"]).to be(true)
+    end
+  end
+
+  describe Dcc::Signature::Signer do
+    let(:xml) { File.read(fixtures_path("dcclib", "valid.xml")) }
+    let(:key_pem) { File.read(fixtures_path("dcclib", "certs", "cert.key")) }
+    let(:cert_pem) { File.read(fixtures_path("dcclib", "certs", "cert.pem")) }
+
+    it "signs a DCC document" do
+      signed = described_class.call(xml, cert_pem: cert_pem, key_pem: key_pem)
+      expect(signed).to include("Signature")
+      expect(signed).to include("SignatureValue")
+    end
+  end
+
+  describe Dcc::Signature::Verifier do
+    let(:xml) { File.read(fixtures_path("dcclib", "valid.xml")) }
+    let(:key_pem) { File.read(fixtures_path("dcclib", "certs", "cert.key")) }
+    let(:cert_pem) { File.read(fixtures_path("dcclib", "certs", "cert.pem")) }
+
+    it "verifies a freshly signed document" do
+      signed = Dcc::Signature::Signer.call(xml, cert_pem: cert_pem, key_pem: key_pem)
+      result = described_class.call(signed, ca_cert_pem: cert_pem)
+      expect(result.valid?).to be(true)
     end
   end
 end

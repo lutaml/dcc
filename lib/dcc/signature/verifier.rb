@@ -1,39 +1,43 @@
 # frozen_string_literal: true
 
+require "moxml"
+require "openssl"
+
 module Dcc
   module Signature
-    # `Dcc::Signature::Verifier` validates a signed DCC against a CA
-    # certificate. The signed XML subtree is extracted so callers can
-    # extract the trustworthy content.
+    # `Dcc::Signature::Verifier` validates a signed DCC using moxml's
+    # native Signature module.
     module Verifier
       class << self
         # @param xml [String] signed DCC XML.
-        # @param ca_cert_pem [String] PEM-encoded CA certificate.
+        # @param ca_cert_pem [String] PEM-encoded certificate or public key.
         # @return [Dcc::Signature::Result]
         def call(xml, ca_cert_pem:)
-          ensure_xmldsig!
-          document = Xmldsig::XMLDoc.new(xml)
-          signed_xml = nil
-          is_valid = document.validate(ca_cert_pem) do |signed_node|
-            signed_xml = signed_node.to_xml
-            true
-          end
+          ctx = ::Moxml.new(::Lutaml::Model::Config.xml_adapter_type)
+          doc = ctx.parse(xml)
+
+          key = load_key(ca_cert_pem)
+          result = ::Moxml::Signature.verify(
+            context: ctx,
+            document: doc,
+            key: key,
+          )
+
           ::Dcc::Signature::Result.new(
-            valid: is_valid,
+            valid: result.valid?,
             certificate_pem: ca_cert_pem,
-            signed_xml: signed_xml,
+            signed_xml: doc.to_xml,
           )
         end
 
         private
 
-        def ensure_xmldsig!
-          return if defined?(::Xmldsig)
-
-          require "xmldsig"
-        rescue ::LoadError
-          raise ::Dcc::MissingDependencyError.new(gem_name: "xmldsig", feature: "Dcc::Signature"),
-                "xmldsig is required for XMLDSig verification"
+        def load_key(pem)
+          begin
+            ::OpenSSL::X509::Certificate.new(pem).public_key
+          rescue ::OpenSSL::X509::CertificateError
+            ::OpenSSL::PKey::RSA.new(pem)
+          end
         end
       end
     end

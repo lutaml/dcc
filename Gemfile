@@ -21,5 +21,4 @@ gem "tty-table"
 group :optional do
   gem "sinatra"      # Dcc::Server REST API
   gem "tty-prompt"   # dcc issue (interactive builder)
-  gem "xmldsig"      # Dcc::Signature
 end
