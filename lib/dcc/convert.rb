@@ -9,6 +9,7 @@ module Dcc
     autoload :Json, "dcc/convert/json"
     autoload :Yaml, "dcc/convert/yaml"
     autoload :Csv, "dcc/convert/csv"
+    autoload :LiquidFilters, "dcc/convert/liquid_filters"
     autoload :Html, "dcc/convert/html"
   end
 end
