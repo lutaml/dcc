@@ -43,6 +43,8 @@ module Dcc
   autoload :Transform, "dcc/transform"
   autoload :Validate, "dcc/validate"
   autoload :Server, "dcc/server"
+  autoload :I18n, "dcc/i18n"
+  autoload :Streaming, "dcc/streaming"
   autoload :Si, "dcc/si"
 
   autoload :V2, "dcc/v2"
