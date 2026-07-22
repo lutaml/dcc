@@ -10,6 +10,54 @@ provides a fully typed Ruby object representation of both the DCC and D-SI
 XML schemas, with per-major-version class hierarchies mirroring the approach
 used by the https://github.com/plurimath/mml[`mml`^] gem for MathML.
 
+== What is a Digital Calibration Certificate?
+
+A Digital Calibration Certificate (DCC) is an XML-based, machine-readable
+calibration certificate developed by Germany's national metrology institute,
+the https://ptb.de[Physikalisch-Technische Bundesanstalt (PTB)^]. It is
+designed to replace traditional paper-based calibration certificates with
+a format that both humans and machines can process automatically.
+
+A DCC document contains three primary sections:
+
+* **Administrative data** — identifies the calibration laboratory, the
+  customer, the calibrated item(s), responsible persons, performance dates,
+  and any statements about traceability or conformity.
+* **Measurement results** — the actual calibration data: measured values,
+  uncertainties, units, environmental conditions, and the methods/equipment
+  used. Each measurement quantity is expressed using the D-SI format.
+* **Document** — optional attached files (PDF reports, spreadsheets, images)
+  embedded as base64 binary data.
+
+The certificate can be digitally signed using W3C XMLDSig to guarantee
+authenticity and integrity.
+
+=== What is D-SI?
+
+D-SI (Digital System of Units) is a companion XML format for expressing
+SI-based measurement quantities with full uncertainty information. A D-SI
+quantity carries the value, unit (in siunitx notation), and an uncertainty
+model (standard, expanded with coverage factor k, or coverage interval).
+
+For example, a resistance measurement of 100.0225 Ω ± 0.003 Ω (k=2):
+
+[source,xml]
+----
+<si:real>
+  <si:value>100.0225</si:value>
+  <si:unit>\ohm</si:unit>
+  <si:expandedMU>
+    <si:valueExpandedMU>0.003</si:valueExpandedMU>
+    <si:coverageFactor>2</si:coverageFactor>
+    <si:coverageProbability>0.95</si:coverageProbability>
+  </si:expandedMU>
+</si:real>
+----
+
+D-SI also supports complex quantities, constants, lists (both verbose and
+compact XML-list forms), hybrid multi-unit representations, covariance
+matrices, and coverage regions for multivariate uncertainties.
+
 == Highlights
 
 * Fully typed object model for DCC v2.x and v3.x (no more XPath over `lxml`)
