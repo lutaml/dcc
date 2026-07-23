@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { parseDcc, validateDcc, verifySignature, type DccCert, type ValidationResult } from "./lib/dcc";
-import { emptyForm, generateDccXml, type BuilderForm } from "./lib/builder";
+import { emptyForm, emptyQuantity, generateDccXml, type BuilderForm } from "./lib/builder";
+import unitData from "./lib/units.json";
+
+interface UnitEntry { label: string; symbol: string; siunitx: string }
+interface QuantityType { name: string; short: string; units: UnitEntry[] }
 
 type Mode = "validate" | "create";
 const mode = ref<Mode>("validate");
@@ -51,9 +55,9 @@ function demoForm(): BuilderForm {
   f.labEmail = "info@nmi.nl"; f.labCode = "NL1"; f.signerName = "M. Schmidt, Ph.D.";
   f.signerEmail = "m.schmidt@nmi.nl"; f.customerName = "Endress+Hauser Flowtec AG";
   f.measurements = [{ name: "Mass flow calibration", quantities: [
-    { name: "Max mass flow", value: "300", unit: "\\kilogram\\per\\minute", uncertainty: "0.15" },
-    { name: "Density min", value: "300", unit: "\\kilogram\\per\\metre\\tothe{3}", uncertainty: "" },
-    { name: "Density max", value: "1400", unit: "\\kilogram\\per\\metre\\tothe{3}", uncertainty: "" },
+    { ...emptyQuantity(), name: "Max mass flow", value: "300", quantityType: "mass_flow", unitLabel: "kg/min", unitSiunitx: "\\kilogram\\per\\minute", uncertainty: "0.15" },
+    { ...emptyQuantity(), name: "Density min", value: "300", quantityType: "density", unitLabel: "kg/m³", unitSiunitx: "\\kilogram\\per\\metre\\tothe{3}", hasUncertainty: false },
+    { ...emptyQuantity(), name: "Density max", value: "1400", quantityType: "density", unitLabel: "kg/m³", unitSiunitx: "\\kilogram\\per\\metre\\tothe{3}", hasUncertainty: false },
   ]}];
   return f;
 }
@@ -69,10 +73,32 @@ const form = ref<BuilderForm>(emptyForm());
 const previewXml = ref("");
 const showPreview = ref(false);
 const buildErrors = ref<string[]>([]);
-function addMeasurement() { form.value.measurements.push({ name: "", quantities: [{ name: "", value: "", unit: "\\unit", uncertainty: "" }] }); }
+const quantities = unitData as QuantityType[];
+
+function addMeasurement() { form.value.measurements.push({ name: "", quantities: [emptyQuantity()] }); }
 function removeMeasurement(i: number) { form.value.measurements.splice(i, 1); }
-function addQuantity(mi: number) { form.value.measurements[mi].quantities.push({ name: "", value: "", unit: "\\unit", uncertainty: "" }); }
+function addQuantity(mi: number) { form.value.measurements[mi].quantities.push(emptyQuantity()); }
 function removeQuantity(mi: number, qi: number) { form.value.measurements[mi].quantities.splice(qi, 1); }
+
+function onQuantityTypeChange(q: BuilderQuantity) {
+  const qt = quantities.find(qt => qt.short === q.quantityType);
+  if (qt && qt.units.length > 0) {
+    q.unitSiunitx = qt.units[0].siunitx;
+    q.unitLabel = qt.units[0].label;
+  }
+}
+
+function onUnitChange(q: BuilderQuantity) {
+  const qt = quantities.find(qt => qt.short === q.quantityType);
+  if (qt) {
+    const u = qt.units.find(u => u.label === q.unitLabel);
+    if (u) q.unitSiunitx = u.siunitx;
+  }
+}
+
+function onCoverageFactorChange(q: BuilderQuantity) {
+  q.coverageProbability = q.coverageFactor === "1" ? "0.68" : q.coverageFactor === "2" ? "0.95" : q.coverageFactor === "3" ? "0.99" : "0.95";
+}
 function generatePreview() {
   previewXml.value = generateDccXml(form.value);
   buildErrors.value = validateDcc(previewXml.value).issues.filter(i => i.severity === "error").map(i => i.message);
@@ -250,14 +276,39 @@ function loadDemoForm() { form.value = demoForm(); }
                 <input v-model="m.name" :placeholder="'Result ' + (mi + 1)" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none" />
                 <button v-if="form.measurements.length > 1" @click="removeMeasurement(mi)" class="text-xs text-red-400/60 hover:text-red-400">Remove</button>
               </div>
-              <div class="space-y-2">
-                <div v-for="(q, qi) in m.quantities" :key="qi" class="grid grid-cols-4 gap-2">
-                  <input v-model="q.name" placeholder="Name" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none" />
-                  <input v-model="q.value" placeholder="Value" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-green-400/90 font-mono focus:border-cyan-500 focus:outline-none" />
-                  <input v-model="q.unit" placeholder="Unit" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-400 font-mono focus:border-cyan-500 focus:outline-none" />
-                  <div class="flex gap-1">
-                    <input v-model="q.uncertainty" placeholder="±U" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400/70 font-mono focus:border-cyan-500 focus:outline-none" />
-                    <button v-if="m.quantities.length > 1" @click="removeQuantity(mi, qi)" class="text-xs text-red-400/40 hover:text-red-400 px-1">✕</button>
+              <div class="space-y-3">
+                <div v-for="(q, qi) in m.quantities" :key="qi" class="rounded-lg border border-slate-700/50 bg-slate-900/60 p-3 space-y-2">
+                  <!-- Row 1: name + value -->
+                  <div class="grid grid-cols-3 gap-2">
+                    <input v-model="q.name" placeholder="Quantity name" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none" />
+                    <input v-model="q.value" placeholder="Measured value" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-green-400/90 font-mono focus:border-cyan-500 focus:outline-none" />
+                    <button v-if="m.quantities.length > 1" @click="removeQuantity(mi, qi)" class="text-xs text-red-400/40 hover:text-red-400 justify-self-end px-2">Remove</button>
+                  </div>
+                  <!-- Row 2: quantity type + unit picker -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <select v-model="q.quantityType" @change="onQuantityTypeChange(q)" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:border-cyan-500 focus:outline-none">
+                      <option value="">Select quantity type...</option>
+                      <option v-for="qt in quantities" :key="qt.short" :value="qt.short">{{ qt.name }}</option>
+                    </select>
+                    <select v-model="q.unitLabel" @change="onUnitChange(q)" :disabled="!q.quantityType" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-400 font-mono focus:border-cyan-500 focus:outline-none disabled:opacity-40">
+                      <option value="">Unit...</option>
+                      <option v-for="u in (quantities.find(qt => qt.short === q.quantityType)?.units || [])" :key="u.label" :value="u.label">{{ u.label }}</option>
+                    </select>
+                  </div>
+                  <!-- Row 3: uncertainty (structured) -->
+                  <div class="flex items-center gap-2 pt-1">
+                    <label class="flex items-center gap-1.5 text-xs text-slate-500 cursor-pointer">
+                      <input type="checkbox" v-model="q.hasUncertainty" class="accent-cyan-500" />
+                      Expanded uncertainty
+                    </label>
+                    <template v-if="q.hasUncertainty">
+                      <input v-model="q.uncertainty" placeholder="U" class="w-20 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-amber-400/70 font-mono focus:border-cyan-500 focus:outline-none" />
+                      <span class="text-slate-600 text-xs">k=</span>
+                      <select v-model="q.coverageFactor" @change="onCoverageFactorChange(q)" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-400 font-mono focus:border-cyan-500 focus:outline-none">
+                        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                      </select>
+                      <span class="text-slate-600 text-xs">p={{ q.coverageProbability }}</span>
+                    </template>
                   </div>
                 </div>
               </div>

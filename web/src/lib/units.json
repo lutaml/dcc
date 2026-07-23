@@ -1,0 +1,105 @@
+[
+  { "name": "Mass", "short": "mass", "units": [
+    { "label": "kilogram (kg)", "symbol": "kg", "siunitx": "\\kilogram" },
+    { "label": "gram (g)", "symbol": "g", "siunitx": "\\gram" },
+    { "label": "milligram (mg)", "symbol": "mg", "siunitx": "\\milli\\gram" },
+    { "label": "microgram (µg)", "symbol": "µg", "siunitx": "\\micro\\gram" },
+    { "label": "tonne (t)", "symbol": "t", "siunitx": "\\tonne" }
+  ]},
+  { "name": "Length", "short": "length", "units": [
+    { "label": "metre (m)", "symbol": "m", "siunitx": "\\meter" },
+    { "label": "millimetre (mm)", "symbol": "mm", "siunitx": "\\milli\\meter" },
+    { "label": "micrometre (µm)", "symbol": "µm", "siunitx": "\\micro\\meter" },
+    { "label": "nanometre (nm)", "symbol": "nm", "siunitx": "\\nano\\meter" },
+    { "label": "kilometre (km)", "symbol": "km", "siunitx": "\\kilo\\meter" }
+  ]},
+  { "name": "Electric Resistance", "short": "resistance", "units": [
+    { "label": "ohm (Ω)", "symbol": "Ω", "siunitx": "\\ohm" },
+    { "label": "kiloohm (kΩ)", "symbol": "kΩ", "siunitx": "\\kilo\\ohm" },
+    { "label": "megaohm (MΩ)", "symbol": "MΩ", "siunitx": "\\mega\\ohm" },
+    { "label": "milliohm (mΩ)", "symbol": "mΩ", "siunitx": "\\milli\\ohm" }
+  ]},
+  { "name": "Temperature", "short": "temperature", "units": [
+    { "label": "degree Celsius (°C)", "symbol": "°C", "siunitx": "\\degreeCelsius" },
+    { "label": "kelvin (K)", "symbol": "K", "siunitx": "\\kelvin" },
+    { "label": "millikelvin (mK)", "symbol": "mK", "siunitx": "\\milli\\kelvin" }
+  ]},
+  { "name": "Pressure", "short": "pressure", "units": [
+    { "label": "pascal (Pa)", "symbol": "Pa", "siunitx": "\\pascal" },
+    { "label": "kilopascal (kPa)", "symbol": "kPa", "siunitx": "\\kilo\\pascal" },
+    { "label": "megapascal (MPa)", "symbol": "MPa", "siunitx": "\\mega\\pascal" },
+    { "label": "bar", "symbol": "bar", "siunitx": "\\bar" }
+  ]},
+  { "name": "Voltage", "short": "voltage", "units": [
+    { "label": "volt (V)", "symbol": "V", "siunitx": "\\volt" },
+    { "label": "millivolt (mV)", "symbol": "mV", "siunitx": "\\milli\\volt" },
+    { "label": "microvolt (µV)", "symbol": "µV", "siunitx": "\\micro\\volt" },
+    { "label": "kilovolt (kV)", "symbol": "kV", "siunitx": "\\kilo\\volt" }
+  ]},
+  { "name": "Electric Current", "short": "current", "units": [
+    { "label": "ampere (A)", "symbol": "A", "siunitx": "\\ampere" },
+    { "label": "milliampere (mA)", "symbol": "mA", "siunitx": "\\milli\\ampere" },
+    { "label": "microampere (µA)", "symbol": "µA", "siunitx": "\\micro\\ampere" }
+  ]},
+  { "name": "Frequency", "short": "frequency", "units": [
+    { "label": "hertz (Hz)", "symbol": "Hz", "siunitx": "\\hertz" },
+    { "label": "kilohertz (kHz)", "symbol": "kHz", "siunitx": "\\kilo\\hertz" },
+    { "label": "megahertz (MHz)", "symbol": "MHz", "siunitx": "\\mega\\hertz" }
+  ]},
+  { "name": "Power", "short": "power", "units": [
+    { "label": "watt (W)", "symbol": "W", "siunitx": "\\watt" },
+    { "label": "milliwatt (mW)", "symbol": "mW", "siunitx": "\\milli\\watt" },
+    { "label": "kilowatt (kW)", "symbol": "kW", "siunitx": "\\kilo\\watt" }
+  ]},
+  { "name": "Force", "short": "force", "units": [
+    { "label": "newton (N)", "symbol": "N", "siunitx": "\\newton" },
+    { "label": "kilonewton (kN)", "symbol": "kN", "siunitx": "\\kilo\\newton" },
+    { "label": "meganewton (MN)", "symbol": "MN", "siunitx": "\\mega\\newton" }
+  ]},
+  { "name": "Time", "short": "time", "units": [
+    { "label": "second (s)", "symbol": "s", "siunitx": "\\second" },
+    { "label": "millisecond (ms)", "symbol": "ms", "siunitx": "\\milli\\second" },
+    { "label": "minute (min)", "symbol": "min", "siunitx": "\\minute" },
+    { "label": "hour (h)", "symbol": "h", "siunitx": "\\hour" }
+  ]},
+  { "name": "Volume", "short": "volume", "units": [
+    { "label": "cubic metre (m³)", "symbol": "m³", "siunitx": "\\meter\\tothe{3}" },
+    { "label": "litre (L)", "symbol": "L", "siunitx": "\\litre" },
+    { "label": "millilitre (mL)", "symbol": "mL", "siunitx": "\\milli\\litre" }
+  ]},
+  { "name": "Density", "short": "density", "units": [
+    { "label": "kg/m³", "symbol": "kg/m³", "siunitx": "\\kilogram\\per\\metre\\tothe{3}" },
+    { "label": "g/cm³", "symbol": "g/cm³", "siunitx": "\\gram\\per\\centi\\meter\\tothe{3}" }
+  ]},
+  { "name": "Mass Flow Rate", "short": "mass_flow", "units": [
+    { "label": "kg/min", "symbol": "kg/min", "siunitx": "\\kilogram\\per\\minute" },
+    { "label": "kg/s", "symbol": "kg/s", "siunitx": "\\kilogram\\per\\second" },
+    { "label": "t/h", "symbol": "t/h", "siunitx": "\\tonne\\per\\hour" }
+  ]},
+  { "name": "Volume Flow Rate", "short": "vol_flow", "units": [
+    { "label": "m³/h", "symbol": "m³/h", "siunitx": "\\meter\\tothe{3}\\per\\hour" },
+    { "label": "L/min", "symbol": "L/min", "siunitx": "\\litre\\per\\minute" }
+  ]},
+  { "name": "Angle", "short": "angle", "units": [
+    { "label": "radian (rad)", "symbol": "rad", "siunitx": "\\radian" },
+    { "label": "degree (°)", "symbol": "°", "siunitx": "\\degree" }
+  ]},
+  { "name": "Capacitance", "short": "capacitance", "units": [
+    { "label": "farad (F)", "symbol": "F", "siunitx": "\\farad" },
+    { "label": "picofarad (pF)", "symbol": "pF", "siunitx": "\\pico\\farad" }
+  ]},
+  { "name": "Inductance", "short": "inductance", "units": [
+    { "label": "henry (H)", "symbol": "H", "siunitx": "\\henry" }
+  ]},
+  { "name": "Magnetic Flux", "short": "mag_flux", "units": [
+    { "label": "tesla (T)", "symbol": "T", "siunitx": "\\tesla" }
+  ]},
+  { "name": "Energy", "short": "energy", "units": [
+    { "label": "joule (J)", "symbol": "J", "siunitx": "\\joule" },
+    { "label": "electronvolt (eV)", "symbol": "eV", "siunitx": "\\electronvolt" }
+  ]},
+  { "name": "Ratio / Percent", "short": "ratio", "units": [
+    { "label": "percent (%)", "symbol": "%", "siunitx": "\\percent" },
+    { "label": "dimensionless", "symbol": "—", "siunitx": "" }
+  ]}
+]

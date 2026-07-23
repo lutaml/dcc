@@ -1,3 +1,15 @@
+export interface BuilderQuantity {
+  name: string;
+  value: string;
+  quantityType: string;
+  unitSiunitx: string;
+  unitLabel: string;
+  hasUncertainty: boolean;
+  uncertainty: string;
+  coverageFactor: string;
+  coverageProbability: string;
+}
+
 export interface BuilderForm {
   schemaVersion: string;
   uniqueId: string;
@@ -14,7 +26,7 @@ export interface BuilderForm {
   signerName: string;
   signerEmail: string;
   customerName: string;
-  measurements: { name: string; quantities: { name: string; value: string; unit: string; uncertainty: string }[] }[];
+  measurements: { name: string; quantities: BuilderQuantity[] }[];
 }
 
 export function emptyForm(): BuilderForm {
@@ -37,9 +49,16 @@ export function emptyForm(): BuilderForm {
     measurements: [
       {
         name: "",
-        quantities: [{ name: "", value: "", unit: "\\unit", uncertainty: "" }],
+        quantities: [emptyQuantity()],
       },
     ],
+  };
+}
+
+export function emptyQuantity(): BuilderQuantity {
+  return {
+    name: "", value: "", quantityType: "", unitSiunitx: "", unitLabel: "",
+    hasUncertainty: true, uncertainty: "", coverageFactor: "2", coverageProbability: "0.95",
   };
 }
 
@@ -58,18 +77,17 @@ export function generateDccXml(form: BuilderForm): string {
       const quants = m.quantities
         .filter((q) => q.value)
         .map((q) => {
-          const unc = q.uncertainty
+          const unc = (q.hasUncertainty && q.uncertainty)
             ? `\n                  <si:expandedMU>
                     <si:valueExpandedMU>${esc(q.uncertainty)}</si:valueExpandedMU>
-                    <si:coverageFactor>2</si:coverageFactor>
-                    <si:coverageProbability>0.95</si:coverageProbability>
+                    <si:coverageFactor>${esc(q.coverageFactor || "2")}</si:coverageFactor>
+                    <si:coverageProbability>${esc(q.coverageProbability || "0.95")}</si:coverageProbability>
                   </si:expandedMU>`
             : "";
           return `          <dcc:quantity>
-            <dcc:name><dcc:content lang="en">${esc(q.name || "Value")}</dcc:content></dcc:name>
+            <dcc:name><dcc:content lang="en">${esc(q.name || q.quantityType || "Value")}</dcc:content></dcc:name>
             <si:real>
-              <si:value>${esc(q.value)}</si:value>
-              <si:unit>${esc(q.unit)}</si:unit>${unc}
+              <si:value>${esc(q.value)}</si:value>${q.unitSiunitx ? `\n              <si:unit>${esc(q.unitSiunitx)}</si:unit>` : ""}${unc}
             </si:real>
           </dcc:quantity>`;
         })
