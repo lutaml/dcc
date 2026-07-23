@@ -63,7 +63,9 @@ module Dcc
             next %{schemaLocation="#{relative}"} if relative.start_with?("http", "file://")
 
             absolute = ::File.expand_path(relative, base_dir)
-            %{schemaLocation="file://#{absolute}"}
+            uri_path = absolute.gsub(::File::ALT_SEPARATOR || "\\", "/")
+            uri_path = "/#{uri_path}" unless uri_path.start_with?("/")
+            %{schemaLocation="file://#{uri_path}"}
           end
         end
 
