@@ -4,8 +4,25 @@ import { parseDcc, validateDcc, verifySignature, type DccCert, type ValidationRe
 import { emptyForm, emptyQuantity, generateDccXml, type BuilderForm } from "./lib/builder";
 import unitData from "./lib/units.json";
 
-interface UnitEntry { label: string; symbol: string; siunitx: string }
-interface QuantityType { name: string; short: string; units: UnitEntry[] }
+interface UnitEntry { short: string; name: string; symbol: string; siunitx: string; siBase: boolean }
+interface QuantityType { short: string; name: string; unit_count: number; units: UnitEntry[] }
+interface PrefixEntry { short: string; name: string; symbol: string; power: string; siunitx: string }
+
+const allQuantities = (unitData.quantities as QuantityType[])
+  .map(q => ({ ...q, units: q.units.filter(u => u.siunitx) }))
+  .filter(q => q.units.length > 0)
+  .sort((a, b) => {
+    const common = ["mass", "length", "temperature", "electric_resistance", "pressure", "voltage", "electric_current", "frequency", "power", "force", "time", "volume", "density", "angle", "energy"];
+    const ai = common.indexOf(a.short); const bi = common.indexOf(b.short);
+    if (ai >= 0 && bi >= 0) return ai - bi;
+    if (ai >= 0) return -1;
+    if (bi >= 0) return 1;
+    return a.name.localeCompare(b.name);
+  });
+const allPrefixes = (unitData.prefixes as PrefixEntry[])
+  .filter(p => ["kilo", "hecto", "deca", "deci", "centi", "milli", "micro", "nano", "pico", "femto", "mega", "giga", "tera"].includes(p.short));
+
+const quantities = allQuantities;
 
 type Mode = "validate" | "create";
 const mode = ref<Mode>("validate");
@@ -73,28 +90,30 @@ const form = ref<BuilderForm>(emptyForm());
 const previewXml = ref("");
 const showPreview = ref(false);
 const buildErrors = ref<string[]>([]);
-const quantities = unitData as QuantityType[];
 
 function addMeasurement() { form.value.measurements.push({ name: "", quantities: [emptyQuantity()] }); }
 function removeMeasurement(i: number) { form.value.measurements.splice(i, 1); }
 function addQuantity(mi: number) { form.value.measurements[mi].quantities.push(emptyQuantity()); }
 function removeQuantity(mi: number, qi: number) { form.value.measurements[mi].quantities.splice(qi, 1); }
 
+function rebuildUnit(q: BuilderQuantity) {
+  const qt = quantities.find(qt => qt.short === q.quantityType);
+  if (!qt) { q.unitSiunitx = ""; return; }
+  const u = qt.units.find(u => u.short === q.unitLabel);
+  if (!u) { q.unitSiunitx = ""; return; }
+  q.unitSiunitx = u.siunitx;
+}
+
 function onQuantityTypeChange(q: BuilderQuantity) {
   const qt = quantities.find(qt => qt.short === q.quantityType);
   if (qt && qt.units.length > 0) {
-    q.unitSiunitx = qt.units[0].siunitx;
-    q.unitLabel = qt.units[0].label;
+    const first = qt.units.find(u => u.siBase) || qt.units[0];
+    q.unitLabel = first.short;
+    rebuildUnit(q);
   }
 }
 
-function onUnitChange(q: BuilderQuantity) {
-  const qt = quantities.find(qt => qt.short === q.quantityType);
-  if (qt) {
-    const u = qt.units.find(u => u.label === q.unitLabel);
-    if (u) q.unitSiunitx = u.siunitx;
-  }
-}
+function onUnitChange(q: BuilderQuantity) { rebuildUnit(q); }
 
 function onCoverageFactorChange(q: BuilderQuantity) {
   q.coverageProbability = q.coverageFactor === "1" ? "0.68" : q.coverageFactor === "2" ? "0.95" : q.coverageFactor === "3" ? "0.99" : "0.95";
@@ -292,7 +311,7 @@ function loadDemoForm() { form.value = demoForm(); }
                     </select>
                     <select v-model="q.unitLabel" @change="onUnitChange(q)" :disabled="!q.quantityType" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-400 font-mono focus:border-cyan-500 focus:outline-none disabled:opacity-40">
                       <option value="">Unit...</option>
-                      <option v-for="u in (quantities.find(qt => qt.short === q.quantityType)?.units || [])" :key="u.label" :value="u.label">{{ u.label }}</option>
+                      <option v-for="u in (quantities.find(qt => qt.short === q.quantityType)?.units || [])" :key="u.short" :value="u.short">{{ u.symbol }} ({{ u.short }})</option>
                     </select>
                   </div>
                   <!-- Row 3: uncertainty (structured) -->
