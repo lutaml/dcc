@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcc:digitalCalibrationCertificate
+    xmlns:dcc="https://ptb.de/dcc"
+    xmlns:si="https://ptb.de/si"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/dcc https://ptb.de/dcc/v3.3.0/dcc.xsd"
+    schemaVersion="3.3.0">
+
+  <dcc:administrativeData>
+    <dcc:dccSoftware>
+      <dcc:software>
+        <dcc:name><dcc:content lang="en">DCC Validator Builder</dcc:content></dcc:name>
+        <dcc:release>0.1.0</dcc:release>
+      </dcc:software>
+    </dcc:dccSoftware>
+
+    <dcc:coreData>
+      <dcc:countryCodeISO3166_1>DE</dcc:countryCodeISO3166_1>
+      <dcc:usedLangCodeISO639_1>en</dcc:usedLangCodeISO639_1>
+      <dcc:usedLangCodeISO639_1>de</dcc:usedLangCodeISO639_1>
+      <dcc:mandatoryLangCodeISO639_1>en</dcc:mandatoryLangCodeISO639_1>
+      <dcc:uniqueIdentifier>PTB-A0123-2026</dcc:uniqueIdentifier>
+      <dcc:beginPerformanceDate>2026-07-23</dcc:beginPerformanceDate>
+      <dcc:endPerformanceDate>2026-07-23</dcc:endPerformanceDate>
+    </dcc:coreData>
+
+    <dcc:items>
+      <dcc:item>
+        <dcc:name><dcc:content lang="en">Precision Resistance Decade 10 kΩ</dcc:content></dcc:name>
+        <dcc:manufacturer><dcc:name><dcc:content lang="en">Burster Präzisionsmesstechnik GmbH</dcc:content></dcc:name></dcc:manufacturer>
+        <dcc:model>BURSTER 1424</dcc:model>
+      </dcc:item>
+    </dcc:items>
+
+    <dcc:calibrationLaboratory>
+      <dcc:calibrationLaboratoryCode>DE1</dcc:calibrationLaboratoryCode>
+      <dcc:contact>
+        <dcc:name><dcc:content lang="en">Physikalisch-Technische Bundesanstalt</dcc:content></dcc:name>
+        <dcc:eMail>calibration@ptb.de</dcc:eMail>
+      </dcc:contact>
+    </dcc:calibrationLaboratory>
+
+    <dcc:respPersons>
+      <dcc:respPerson>
+        <dcc:person>
+          <dcc:name><dcc:content lang="en">Dr. Klaus-Dieter Sommer</dcc:content></dcc:name>
+          <dcc:eMail>k.sommer@ptb.de</dcc:eMail>
+        </dcc:person>
+        <dcc:mainSigner>true</dcc:mainSigner>
+      </dcc:respPerson>
+    </dcc:respPersons>
+
+    <dcc:customer>
+      <dcc:name><dcc:content lang="en">Burster Präzisionsmesstechnik GmbH</dcc:content></dcc:name>
+    </dcc:customer>
+  </dcc:administrativeData>
+
+  <dcc:measurementResults>
+    <dcc:measurementResult>
+      <dcc:name><dcc:content lang="en">Calibration Results</dcc:content></dcc:name>
+      <dcc:results>
+        <dcc:result>
+          <dcc:name><dcc:content lang="en">Resistance calibration at 1 kΩ</dcc:content></dcc:name>
+          <dcc:data>
+          <dcc:quantity>
+            <dcc:name><dcc:content lang="en">Actual resistance</dcc:content></dcc:name>
+            <si:real>
+              <si:value>999.982</si:value>
+              <si:unit>\ohm</si:unit>
+                  <si:expandedMU>
+                    <si:valueExpandedMU>0.012</si:valueExpandedMU>
+                    <si:coverageFactor>2</si:coverageFactor>
+                    <si:coverageProbability>0.95</si:coverageProbability>
+                  </si:expandedMU>
+            </si:real>
+          </dcc:quantity>
+          <dcc:quantity>
+            <dcc:name><dcc:content lang="en">Temperature coefficient</dcc:content></dcc:name>
+            <si:real>
+              <si:value>5.2e-6</si:value>
+              <si:unit>\per\kelvin</si:unit>
+                  <si:expandedMU>
+                    <si:valueExpandedMU>0.3e-6</si:valueExpandedMU>
+                    <si:coverageFactor>2</si:coverageFactor>
+                    <si:coverageProbability>0.95</si:coverageProbability>
+                  </si:expandedMU>
+            </si:real>
+          </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+        <dcc:result>
+          <dcc:name><dcc:content lang="en">Resistance calibration at 10 kΩ</dcc:content></dcc:name>
+          <dcc:data>
+          <dcc:quantity>
+            <dcc:name><dcc:content lang="en">Actual resistance</dcc:content></dcc:name>
+            <si:real>
+              <si:value>10000.04</si:value>
+              <si:unit>\kilo\ohm</si:unit>
+                  <si:expandedMU>
+                    <si:valueExpandedMU>0.03</si:valueExpandedMU>
+                    <si:coverageFactor>2</si:coverageFactor>
+                    <si:coverageProbability>0.95</si:coverageProbability>
+                  </si:expandedMU>
+            </si:real>
+          </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+        <dcc:result>
+          <dcc:name><dcc:content lang="en">Environmental conditions</dcc:content></dcc:name>
+          <dcc:data>
+          <dcc:quantity>
+            <dcc:name><dcc:content lang="en">Ambient temperature</dcc:content></dcc:name>
+            <si:real>
+              <si:value>23.0</si:value>
+              <si:unit>\degreeCelsius</si:unit>
+                  <si:expandedMU>
+                    <si:valueExpandedMU>0.2</si:valueExpandedMU>
+                    <si:coverageFactor>2</si:coverageFactor>
+                    <si:coverageProbability>0.95</si:coverageProbability>
+                  </si:expandedMU>
+            </si:real>
+          </dcc:quantity>
+          <dcc:quantity>
+            <dcc:name><dcc:content lang="en">Relative humidity</dcc:content></dcc:name>
+            <si:real>
+              <si:value>48</si:value>
+              <si:unit>\percent</si:unit>
+                  <si:expandedMU>
+                    <si:valueExpandedMU>2</si:valueExpandedMU>
+                    <si:coverageFactor>2</si:coverageFactor>
+                    <si:coverageProbability>0.95</si:coverageProbability>
+                  </si:expandedMU>
+            </si:real>
+          </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+      </dcc:results>
+    </dcc:measurementResult>
+  </dcc:measurementResults>
+</dcc:digitalCalibrationCertificate>
