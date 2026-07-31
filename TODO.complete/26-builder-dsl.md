@@ -29,4 +29,5 @@ Programmatic DCC creation: `Dcc.build(version: 3) { administrative_data { ... } 
 
 ## Verification
 - Build a minimal DCC, serialize, re-parse, assert key fields match.
-- Spec covers every DSL method.
+- (Not covered: `spec/dcc/builder/builder_spec.rb` has three examples and does not
+  reach every DSL method. See the gaps above.)

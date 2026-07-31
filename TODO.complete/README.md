@@ -27,8 +27,10 @@ levels.
 - `PARTIAL` — the core goal works, but a named deliverable is missing,
   is not wired into anything, or behaves differently than this file
   describes. Each such file has a `## Gaps` section with the specifics.
-- `IN PROGRESS` — actively being worked.
 - `PENDING` — not yet started.
+
+There is no `IN PROGRESS`. These statuses describe the default branch, and work in
+flight is not on it yet. Check the open pull requests for that.
 
 ## Phase index
 

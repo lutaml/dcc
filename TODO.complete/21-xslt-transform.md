@@ -20,4 +20,6 @@ Apply XSLT stylesheets to DCC XML. Default engine: `:xsltproc`, which shells out
 
 ## Verification
 - Apply identity XSLT to `valid.xml` → output structurally equivalent.
-- Spec covers the `xsltproc` engine; Saxon engine is opt-in (skip if jar absent).
+- (Not covered: no spec exercises either engine. Nothing under `spec/` references
+  `Dcc::Transform::Xslt` or `xsltproc`, so the engine claim below never ran.)
+- Saxon engine is opt-in (skip if jar absent).
