@@ -1,6 +1,12 @@
 # 41 — Add YARD documentation throughout (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- Five of the files listed below carry no annotations at all:
+  `lib/dcc/convert/json.rb`, `convert/yaml.rb`, `convert/html.rb`,
+  `lib/dcc/quantity_math.rb`, `lib/dcc/quantity_format.rb`.
+- `yard` is not in the Gemfile, so neither verification step can run.
 
 ## Goal
 Add YARD-style `# @!method` and `# @param`/`# @return` annotations to

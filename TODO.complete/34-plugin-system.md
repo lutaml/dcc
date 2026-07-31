@@ -1,6 +1,15 @@
 # 34 — Plugin system (P3)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/plugin/base.rb` does not exist, and there is no
+  `Dcc.load_plugins` or gem-prefix auto-discovery.
+- Nothing consumes the registry. `Dcc::Validate`, `Dcc::Convert` and
+  `Dcc::Cli` never read `Dcc::Plugin.all`, so a registered plugin has no
+  effect on validation, conversion or the CLI.
+- `spec/dcc/plugin_spec.rb` asserts only that the registry stores and returns
+  objects.
 
 ## Goal
 Registry-based plugin system for custom validators, converters, and CLI commands.
