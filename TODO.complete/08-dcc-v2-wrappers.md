@@ -31,4 +31,5 @@ end
 
 ## Verification
 - `Dcc::V2.parse(fixture_xml_v2_3_0)` returns a `Dcc::V2::DigitalCalibrationCertificate`.
-- Spec covers every wrapper class: parse + serialize + assert class identity.
+- (Not covered: no spec names a single one of the 47 `Dcc::V2::` wrapper classes,
+  so the per-class parse/serialize/identity claim never ran.)

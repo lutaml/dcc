@@ -6,7 +6,7 @@
 Stand up the gem skeleton: gemspec, dependencies, build tooling, lib entry point.
 
 ## Files created
-- `dcc.gemspec` — modelled on reqif.gemspec; deps: `lutaml-model ~> 0.8`, `nokogiri`, `thor`.
+- `dcc.gemspec` — modelled on reqif.gemspec; deps: `lutaml-model ~> 0.8`, `moxml`, `mml`, `liquid`, `thor`. Note: `tty-table` is required at load by `lib/dcc/cli/cli.rb` but is only a Gemfile dev dependency.
 - `Gemfile` — dev deps + GitHub lutaml-model + optional group (`sinatra`, `tty-prompt`, `xmldsig`).
 - `Rakefile` — `bundler/gem_tasks`, rspec, rubocop; default = spec + rubocop.
 - `.rspec`, `.rubocop.yml`, `.rubocop_todo.yml`, `.gitignore`, `LICENSE` (MIT).

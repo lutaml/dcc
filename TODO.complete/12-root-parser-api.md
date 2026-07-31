@@ -7,11 +7,14 @@ Finalize the public parse entry points: `Dcc.parse`, `Dcc::V2.parse`, `Dcc::V3.p
 
 ## Files
 - `lib/dcc.rb` already defines `Dcc.parse(input, version:, context:, register:)`, `parser_for(version)`, `detect_version(input)`.
-- Add integration spec: `spec/dcc/parse_spec.rb` covering:
+- No `spec/dcc/parse_spec.rb` was created. `spec/dcc_spec.rb` covers
+  `parser_for`, `detect_version` and input handling; the `Dcc.parse`
+  examples live in `spec/ptb_fixtures_spec.rb` and `spec/round_trip_spec.rb`.
+  Between them they cover:
   - Auto-detect from `schemaVersion="3.3.0"` → V3.
   - Auto-detect from `schemaVersion="2.3.0"` → V2.
   - Explicit `version: 2` / `version: 3`.
-  - Custom context via `context: :dcc_v3_4`.
+  - (Not covered: `context: :dcc_v3_4` — that context does not exist. See phase 09.)
   - Error on unknown version.
 
 ## Design notes

@@ -1,6 +1,16 @@
 # 35 — Documentation (P3)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `docs/api/` does not exist, and `yard` is not in the Gemfile, so
+  `bundle exec yard doc` fails.
+- Five example scripts are absent: `sign_with_xmldsig.rb`,
+  `migrate_v2_to_v3.rb`, `diff_two_dccs.rb`,
+  `extract_and_evaluate_formula.rb`, `streaming_processor.rb`. Two more
+  shipped under different names — `validate_batch.rb` as `validate_full.rb`,
+  `convert_to_json.rb` as `convert_all_formats.rb`.
+- No RSpec doctest wraps the examples.
 
 ## Goal
 Polished documentation for users and contributors: README, examples, YARD docs, getting-started guide.

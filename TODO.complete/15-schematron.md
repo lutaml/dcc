@@ -1,13 +1,19 @@
 # 15 — Pure-Ruby Schematron (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- The profile runs 13 rules, not 14.
+  `lib/dcc/validate/schematron/profile.rb` omits
+  `Rules::AdministrativeDataCompleteness`, so that rule never runs during
+  validation even though the file exists and is autoloaded.
 
 ## Goal
 Reimplement PTB's 14 Schematron patterns as `Lutaml::Model::Validation::Rule` subclasses operating on the parsed object tree. No Saxon-HE, no JVM.
 
 ## Files
 - `lib/dcc/validate/schematron.rb` — autoloads + entry point.
-- `lib/dcc/validate/schematron/profile.rb` — `Dcc::Validate::Schematron::Profile < Lutaml::Model::Validation::Profile` aggregating all 14 rules.
+- `lib/dcc/validate/schematron/profile.rb` — `Dcc::Validate::Schematron::Profile`, a plain class with no superclass, aggregating 13 of the 14 rules (see Gaps).
 - `lib/dcc/validate/schematron/rules/` — 14 rule files, one per PTB pattern:
   - `used_methods_placement.rb` (error if no usedMethods anywhere)
   - `used_software_placement.rb` (warning)
@@ -24,7 +30,7 @@ Reimplement PTB's 14 Schematron patterns as `Lutaml::Model::Validation::Rule` su
   - `xml_list_spacing.rb` (single-space separator, no leading/trailing)
   - `administrative_data_completeness.rb` (mandatory sections present)
 
-Each rule subclasses `Lutaml::Model::Validation::Rule`:
+Each rule subclasses `Dcc::Validate::Schematron::Rules::Base` (the sketch below predates that base class):
 
 ```ruby
 module Dcc::Validate::Schematron::Rules
