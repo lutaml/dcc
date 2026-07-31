@@ -1,6 +1,14 @@
 # 09 — Dcc::V3 wrappers (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- The `:dcc_v3_4` substitution context is never registered.
+  `lib/dcc/v3/configuration.rb` defines `CONTEXT_ID = :dcc_v3` and nothing
+  else, so `Dcc.parse(xml, context: :dcc_v3_4)` cannot work.
+- No v3.4 fixture exists under `spec/fixtures/`, so the last verification
+  step below has never run.
+- The v3.4.0-rc.2 attributes themselves are not modelled — see phase 07.
 
 ## Goal
 Thin wrapper classes for every DCC element under `Dcc::V3::*`, including v3 extras (`refId`, `refType`, v3.4.0-rc.2 features as optional attributes), registering in `:dcc_v3`.
@@ -15,7 +23,7 @@ Thin wrapper classes for every DCC element under `Dcc::V3::*`, including v3 extr
 ## Design notes
 - V3-specific modules (`V3Extras`) add the `refId`/`refType` attributes shared by most types.
 - V3.4.0-rc.2 features (`measurands`, `richContentType`, `reportAmendedSubstituted`, `relativeUncertainty`, `positionCoordinates`, `performanceLocation`) live in `Dcc::Base::*` modules as optional attributes — V3 wrappers can ignore them.
-- `ds:Signature` element on root (new in 3.4.0) is an optional collection attribute on `DigitalCalibrationCertificate`.
+- `ds:Signature` element on root is an optional collection attribute on `DigitalCalibrationCertificate`. It is not new in 3.4.0 — the bundled v3.3.0 XSD already declares it (`dcc/v3.3.0/dcc.xsd:66`).
 
 ## Dependencies
 - 07 (DCC base modules).

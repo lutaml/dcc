@@ -1,6 +1,14 @@
 # 04 — Custom types (P0)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `Base64Binary.cast` returns the base64 *text* unchanged rather than the
+  binary ASCII-8BIT String promised above; decoding is only reachable through
+  the separate `.decode` helper.
+- `SchemaVersion` defines `major` (and `self.extract_major`) only — there are
+  no `minor` or `patch` accessors, and no `serialize`, so it is not a
+  `cast`/`serialize` inverse pair.
 
 ## Goal
 Six `Lutaml::Model::Type::Value` subclasses that encode DCC/D-SI-specific XML constraints.

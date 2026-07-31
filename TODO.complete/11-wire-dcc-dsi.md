@@ -21,4 +21,9 @@ Connect `dcc:quantityType` to D-SI quantity classes and finalize the `dcc:dataTy
 
 ## Verification
 - PTB `valid.xml` parses and round-trips with full D-SI quantity tree intact.
-- Spec: parse `dcc:quantity` containing `si:hybrid`, navigate `dcc.measurement_results.first.results.first.data.quantities.first.real.first.value` returns a BigDecimal.
+- Spec: parse `dcc:quantity` containing `si:hybrid` and navigate the D-SI subtree.
+  The real path is `dcc.measurement_results.measurement_result.first.results.result.first.data.first.quantity` —
+  `measurement_results` and `results` are list wrappers, `data` is a collection, and the
+  attribute is `quantity`, not `quantities`.
+- `si:real` values are typed `:string`, not BigDecimal. That is a deliberate
+  modelling decision, not a gap in this phase.

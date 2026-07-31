@@ -1,6 +1,16 @@
 # 22 — Inspection report (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `Report` declares 11 attributes and its `to_s` prints the Identity and
+  Measurement sections only.
+- Absent: calibration laboratory, customer and dates from the Administrative
+  section; the signature `valid?` flag; and the entire Validity section.
+- `signature_present?` (`lib/dcc/inspect/report.rb:170`) tests
+  `dcc.document`, which is the `dcc:document` element rather than a
+  `ds:Signature`. `has_signature` is therefore wrong for both signed and
+  unsigned documents.
 
 ## Goal
 Produce a human-readable summary of a DCC: counts, signature status, validity, languages, key identifiers.

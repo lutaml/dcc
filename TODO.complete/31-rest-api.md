@@ -1,6 +1,11 @@
 # 31 — REST API server (P3, optional)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/server/app.rb` serves three routes: `GET /`, `GET /demo.xml` and
+  `POST /validate`. None of the PTB endpoints listed above exist.
+- Storage ships `Memory` only; the `Disk` and `Redis` backends do not exist.
 
 ## Goal
 Rack/Sinatra REST API matching PTB's endpoints: `/dccs`, `/dccs/:id/validate/{xsd,schematron}`, `/dccs/:id/convert/json`, `/dccs/:id/extract/{files,formulae}`, `/dccs/:id/signature`, `/dccs/:id/transform/xslt`.

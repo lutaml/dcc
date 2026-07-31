@@ -12,8 +12,8 @@ Sign a DCC with XMLDSig (enveloped RSA-SHA-256) and verify signed DCCs against a
 - `lib/dcc/signature/result.rb` — result model with `to_s`, `to_json`, `to_yaml`.
 
 ## Design notes
-- Soft-dependency on `xmldsig` gem. If not installed, raise `Dcc::Error::MissingDependencyError` with friendly message.
-- Fallback: shell out to `xmlsec1` CLI if `xmldsig` lacks an algorithm.
+- Implemented with `Moxml::Signature`, plus OpenSSL for keys and certificates.
+  Neither the `xmldsig` gem nor an `xmlsec1` fallback is used.
 - Extract the signed subtree via `Verifier` so callers know what's actually trustworthy (per PTB warning).
 
 ## Dependencies
