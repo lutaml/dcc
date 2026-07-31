@@ -84,29 +84,24 @@ module Dcc
       end
 
       desc "extract TARGET FILE",
-           "Extract embedded files or quantities from a DCC"
+           "Extract embedded files or formulae from a DCC"
       method_option :index, type: :numeric, desc: "Index of the file to extract"
       method_option :output, type: :string, banner: "PATH",
                              desc: "Write extracted payload to PATH"
       method_option :ring, type: :string,
                            enum: %w[administrativeData measurementResults comment document]
+      # `repeatable` and not `type: :array`: with an array type Thor lets a
+      # second `-v` overwrite the first, so `-v T=42 -v R0=1` would silently
+      # drop T. PTB's CLI accumulates, and so must this.
+      method_option :variable, type: :string, aliases: "-v", repeatable: true,
+                               banner: "NAME=VALUE",
+                               desc: "Override a formula variable (repeatable; NAME=V1,V2 for a list)"
       def extract(target, file)
         Cli.ensure_loaded!
         dcc = Dcc.parse(File.read(file))
         case target
-        when "files"
-          files = ::Dcc::Extract::File.each(dcc)
-          if options[:ring]
-            files = files.select do |f|
-              f.ring.to_s == options[:ring]
-            end
-          end
-          if options[:index]
-            f = files[options[:index].to_i] || abort("No file at index #{options[:index]}")
-            output_to(f.data, options[:output], f.file_name)
-          else
-            ::Dcc::Cli::Formatters.print_files(files)
-          end
+        when "files" then extract_files(dcc)
+        when "formulae" then extract_formulae(dcc)
         else
           abort "Unknown extract target: #{target}"
         end
@@ -160,6 +155,84 @@ module Dcc
           else
             $stdout.binmode
             $stdout.write(payload)
+          end
+        end
+
+        def extract_files(dcc)
+          files = ::Dcc::Extract::File.each(dcc)
+          if options[:ring]
+            files = files.select { |f| f.ring.to_s == options[:ring] }
+          end
+          return ::Dcc::Cli::Formatters.print_files(files) unless options[:index]
+
+          index = options[:index].to_i
+          file = files[index] || abort("No file at index #{index}")
+          output_to(file.data, options[:output], file.file_name)
+        end
+      end
+
+      no_commands do
+        def extract_formulae(dcc)
+          variables = parse_variables(options[:variable])
+          print_formulae(::Dcc::Extract::Formula.call(dcc), variables)
+        rescue ::Dcc::ExtractionError => e
+          abort e.message
+        end
+      end
+
+      no_commands do
+        def parse_variables(assignments)
+          Array(assignments).each_with_object({}) do |assignment, variables|
+            name, values = split_assignment(assignment)
+            variables[name] = override_value(values)
+          end
+        end
+
+        # `-v T=42` is a scalar and broadcasts across the document's lists;
+        # only `-v T=1,2` is a list, and a list has to match every other
+        # list's length. Wrapping a lone value in an array made `-v R0=1`
+        # a one-element list that collided with the document's own.
+        def override_value(values)
+          decimals = values.map { |v| decimal_or_abort(v) }
+          decimals.size == 1 ? decimals.first : decimals
+        end
+      end
+
+      no_commands do
+        # `split(",", -1)` keeps trailing empty fields, so `T=42,` reaches
+        # validation instead of silently losing the empty entry.
+        def split_assignment(assignment)
+          name, values = assignment.split("=", 2)
+          if name.nil? || name.empty? || values.nil? || values.empty?
+            abort "#{assignment} is not a valid NAME=value"
+          end
+
+          [name, values.split(",", -1)]
+        end
+
+        # Validated here, at the command line, not where the value is used.
+        # The evaluator only coerces variables the formula references, so a
+        # bad `-v` for an unreferenced variable — or any `-v` against a
+        # document with no formulae — would otherwise pass in silence.
+        #
+        # Delegates rather than calling BigDecimal itself: a second
+        # coercion site is exactly the drift the single boundary exists to
+        # prevent, even when it starts out agreeing.
+        def decimal_or_abort(value)
+          ::Dcc::Extract::Formula::Quantity.decimal(value)
+        rescue ::Dcc::ExtractionError
+          abort "#{value} is not a valid decimal value"
+        end
+      end
+
+      no_commands do
+        def print_formulae(formulae, variables)
+          return puts("No formulae found.") if formulae.empty?
+
+          formulae.each do |formula|
+            puts formula
+            values = formula.evaluate(variables)
+            values.each { |value| puts "  #{value.to_s('F')}" }
           end
         end
       end

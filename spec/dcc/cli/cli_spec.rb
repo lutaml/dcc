@@ -63,6 +63,133 @@ RSpec.describe Dcc::Cli::Cli do
     end
   end
 
+  describe "extract formulae" do
+    let(:formula_file) { fixtures_path("dcclib", "valid_formula.xml") }
+
+    # A repeated -v must accumulate, not overwrite. With Thor's `type:
+    # :array` the second -v silently dropped the first, so T fell back to
+    # the document list and this printed five values instead of one.
+    let(:repeated) do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(
+          ["extract", "formulae", formula_file, "-v", "T=42", "-v", "R0=1"],
+        )
+      end
+      output
+    end
+
+    it "prints the document's own values" do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file])
+      end
+
+      expect(output).to include("R", "100.0225", "109.77301212171875")
+    end
+
+    it "honours -v overrides" do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "T=42"])
+      end
+
+      expect(output).to include("116.357161312039")
+    end
+
+    it "accumulates repeated -v flags" do
+      expect(repeated).to include("1.1633098684")
+    end
+
+    it "does not fall back to the document list when -v repeats" do
+      expect(repeated).not_to include("109.77301212171875")
+    end
+
+    # A lone -v value is a scalar and broadcasts. Wrapping it in an array
+    # made it a one-element list that collided with the document's own
+    # five-element T list, so overriding one parameter was impossible.
+    it "broadcasts a scalar override across the document list" do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "R0=1"])
+      end
+
+      expect(output).to include("1.0974831875", "1.385081")
+    end
+
+    it "prints one line per document value for a scalar override" do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "R0=1"])
+      end
+
+      expect(output.lines.grep(/\A {2}\d/).size).to eq(5)
+    end
+
+    # Two -v lists of different lengths is a real mismatch. It must reach
+    # the user as a message, not as a Ruby backtrace out of Thor.
+    it "aborts cleanly on mismatched override list lengths" do
+      exit_code, = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file,
+                               "-v", "T=1,2", "-v", "R0=1,2,3"])
+      end
+
+      expect(exit_code).to eq(1)
+    end
+
+    it "reports when a document has no formulae" do
+      _exit_code, output = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", valid_file])
+      end
+
+      expect(output).to include("No formulae found.")
+    end
+
+    # `abort` writes to stderr and raises SystemExit, so assert the status,
+    # not the captured stdout.
+    it "rejects a non-numeric override" do
+      exit_code, = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "x=invalid"])
+      end
+
+      expect(exit_code).to eq(1)
+    end
+
+    it "rejects an override with an empty name" do
+      exit_code, = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "=1"])
+      end
+
+      expect(exit_code).to eq(1)
+    end
+
+    # String#split drops a trailing empty field, so `T=42,` would lose the
+    # empty entry instead of rejecting it.
+    it "rejects an override with a trailing comma" do
+      exit_code, = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", formula_file, "-v", "T=42,"])
+      end
+
+      expect(exit_code).to eq(1)
+    end
+
+    # Validation happens when the flag is parsed, so an override for a
+    # variable the formula never mentions is still rejected.
+    it "rejects a non-finite override even when the variable is unreferenced" do
+      %w[Infinity NaN].each do |bad|
+        exit_code, = capture_stdout_and_exit do
+          described_class.start(["extract", "formulae", formula_file, "-v", "unused=#{bad}"])
+        end
+
+        expect(exit_code).to eq(1)
+      end
+    end
+
+    # Same reason: nothing downstream would ever coerce this one.
+    it "rejects a bad override against a document with no formulae" do
+      exit_code, = capture_stdout_and_exit do
+        described_class.start(["extract", "formulae", valid_file, "-v", "x=Infinity"])
+      end
+
+      expect(exit_code).to eq(1)
+    end
+  end
+
   describe "version" do
     it "prints the gem version" do
       _exit_code, output = capture_stdout_and_exit do
