@@ -1,6 +1,13 @@
 # 16 — Business rule validators (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- Only two rules ship: `MainSignerSingle`
+  (`lib/dcc/validate/business_rules.rb:71`, the renamed
+  `RespPersonsMainSigner`) and `UniqueIdentifierPresent` (line 94).
+- `MandatoryLanguageCoverage`, `StatementRefType` and `PreviousReportHash`
+  do not exist.
 
 ## Goal
 Ruby-side semantic checks beyond what Schematron covers — cross-section consistency, signature presence, template coherence.
@@ -11,7 +18,7 @@ Ruby-side semantic checks beyond what Schematron covers — cross-section consis
 
 ## Design notes
 - Examples:
-  - `RespPersonsMainSigner` — exactly one `respPerson` has `mainSigner=true`.
+  - `RespPersonsMainSigner` — exactly one `respPerson` has `mainSigner=true`. Shipped as `MainSignerSingle`.
   - `MandatoryLanguageCoverage` — every `dcc:content` element has the mandatory language code.
   - `StatementRefType` — every `statement` with `refType="conformity"` has a `declaration` child.
   - `PreviousReportHash` — if `previousReport` present, all hash fields populated.

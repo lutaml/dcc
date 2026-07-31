@@ -1,6 +1,14 @@
 # 13 — Round-trip fidelity specs (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `spec/round_trip_spec.rb:47-48` asserts only that the output is a String
+  containing `digitalCalibrationCertificate`. There is no canonical
+  comparison, despite the goal above.
+- The `fixture_globs` list omits `dsi_examples/**/*.xml`, so no D-SI example
+  is round-tripped — even though the file comment at line 10 says otherwise.
+- No per-class `spec/dcc/model/{element}_spec.rb` files exist.
 
 ## Goal
 Lossless round-trip on every PTB fixture: parse → serialize → canonically compare with the original.

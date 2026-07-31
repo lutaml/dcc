@@ -21,6 +21,7 @@ The base `Dcc::Validate::Schematron::Rule` is autoloaded from
 parent `lib/dcc/validate/schematron/rules.rb` aggregator.
 
 ## Verification
-- `grep -rln require_relative lib/` returns nothing
+- `grep -rn "^\s*require_relative" lib/` returns nothing (an unanchored grep
+  still matches a comment in `rules.rb:6`)
 - `bundle exec rspec` still passes
 - Schematron rules load on first use (lazy)

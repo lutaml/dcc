@@ -32,7 +32,9 @@ RSpec.describe Dcc::Cli::Cli do
     end
 
     it "writes to a file with --output" do
-      outfile = Tempfile.new(["out", ".json"]).path
+      file_handle = Tempfile.new("dcc-cli-test").tap(&:close)
+
+      outfile = file_handle.path
       capture_stdout_and_exit do
         described_class.start(["convert", "json", valid_file, "--output",
                                outfile])
