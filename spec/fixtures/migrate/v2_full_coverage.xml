@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hand-built DCC v2.3.0 document exercising every v2 to v3 transform rule that
+  no PTB example fixture covers AND that the object model can round-trip.
+
+  Deliberately absent, because the parser cannot carry them and their presence
+  would break the public-API assertions for reasons unrelated to migration:
+  si:list, previousReport, and any quantity under statement/data or
+  metaData/data. Those live in v2_si_list.xml, which is transform-level only.
+  See the out-of-scope notes in docs/plans.
+-->
+<dcc:digitalCalibrationCertificate
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://ptb.de/dcc https://ptb.de/dcc/v2.3.0/dcc.xsd"
+    xmlns:dcc="https://ptb.de/dcc"
+    xmlns:si="https://ptb.de/si"
+    schemaVersion="2.3.0">
+
+  <dcc:administrativeData>
+    <dcc:dccSoftware>
+      <dcc:software id="sw1">
+        <dcc:name><dcc:content>Coverage Tool</dcc:content></dcc:name>
+        <dcc:release>v1.0</dcc:release>
+        <dcc:description id="sw-desc-1">
+          <dcc:content lang="en">First software description.</dcc:content>
+        </dcc:description>
+        <dcc:description id="sw-desc-2">
+          <dcc:content lang="de">Zweite Software-Beschreibung.</dcc:content>
+        </dcc:description>
+      </dcc:software>
+    </dcc:dccSoftware>
+
+    <dcc:coreData>
+      <dcc:countryCodeISO3166_1>DE</dcc:countryCodeISO3166_1>
+      <dcc:usedLangCodeISO639_1>en</dcc:usedLangCodeISO639_1>
+      <dcc:mandatoryLangCodeISO639_1>en</dcc:mandatoryLangCodeISO639_1>
+      <dcc:uniqueIdentifier>COV-0001</dcc:uniqueIdentifier>
+      <dcc:beginPerformanceDate>2024-01-01</dcc:beginPerformanceDate>
+      <dcc:endPerformanceDate>2024-01-02</dcc:endPerformanceDate>
+    </dcc:coreData>
+
+    <dcc:items>
+      <dcc:item id="item1">
+        <dcc:name><dcc:content>Calibration item</dcc:content></dcc:name>
+        <dcc:description id="item-desc-1">
+          <dcc:content lang="en">First item description.</dcc:content>
+        </dcc:description>
+        <dcc:description id="item-desc-2">
+          <dcc:content lang="de">Zweite Item-Beschreibung.</dcc:content>
+        </dcc:description>
+        <dcc:descriptionData>
+          <dcc:name><dcc:content>Item datasheet</dcc:content></dcc:name>
+          <dcc:description><dcc:content>Attached datasheet</dcc:content></dcc:description>
+          <dcc:fileName>item.txt</dcc:fileName>
+          <dcc:mimeType>text/plain</dcc:mimeType>
+          <dcc:data>SGVsbG8gaXRlbQ==</dcc:data>
+        </dcc:descriptionData>
+        <dcc:manufacturer>
+          <dcc:name><dcc:content>Instrument Maker GmbH</dcc:content></dcc:name>
+        </dcc:manufacturer>
+        <dcc:model>  Model X100  </dcc:model>
+        <dcc:identifications>
+          <dcc:identification>
+            <dcc:issuer>manufacturer</dcc:issuer>
+            <dcc:value>SN-0001</dcc:value>
+            <dcc:description>
+              <dcc:content lang="en">Serial number</dcc:content>
+            </dcc:description>
+          </dcc:identification>
+        </dcc:identifications>
+      </dcc:item>
+    </dcc:items>
+
+    <dcc:calibrationLaboratory>
+      <dcc:contact>
+        <dcc:name><dcc:content>Primary laboratory contact</dcc:content></dcc:name>
+        <dcc:eMail>lab@example.org</dcc:eMail>
+        <dcc:location><dcc:city>Braunschweig</dcc:city></dcc:location>
+      </dcc:contact>
+      <dcc:contact>
+        <dcc:name><dcc:content>Secondary laboratory contact</dcc:content></dcc:name>
+        <dcc:eMail>lab2@example.org</dcc:eMail>
+        <dcc:location><dcc:city>Berlin</dcc:city></dcc:location>
+      </dcc:contact>
+    </dcc:calibrationLaboratory>
+
+    <dcc:respPersons>
+      <dcc:respPerson>
+        <dcc:person>
+          <dcc:name><dcc:content>Responsible Signer</dcc:content></dcc:name>
+        </dcc:person>
+      </dcc:respPerson>
+    </dcc:respPersons>
+
+    <dcc:customer>
+      <dcc:name><dcc:content>Customer Ltd</dcc:content></dcc:name>
+      <dcc:eMail>customer@example.org</dcc:eMail>
+      <dcc:location><dcc:city>Hamburg</dcc:city></dcc:location>
+    </dcc:customer>
+  </dcc:administrativeData>
+
+  <dcc:measurementResults>
+    <dcc:measurementResult>
+      <dcc:usedMethods>
+        <dcc:usedMethod>
+          <dcc:name><dcc:content>Weighing method</dcc:content></dcc:name>
+          <dcc:description id="um-desc-1">
+            <dcc:content lang="en">First method description.</dcc:content>
+          </dcc:description>
+          <dcc:description id="um-desc-2">
+            <dcc:content lang="de">Zweite Methodenbeschreibung.</dcc:content>
+          </dcc:description>
+        </dcc:usedMethod>
+      </dcc:usedMethods>
+
+      <dcc:measuringEquipments>
+        <dcc:measuringEquipment id="me1">
+          <dcc:name><dcc:content>Reference balance</dcc:content></dcc:name>
+          <dcc:description id="me-desc-1">
+            <dcc:content lang="en">First equipment description.</dcc:content>
+          </dcc:description>
+          <dcc:description id="me-desc-2">
+            <dcc:content lang="de">Zweite Ausstattungsbeschreibung.</dcc:content>
+          </dcc:description>
+          <dcc:descriptionData>
+            <dcc:name><dcc:content>Equipment datasheet</dcc:content></dcc:name>
+            <dcc:description><dcc:content>Attached datasheet</dcc:content></dcc:description>
+            <dcc:fileName>equipment.txt</dcc:fileName>
+            <dcc:mimeType>text/plain</dcc:mimeType>
+            <dcc:data>SGVsbG8gZXF1aXA=</dcc:data>
+          </dcc:descriptionData>
+        </dcc:measuringEquipment>
+      </dcc:measuringEquipments>
+
+      <dcc:results>
+        <dcc:result>
+          <dcc:name><dcc:content>Mass result</dcc:content></dcc:name>
+          <dcc:data>
+            <dcc:formula lang="en">
+              <dcc:siunitx>\SI{1.234}{\kilogram}</dcc:siunitx>
+            </dcc:formula>
+            <dcc:quantity id="q1">
+              <dcc:name><dcc:content>Mass</dcc:content></dcc:name>
+              <si:real>
+                <si:value>1.234</si:value>
+                <si:unit>\kilogram</si:unit>
+                <si:coverageInterval>
+                  <si:standardUnc>0.001</si:standardUnc>
+                  <si:intervalMin>1.232</si:intervalMin>
+                  <si:intervalMax>1.236</si:intervalMax>
+                  <si:coverageProbability>.95</si:coverageProbability>
+                </si:coverageInterval>
+              </si:real>
+            </dcc:quantity>
+          </dcc:data>
+        </dcc:result>
+      </dcc:results>
+    </dcc:measurementResult>
+  </dcc:measurementResults>
+</dcc:digitalCalibrationCertificate>
