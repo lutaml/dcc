@@ -210,4 +210,41 @@ RSpec.describe Dcc::Extract::Formula do
         .to raise_error(Dcc::ExtractionError, /not a finite number/i)
     end
   end
+
+  describe Dcc::Extract::Formula::Ast::Constant do
+    it "accepts a name the evaluator dispatches on" do
+      expect(described_class.new(name: :pi).name).to eq(:pi)
+    end
+
+    # Without the guard the evaluator's `case` returns nil and the formula
+    # evaluates to [nil] — a wrong answer rather than an error.
+    it "refuses a name outside the canonical set" do
+      expect { described_class.new(name: :bogus) }
+        .to raise_error(Dcc::ExtractionError, /not a formula constant/i)
+    end
+  end
+
+  describe Dcc::Extract::Formula::Ast::Apply do
+    # Without the guard `trigonometric` returns nil and `finite` raises
+    # NoMethodError, leaking a raw Ruby failure out of the public API.
+    it "refuses an operator outside the canonical set" do
+      operand = Dcc::Extract::Formula::Ast::Number.new(value: 2)
+      expect { described_class.new(operator: :bogus, operands: [operand]) }
+        .to raise_error(Dcc::ExtractionError, /not a formula operator/i)
+    end
+  end
+
+  # The two sets are declared on Ast to keep Parser a one-way dependency.
+  # This is what stops them drifting apart.
+  describe "the canonical sets" do
+    it "covers every operator the parser emits" do
+      expect(Dcc::Extract::Formula::Ast::OPERATORS)
+        .to match_array(Dcc::Extract::Formula::Parser::OPERATORS.values)
+    end
+
+    it "covers every constant the parser emits" do
+      expect(Dcc::Extract::Formula::Ast::CONSTANTS)
+        .to match_array(Dcc::Extract::Formula::Parser::CONSTANTS.values)
+    end
+  end
 end

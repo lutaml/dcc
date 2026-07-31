@@ -44,7 +44,28 @@ module Dcc
 
         Variable = ::Data.define(:name)
         BoundVariable = ::Data.define(:name)
-        Constant = ::Data.define(:name)
+
+        # The symbols the evaluator can dispatch on. Its `case` statements
+        # have no `else`, so an unrecognised name would evaluate to nil —
+        # a silent wrong answer for a constant, a NoMethodError for an
+        # operator. Rejecting at construction keeps both out of the API.
+        CONSTANTS = %i[pi e].freeze
+        OPERATORS = %i[+ - * / ** root exp ln log sin cos tan abs].freeze
+
+        Constant = ::Data.define(:name) do
+          def initialize(name:)
+            Constant.check_name(name)
+            super
+          end
+
+          def self.check_name(name)
+            return if CONSTANTS.include?(name)
+
+            raise ::Dcc::ExtractionError,
+                  "#{name} is not a formula constant, expected one of " \
+                  "#{CONSTANTS.join(', ')}"
+          end
+        end
 
         # How many operands each operator accepts; anything absent is a
         # single-argument function. Without this, `<power/>` with one
@@ -65,8 +86,17 @@ module Dcc
         # same contract as a parsed one.
         Apply = ::Data.define(:operator, :operands) do
           def initialize(operator:, operands:)
+            Apply.check_operator(operator)
             Apply.check_arity(operator, operands)
             super(operator: operator, operands: operands.dup.freeze)
+          end
+
+          def self.check_operator(operator)
+            return if OPERATORS.include?(operator)
+
+            raise ::Dcc::ExtractionError,
+                  "#{operator} is not a formula operator, expected one of " \
+                  "#{OPERATORS.join(', ')}"
           end
 
           def self.check_arity(operator, operands)
