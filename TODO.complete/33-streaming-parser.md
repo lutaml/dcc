@@ -1,6 +1,11 @@
 # 33 — Streaming parser for large documents (P3)
 
-**Status:** COMPLETED
+**Status:** PENDING
+
+## Gaps
+- Neither `lib/dcc/streaming.rb` nor `lib/dcc/streaming/reader.rb` exists.
+- Nothing in `lib/` uses `Nokogiri::XML::Reader`.
+- `spec/dcc/streaming/reader_spec.rb` was removed — see phase 38.
 
 ## Goal
 Lazy enumeration of items / results / quantities for multi-MB DCC documents using Nokogiri::XML::Reader.

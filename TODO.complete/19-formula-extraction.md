@@ -1,6 +1,13 @@
 # 19 — Formula extraction and evaluation (P1)
 
-**Status:** COMPLETED
+**Status:** PENDING
+
+## Gaps
+- None of the five files exist. `lib/dcc/extract/` contains only `file.rb`
+  and `ring.rb`.
+- `lib/dcc/extract.rb:7` still autoloads `:Formula`, so referencing
+  `Dcc::Extract::Formula` raises `LoadError`.
+- `spec/dcc/extract/formula_spec.rb` was removed — see phase 38.
 
 ## Goal
 Extract MathML `<ml:apply>` formula trees from `dcc:formula`, build a Ruby AST, and evaluate numerically with BigDecimal precision.
