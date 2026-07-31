@@ -112,7 +112,7 @@ module Dcc
     # Map a `schemaVersion` attribute value to its major DCC version.
     # Only a leading run of digits followed by a dot counts; anything else
     # (missing, malformed, or an unsupported major) resolves to 3.
-    # @param schema_version [String, nil] e.g. `"2.3.0"`.
+    # @param schema_version [String, nil] e.g. "2.3.0".
     # @return [Integer] 2 or 3.
     def major_version_from(schema_version)
       match = schema_version.to_s.match(/\A(\d+)\./)

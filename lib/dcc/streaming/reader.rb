@@ -53,7 +53,12 @@ module Dcc
       # prefix is resolved, so an element that rebinds its prefix matches on
       # its new binding rather than the inherited one.
       def on_start_element(name, attributes = {}, namespaces = {})
-        @scopes.push(@scopes.last.merge(namespaces))
+        # Almost no element declares a namespace, so merging every time would
+        # allocate a copy of the parent scope per element. Scopes are only
+        # ever read, so the unchanged ones can share one hash.
+        @scopes.push(
+          namespaces.empty? ? @scopes.last : @scopes.last.merge(namespaces),
+        )
         @major ||= ::Dcc.major_version_from(attributes["schemaVersion"])
         return begin_subtree(name, attributes) unless @subtree
 
