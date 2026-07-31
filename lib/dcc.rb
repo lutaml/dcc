@@ -41,6 +41,7 @@ module Dcc
   autoload :QuantityFormat, "dcc/quantity_format"
   autoload :QuantityMath, "dcc/quantity_math"
   autoload :Signature, "dcc/signature"
+  autoload :Streaming, "dcc/streaming"
   autoload :Transform, "dcc/transform"
   autoload :Validate, "dcc/validate"
   autoload :Server, "dcc/server"
@@ -104,9 +105,18 @@ module Dcc
     # @return [Integer] 2 or 3.
     def detect_version(input)
       str = read_input(input)
-      match = str.match(/schemaVersion\s*=\s*["'](\d+)\./)
-      major = match && match[1] ? match[1].to_i : 3
-      major == 2 ? 2 : 3
+      match = str.match(/schemaVersion\s*=\s*["'](\d+\.)/)
+      major_version_from(match && match[1])
+    end
+
+    # Map a `schemaVersion` attribute value to its major DCC version.
+    # Only a leading run of digits followed by a dot counts; anything else
+    # (missing, malformed, or an unsupported major) resolves to 3.
+    # @param schema_version [String, nil] e.g. `"2.3.0"`.
+    # @return [Integer] 2 or 3.
+    def major_version_from(schema_version)
+      match = schema_version.to_s.match(/\A(\d+)\./)
+      match && match[1].to_i == 2 ? 2 : 3
     end
 
     # Read an input that may be a String or an IO-like object.
