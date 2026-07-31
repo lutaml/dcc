@@ -87,17 +87,30 @@ module Dcc
     # @raise [Dcc::PluginError] if a plugin's entry file cannot be loaded.
     # @return [Array<String>] the entry-file path for each name given.
     #   A plugin already loaded is left alone and its path still returned.
+    #
+    # A plugin whose own `require` fails raises from inside a file we did
+    # find. Reporting that as a missing entry file points the author at the
+    # wrong problem, so only the entry path's own LoadError is wrapped.
     def load_plugins(*names)
       names.flatten.map do |name|
-        path = name.to_s
-        path = path.tr("-", "/") unless path.include?("/")
+        path = plugin_path(name)
         require path
         path
       rescue ::LoadError => e
+        raise unless e.path == path
+
         raise PluginError, "could not load plugin #{name}: tried " \
                            "require #{path.inspect} (#{e.message})"
       end
     end
+
+    # "dcc-audit" is a gem name and maps to "dcc/audit". Anything already
+    # carrying a slash is a require path and is left alone, hyphens included.
+    def plugin_path(name)
+      text = name.to_s
+      text.include?("/") ? text : text.tr("-", "/")
+    end
+    private :plugin_path
 
     # Migrate a parsed DCC object from one schema version to another.
     # @param dcc [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]

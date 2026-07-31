@@ -2,7 +2,9 @@
 
 require "spec_helper"
 
-$LOAD_PATH.unshift(fixtures_path("plugins"))
+# Appended, not prepended: the fixture tree mirrors real `dcc/` paths, so
+# giving it precedence would let a fixture shadow the gem's own files.
+$LOAD_PATH.push(fixtures_path("plugins"))
 
 RSpec.describe Dcc do
   describe ".parser_for" do
@@ -73,6 +75,13 @@ RSpec.describe Dcc do
     it "maps a gem name to its entry-file path" do
       expect(described_class.load_plugins("dcc-version"))
         .to eq(["dcc/version"])
+    end
+
+    # The entry file was found. Wrapping this would blame the plugin's own
+    # path for a dependency it failed to require.
+    it "lets a failure from inside the plugin through untouched" do
+      expect { described_class.load_plugins("dcc-brokendep") }
+        .to raise_error(LoadError, /a_gem_that_does_not_exist/)
     end
 
     it "leaves a slash-separated path alone, hyphens included" do
