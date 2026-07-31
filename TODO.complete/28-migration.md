@@ -3,11 +3,14 @@
 **Status:** PARTIAL
 
 ## Gaps
-- `lib/dcc/migrate/` does not exist: `route.rb`, `v2_to_v3.rb` and
-  `v3_to_v3_4.rb` are all absent.
-- `lib/dcc/migrate.rb` is a 41-line shim that serializes, re-parses under the
-  target context and rewrites `schemaVersion`. There are no per-field
-  transformations and no D-SI v1 → v2 transition.
+- `lib/dcc/migrate/v3_to_v3_4.rb` is absent, and there is no migration to
+  v3.4.0-rc.2. That version is not bundled — `Schema::Version::DCC_ALL` stops
+  at `3.3.0` and `resolve_dcc("3.4.0-rc.2")` raises `UnknownVersionError`.
+- Only `2.3.0 → 3.3.0` has a real transform. `Route.supported_pairs` also
+  lists `3.2.1 → 3.3.0`, which only rewrites `schemaVersion`; every other
+  pair raises. DCC 2.1.0 and 2.1.1 import `dsi/v1.0.1.xsd`, whose
+  targetNamespace is `https://intranet.ptb.de/...`, and nothing rewrites it,
+  so those versions are refused rather than migrated.
 
 ## Goal
 `Dcc.migrate(dcc, from:, to:)` upgrades or downgrades a DCC between schema versions, applying the necessary field renames and D-SI version transitions.
