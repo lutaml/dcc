@@ -279,5 +279,19 @@ RSpec.describe Dcc::QuantityMath::Complex do
       expect(negative.to_s).to include("- (0.15e1")
       expect(negative.to_s).not_to include("+ (-")
     end
+
+    it "omits the uncertainty when a component is exact",
+       :aggregate_failures do
+      # z3 reports uncertain? == false, so rendering "± 0.0" would have the
+      # class contradicting itself.
+      expect(z3.uncertain?).to be(false)
+      expect(z3.to_s).not_to include("±")
+    end
+
+    it "keeps the uncertainty on whichever component has one" do
+      half = described_class.cartesian(real: real("3", "0.1"),
+                                       imag: exact("4"))
+      expect(half.to_s.scan("±").size).to eq(1)
+    end
   end
 end

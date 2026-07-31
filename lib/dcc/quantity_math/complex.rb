@@ -149,13 +149,22 @@ module Dcc
 
       def to_s
         re, im = matrix.values
-        u_re, u_im = matrix.uncertainties
         sign = im.negative? ? "-" : "+"
         suffix = unit ? " #{unit}" : ""
-        "(#{re} ± #{u_re}) #{sign} (#{im.abs} ± #{u_im})i#{suffix}"
+        "(#{measured(re, 0)}) #{sign} (#{measured(im.abs, 1)})i#{suffix}"
       end
 
       private
+
+      # Renders one component, dropping the "± u" when its variance is zero.
+      # `uncertain?` already treats an all-zero covariance as exact, so
+      # printing "± 0.0" would have this class contradicting itself.
+      def measured(value, index)
+        variance = covariance[index][index]
+        return value.to_s if variance.zero?
+
+        "#{value} ± #{variance.sqrt(SQRT_PRECISION)}"
+      end
 
       # dw/dz1 = 1/z2 and dw/dz2 = -z1/z2^2, both at full precision because
       # they feed the covariance.
