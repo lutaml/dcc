@@ -77,3 +77,55 @@ RSpec.describe Dcc::Validate::Schematron::Rules::LanguageCodeDedup do
     expect(issues).to be_an(Array)
   end
 end
+
+# A plugin-supplied rule. Fires on any document carrying a schemaVersion,
+# so it is guaranteed to trigger on the valid.xml fixture.
+class PluginProbeRule < Dcc::Validate::Schematron::Rules::Base
+  def check_on(dcc)
+    return [] unless Dcc::TypeGuards.has_attribute?(dcc, :schema_version)
+
+    [issue(severity: :error, message: "plugin rule fired")]
+  end
+end
+
+RSpec.describe Dcc::Validate::Schematron::Profile do
+  let(:dcc) { Dcc.parse(File.read(fixtures_path("dcclib", "valid.xml"))) }
+
+  before do
+    Dcc::V3.load_all!
+    Dcc::Plugin.reset!
+  end
+
+  after { Dcc::Plugin.reset! }
+
+  it "keeps the built-in rules" do
+    expect(described_class.new(dcc).rules)
+      .to include(Dcc::Validate::Schematron::Rules::DateRangeCheck)
+  end
+
+  it "freezes the rule list it exposes" do
+    expect(described_class.new(dcc).rules).to be_frozen
+  end
+
+  it "omits plugin rules that were never registered" do
+    expect(described_class.new(dcc).rules).not_to include(PluginProbeRule)
+  end
+
+  it "appends a registered plugin validator" do
+    Dcc::Plugin.register(:validators, PluginProbeRule)
+    expect(described_class.new(dcc).rules).to include(PluginProbeRule)
+  end
+
+  it "fires a plugin rule during a real Schematron run" do
+    Dcc::Plugin.register(:validators, PluginProbeRule)
+    result = Dcc::Validate::Schematron.call(dcc)
+    expect(result.issues.map(&:code))
+      .to include("dcc.schematron.plugin_probe_rule")
+  end
+
+  it "reports no plugin code when nothing is registered" do
+    result = Dcc::Validate::Schematron.call(dcc)
+    expect(result.issues.map(&:code))
+      .not_to include("dcc.schematron.plugin_probe_rule")
+  end
+end

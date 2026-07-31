@@ -5,13 +5,17 @@
 # without modifying the core codebase (Open/Closed Principle).
 #
 # @example Register a custom validator
-#   Dcc::Plugin.register(:validators, MyCustomRule)
+#   class MyPlugin
+#     include Dcc::Plugin::Base
+#     register_validator MyCustomRule
+#   end
 #
 # @example List all registered validators
 #   Dcc::Plugin.all(:validators)
 module Dcc
   module Plugin
     autoload :Registry, "dcc/plugin/registry"
+    autoload :Base, "dcc/plugin/base"
 
     class << self
       # @param category [Symbol] e.g. :validators, :converters, :cli_commands.

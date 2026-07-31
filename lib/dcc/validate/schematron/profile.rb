@@ -15,25 +15,32 @@ module Dcc
       #   result.ok?           # => true
       #   result.issues.size   # => 0
       class Profile
+        # The rules shipped with the gem, in execution order.
+        DEFAULT_RULES = [
+          Rules::UsedMethodsPlacement,
+          Rules::UsedSoftwarePlacement,
+          Rules::InfluenceConditionsPlacement,
+          Rules::SchemaVersionCheck,
+          Rules::IdRefIdLinking,
+          Rules::IsoCodeValidation,
+          Rules::DateRangeCheck,
+          Rules::ReleaseFormatCheck,
+          Rules::UncertaintyConsistency,
+          Rules::UnitFormatCheck,
+          Rules::NonSiDeclaration,
+          Rules::LanguageCodeDedup,
+          Rules::XmlListSpacing,
+        ].freeze
+        private_constant :DEFAULT_RULES
+
         attr_reader :dcc, :rules
 
+        # Plugin validators are read here, not at class-definition time, so
+        # a plugin loaded after this class still takes effect. Frozen because
+        # `attr_reader :rules` hands the array straight to callers.
         def initialize(dcc)
           @dcc = dcc
-          @rules = [
-            Rules::UsedMethodsPlacement,
-            Rules::UsedSoftwarePlacement,
-            Rules::InfluenceConditionsPlacement,
-            Rules::SchemaVersionCheck,
-            Rules::IdRefIdLinking,
-            Rules::IsoCodeValidation,
-            Rules::DateRangeCheck,
-            Rules::ReleaseFormatCheck,
-            Rules::UncertaintyConsistency,
-            Rules::UnitFormatCheck,
-            Rules::NonSiDeclaration,
-            Rules::LanguageCodeDedup,
-            Rules::XmlListSpacing,
-          ]
+          @rules = (DEFAULT_RULES + ::Dcc::Plugin.all(:validators)).freeze
         end
 
         # Run all rules and return a `Dcc::Validate::Result`.

@@ -8,6 +8,7 @@ end
 
 RSpec.describe Dcc::Plugin do
   before { described_class.reset! }
+  after { described_class.reset! }
 
   describe ".register and .all" do
     it "stores plugins by category" do

@@ -78,6 +78,26 @@ module Dcc
       Builder.call(version: version, &)
     end
 
+    # Load plugin gems by name.
+    #
+    # A gem name maps to its entry file the usual way: "dcc-audit" loads
+    # "dcc/audit". A slash-separated path is accepted unchanged.
+    #
+    # @param names [Array<String, Symbol>] plugin gem names.
+    # @raise [Dcc::PluginError] if a plugin's entry file cannot be loaded.
+    # @return [Array<String>] the entry-file path for each name given.
+    #   A plugin already loaded is left alone and its path still returned.
+    def load_plugins(*names)
+      names.flatten.map do |name|
+        path = name.to_s.tr("-", "/")
+        require path
+        path
+      rescue ::LoadError => e
+        raise PluginError, "could not load plugin #{name}: tried " \
+                           "require #{path.inspect} (#{e.message})"
+      end
+    end
+
     # Migrate a parsed DCC object from one schema version to another.
     # @param dcc [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]
     # @param from [String] source version, e.g. "2.3.0".
