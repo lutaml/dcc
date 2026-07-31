@@ -6,7 +6,7 @@
 Structured error classes for every failure mode the gem can encounter.
 
 ## Files created
-- `lib/dcc/error.rb` — base `Dcc::Error < StandardError` plus `Dcc::Error::*` subclasses:
+- `lib/dcc/error.rb` — base `Dcc::Error < StandardError` plus sibling classes declared directly under `Dcc::` (not nested inside `Dcc::Error`):
   - `ParseError` — malformed XML / encoding issues.
   - `ValidationError` (base, carries `issues:`) + `SchemaError` subclass.
   - `SignatureError`, `ConversionError`, `ExtractionError`, `TransformError`.

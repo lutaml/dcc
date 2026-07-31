@@ -1,6 +1,11 @@
 # 23 — Output models with format transforms (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/output.rb` does not exist; the shared concern was never written.
+- Five result models define `to_json`/`to_yaml` by hand. `Dcc::Extract::File`
+  defines `to_s` only, so the verification below is false for it.
 
 ## Goal
 Establish the pattern: every command/service returns a model object that responds to `to_s` (human-readable), `to_json` (machine), `to_yaml` (Ruby). The CLI picks the formatter based on `--format`.

@@ -1,6 +1,10 @@
 # 29 — Uncertainty propagation (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/quantity_math/complex.rb` and `matrix.rb` do not exist, so complex
+  arithmetic and covariance-aware multivariate operations are unavailable.
 
 ## Goal
 BigDecimal-based arithmetic on D-SI quantities that propagates uncertainty via root-sum-square (RSS) for add/sub and fractional for mul/div.
