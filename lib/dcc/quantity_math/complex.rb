@@ -27,9 +27,14 @@ module Dcc
       # every downstream covariance.
       #
       # Bounding them here rather than rounding the covariance is deliberate.
-      # BigDecimal multiplication and addition never round, so `J C J^T` over
-      # bounded derivatives stays exact — and therefore exactly symmetric and
-      # exactly positive semi-definite. Rounding the covariance instead would
+      # Inside `QuantityMath.exact_covariance`, which sets
+      # `BigDecimal.limit(0)`, multiplication and addition are exact, so
+      # `J C J^T` over bounded derivatives stays exact — and therefore
+      # exactly symmetric and exactly positive semi-definite. That exactness
+      # comes from the zero limit, not from BigDecimal itself: under a
+      # non-zero `BigDecimal.limit` both operations round. Moving any of this
+      # arithmetic outside that block reintroduces the asymmetry the
+      # covariance validation rejects. Rounding the covariance instead would
       # risk failing PSD validation on the exactly-singular matrices that a
       # component with no uncertainty produces.
       #
