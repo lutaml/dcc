@@ -8,7 +8,9 @@
 ## Files
 - `lib/dcc/validate.rb` — autoloads.
 - `lib/dcc/validate/result.rb` — `Dcc::Validate::Result` (model with `ok?`, `issues`, `to_s/to_json/to_yaml`), `Dcc::Validate::Issue` (severity, line, column, message, path), `Dcc::Validate::Severity` enum.
-- `lib/dcc/validate/error.rb` — `Dcc::Error::SchemaError` already exists; add helpers here.
+- No `lib/dcc/validate/error.rb` was created; `Dcc::SchemaError` lives in `lib/dcc/error.rb`.
+  `Issue` and `Severity` are their own files (`validate/issue.rb`, `validate/severity.rb`),
+  not part of `result.rb`.
 - `lib/dcc/validate/xsd.rb` — service class:
   ```ruby
   def self.call(xml, version: :auto)

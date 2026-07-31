@@ -1,6 +1,15 @@
 # 24 — CLI scaffold (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- Three command groups are missing: `dcc signature sign|verify`,
+  `dcc transform xslt`, and `dcc issue`.
+- `dcc extract` handles `files` only; `formulae`, `quantities` and `table`
+  abort with "Unknown extract target".
+- The commands live inline in `lib/dcc/cli/cli.rb`; `lib/dcc/cli/commands/`
+  was never created.
+- An undocumented `dcc serve` command exists.
 
 ## Goal
 Thor-based CLI dispatching to all Dcc services with human-readable default output and `--format json|yaml` switches.

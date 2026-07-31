@@ -9,11 +9,11 @@ Structural diff of two DCCs — what items/quantities/results were added, remove
 - `lib/dcc/diff.rb` — autoloads.
 - `lib/dcc/diff/result.rb` — `Dcc::Diff::Result` model with `changes` (Array), `to_s` (unified-diff style), `to_json`, `to_yaml`.
 - `lib/dcc/diff/change.rb` — `Change` value object (`path`, `kind` ∈ {add, remove, change}, `before`, `after`).
-- `lib/dcc/diff/comparator.rb` — recursive tree comparator with sensible equality rules (BigDecimal vs Float, language-tagged text).
+- No `lib/dcc/diff/comparator.rb` was created; the recursive comparator is `Dcc::Diff.collect_differences` in `lib/dcc/diff.rb`.
 
 ## Design notes
-- Identity keys: `uniqueIdentifier` for certificates, `id`/`refId` for elements, `name`+`refType` for quantities.
-- Numeric tolerance configurable (default 1e-9).
+- Neither identity keys nor a configurable numeric tolerance is implemented.
+  The comparator walks attributes recursively and compares collections positionally.
 
 ## Dependencies
 - 12.
