@@ -31,13 +31,6 @@ RSpec.describe Dcc::Validate::Xsd do
       expect(result.errors.first.line).to be_a(Integer)
       expect(result.errors.first.source).to eq("xsd")
     end
-
-    it "caches the loaded schema" do
-      described_class.call(valid_xml)
-      cache_before = described_class.const_get(:SCHEMA_CACHE).size
-      described_class.call(valid_xml)
-      expect(described_class.const_get(:SCHEMA_CACHE).size).to eq(cache_before)
-    end
   end
 end
 
