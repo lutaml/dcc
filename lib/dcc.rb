@@ -89,7 +89,8 @@ module Dcc
     #   A plugin already loaded is left alone and its path still returned.
     def load_plugins(*names)
       names.flatten.map do |name|
-        path = name.to_s.tr("-", "/")
+        path = name.to_s
+        path = path.tr("-", "/") unless path.include?("/")
         require path
         path
       rescue ::LoadError => e

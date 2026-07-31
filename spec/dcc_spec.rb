@@ -75,6 +75,11 @@ RSpec.describe Dcc do
         .to eq(["dcc/version"])
     end
 
+    it "leaves a slash-separated path alone, hyphens included" do
+      expect { described_class.load_plugins("dcc/nope-not-real") }
+        .to raise_error(Dcc::PluginError, %r{require "dcc/nope-not-real"})
+    end
+
     it "names the plugin when its entry file is missing" do
       expect { described_class.load_plugins("dcc-nope-not-real") }
         .to raise_error(Dcc::PluginError, /dcc-nope-not-real/)
