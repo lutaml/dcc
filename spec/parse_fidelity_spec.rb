@@ -49,6 +49,18 @@ RSpec.describe Dcc, ".parse" do
     it "round-trips every quantity in dcc_excel/example.xml" do
       expect(counts("dcc_excel/example.xml", "quantity")).to eq(in: 20, out: 20)
     end
+
+    # Counted alongside the list itself: a dcc:list that parses back to an
+    # empty wrapper still round-trips 1 to 1, so only the children catch it.
+    #
+    # 8 of 13, not 13 of 13. The five still lost sit under
+    # measurementMetaData/metaData/data, and dcc:data is unmapped on
+    # Dcc::Base::Statement, which MeasurementMetaData includes. Pinning the
+    # real number locks in the fix and the known gap together: map dcc:data
+    # and this example fails, telling you to raise the number.
+    it "recovers the quantities dcc:list was hiding in dcclib/valid.xml" do
+      expect(counts("dcclib/valid.xml", "quantity")).to eq(in: 13, out: 8)
+    end
   end
 
   # dcc:mathml is a dcc:xmlType wrapper holding a foreign-namespace child, so
@@ -126,6 +138,13 @@ RSpec.describe Dcc, ".parse" do
 
     it "emits one valueXMLList per realListXMLList" do
       expect(texts.size).to eq(element_count(serialized, "realListXMLList"))
+    end
+
+    # 5 of 9, capped by that same unmapped dcc:data rather than by anything
+    # this change controls. Asserted absolutely as well as as a ratio, so a
+    # regression that dropped every list could not satisfy 0 == 0.
+    it "recovers the value lists dcc:list was hiding" do
+      expect(counts("dcclib/valid.xml", "valueXMLList")).to eq(in: 9, out: 5)
     end
 
     it "emits at least one list" do
