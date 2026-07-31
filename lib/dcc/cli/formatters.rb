@@ -1,12 +1,30 @@
 # frozen_string_literal: true
 
-require "tty-table"
-
 module Dcc
   module Cli
     # `Dcc::Cli::Formatters` picks the right text/JSON/YAML representation
     # of a result model and prints it.
     module Formatters
+      # Goes to stderr, so a piped `extract files` still yields clean data.
+      TTY_TABLE_HINT = "note: install tty-table for aligned output " \
+                       "(gem install tty-table)"
+
+      # `tty-table` is optional. It pulls in eight further gems to prettify
+      # one command, which every library user would otherwise install just
+      # to parse XML. Loaded on first use, and its absence falls back to the
+      # plain renderer rather than raising the way `Dcc::Server` does.
+      def self.table_available?
+        return @table_available unless @table_available.nil?
+
+        begin
+          require "tty-table"
+          @table_available = true
+        rescue ::LoadError
+          @table_available = false
+        end
+        @table_available
+      end
+
       module_function
 
       def print(object, format: "text")
@@ -21,6 +39,12 @@ module Dcc
       def print_files(files)
         if files.empty?
           puts "(no embedded files)"
+          return
+        end
+
+        unless table_available?
+          print_files_plain(files)
+          warn TTY_TABLE_HINT
           return
         end
 

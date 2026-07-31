@@ -16,6 +16,7 @@ gem "rubocop-rspec"
 group :optional do
   gem "sinatra"      # Dcc::Server REST API
   gem "tty-prompt"   # dcc issue (interactive builder)
+  gem "tty-table"    # dcc extract files (aligned table)
 end
 
 gem "puma", "~> 8.0"
