@@ -11,7 +11,6 @@ gem "rubocop", "~> 1.21"
 gem "rubocop-performance"
 gem "rubocop-rake"
 gem "rubocop-rspec"
-gem "tty-table"
 
 # Optional dependencies — loaded lazily by the feature that needs them.
 group :optional do
