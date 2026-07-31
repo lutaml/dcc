@@ -14,6 +14,7 @@ module Dcc
     autoload :Text, "dcc/v3/text"
     autoload :ByteData, "dcc/v3/byte_data"
     autoload :Formula, "dcc/v3/formula"
+    autoload :Mathml, "dcc/v3/mathml"
     autoload :RichContent, "dcc/v3/rich_content"
     autoload :XmlBlob, "dcc/v3/xml_blob"
     autoload :Comment, "dcc/v3/comment"
@@ -64,7 +65,7 @@ module Dcc
     # `Configuration.populate_context!` can register them. Iterating
     # `constants` triggers each autoload lazily.
     ELEMENT_CLASSES = %i[
-      StringWithLang Text ByteData Formula RichContent XmlBlob Comment
+      StringWithLang Text ByteData Mathml Formula RichContent XmlBlob Comment
       EquipmentClass Location Contact ContactNotStrict HashType
       Identification Identifications Software SoftwareList
       RefTypeDefinition RefTypeDefinitionList
@@ -91,9 +92,17 @@ module Dcc
 
     # Re-export D-SI v2 type registrations into the DCC v3 context. Uses
     # only the public `register_model` API (no instance_variable access).
+    #
+    # Ids DCC already owns are skipped: `register_model` overwrites on
+    # duplicate, and both DCC and D-SI define a `list` element, so without this
+    # the D-SI one would displace `Dcc::V3::List` and every `dcc:list` would
+    # parse as an empty `si:list`.
     def self.register_dsi_types!
       ::Dcc::Si::V2.load_all!
+      own_ids = Configuration.registered_model_ids
       ::Dcc::Si::V2::Configuration.registered_model_ids.each do |id|
+        next if own_ids.include?(id)
+
         klass = ::Dcc::Si::V2::Configuration.registered_model_class(id)
         Configuration.register_model(klass, id: id)
       end

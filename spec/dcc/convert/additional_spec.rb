@@ -32,6 +32,17 @@ RSpec.describe Dcc::Convert::Csv do
     expect(lines.first).to include("result_name")
     expect(lines.first).to include("quantity_name")
   end
+
+  # BigDecimal#to_s renders 0.072 as "0.72e-1", which is not what the
+  # document said.
+  it "renders list values as plain decimals" do
+    expect(described_class.call(dcc).payload).not_to match(/\d+e-?\d/)
+  end
+
+  it "renders list values as they appear in the document" do
+    expect(described_class.call(dcc).payload)
+      .to include("0.072 0.089 0.107 -0.009 -0.084")
+  end
 end
 
 RSpec.describe Dcc::Convert::Html do

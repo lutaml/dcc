@@ -77,3 +77,54 @@ RSpec.describe Dcc::Validate::Schematron::Rules::LanguageCodeDedup do
     expect(issues).to be_an(Array)
   end
 end
+
+RSpec.describe Dcc::Validate::Schematron::Rules::UncertaintyConsistency do
+  before { Dcc::Si::V2.load_all! }
+
+  let(:rule) { described_class.new }
+
+  def real_list(uncertainties, factors: "2")
+    Dcc::Si::V2::RealListXmlList.from_xml(<<~XML)
+      <si:realListXMLList xmlns:si="https://ptb.de/si">
+        <si:valueXMLList>1 2 3 4 5</si:valueXMLList>
+        <si:unitXMLList>\\kelvin</si:unitXMLList>
+        <si:expandedUncXMLList>
+          <si:uncertaintyXMLList>#{uncertainties}</si:uncertaintyXMLList>
+          <si:coverageFactorXMLList>#{factors}</si:coverageFactorXMLList>
+          <si:coverageProbabilityXMLList>0.95</si:coverageProbabilityXMLList>
+        </si:expandedUncXMLList>
+      </si:realListXMLList>
+    XML
+  end
+
+  # D-SI broadcasts a single uncertainty across every value, the same way
+  # unitXMLList broadcasts a single unit. PTB's own reference documents use
+  # this far more often than a one-to-one list.
+  it "accepts a single uncertainty broadcast over many values" do
+    expect(rule.check_on(real_list("0.061"))).to be_empty
+  end
+
+  it "accepts an uncertainty per value" do
+    list = real_list("0.1 0.2 0.3 0.4 0.5", factors: "2 2 2 2 2")
+    expect(rule.check_on(list)).to be_empty
+  end
+
+  # PTB ships a document pairing nine uncertainties with one shared coverage
+  # factor, so each list decides broadcast independently of its siblings.
+  it "accepts a per-value list beside a broadcast sibling" do
+    list = real_list("0.1 0.2 0.3 0.4 0.5", factors: "2")
+    expect(rule.check_on(list)).to be_empty
+  end
+
+  it "reports a sibling list that neither matches nor broadcasts" do
+    issues = rule.check_on(real_list("0.061", factors: "2 2 2"))
+    expect(issues.map(&:message))
+      .to include(a_string_matching(/coverageFactorXMLList count \(3\)/))
+  end
+
+  it "reports an uncertainty count that neither matches nor broadcasts" do
+    issues = rule.check_on(real_list("0.1 0.2"))
+    expect(issues.map(&:message))
+      .to include(a_string_matching(/uncertaintyXMLList count \(2\)/))
+  end
+end

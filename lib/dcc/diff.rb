@@ -12,6 +12,12 @@ module Dcc
     autoload :Result, "dcc/diff/result"
     autoload :Change, "dcc/diff/change"
 
+    # Leaf types compared directly rather than descended into. Numeric covers
+    # BigDecimal and Date covers DateTime, so neither needs its own entry.
+    PRIMITIVE_TYPES = [
+      ::String, ::Numeric, ::Symbol, ::Time, ::Date
+    ].freeze
+
     class << self
       # @param a [Lutaml::Model::Serializable]
       # @param b [Lutaml::Model::Serializable]
@@ -68,13 +74,13 @@ module Dcc
       end
 
       def primitive?(value)
-        return true if value.nil?
-        return true if value.is_a?(::String) || value.is_a?(::Numeric) || value.is_a?(::Symbol)
-        return true if [true, false].include?(value)
-        return true if value.is_a?(::Time) || value.is_a?(::Date) || value.is_a?(::DateTime)
-        return true if value.is_a?(::BigDecimal)
+        return true if value.nil? || [true, false].include?(value)
+        return false if value.is_a?(::Array)
+        return true if PRIMITIVE_TYPES.any? { |type| value.is_a?(type) }
 
-        false
+        # Anything we cannot descend into is compared with `==`, which covers
+        # value objects such as decimal XML lists.
+        !value.class.respond_to?(:attributes)
       end
 
       def summarize(node)

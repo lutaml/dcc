@@ -5,9 +5,16 @@ module Dcc
     module Schematron
       module Rules
         # Validates that for every `si:realListXMLList` paired with an
-        # `si:expandedUncXMLList`, the count of values matches the count
-        # of uncertainty entries.
+        # `si:expandedUncXMLList`, each uncertainty list holds either one
+        # entry per value or a single entry broadcast across all of them.
         class UncertaintyConsistency < Base
+          UNCERTAINTY_LISTS = {
+            uncertainty_xml_list: "uncertaintyXMLList",
+            coverage_factor_xml_list: "coverageFactorXMLList",
+            coverage_probability_xml_list: "coverageProbabilityXMLList",
+            distribution_xml_list: "distributionXMLList",
+          }.freeze
+
           def check_on(dcc)
             issues = []
             return issues unless dcc.is_a?(::Lutaml::Model::Serializable)
@@ -36,14 +43,35 @@ module Dcc
             unc = list_node.expanded_unc_xml_list
             return unless unc && values
 
-            unc_count = Array(unc.uncertainty_xml_list).size
-            value_count = Array(values).size
-            return if unc_count == value_count || unc_count.zero?
+            value_count = entry_count(values)
+            UNCERTAINTY_LISTS.each do |attribute, xml_name|
+              count = entry_count(unc.public_send(attribute))
+              next if consistent?(count, value_count)
 
-            issues << issue(
+              issues << count_mismatch(xml_name, count, value_count)
+            end
+          end
+
+          def count_mismatch(xml_name, count, value_count)
+            issue(
               severity: :error,
-              message: "valueXMLList count (#{value_count}) does not match expandedUncertaintyXMLList count (#{unc_count})",
+              message: "valueXMLList count (#{value_count}) does not " \
+                       "match #{xml_name} count (#{count})",
             )
+          end
+
+          # Every list here is an xs:list, so its entries are whitespace
+          # separated whether the attribute holds a string or a decimal list.
+          def entry_count(list)
+            list.to_s.split.size
+          end
+
+          # A list either carries one entry per value or a single entry that
+          # broadcasts across all of them, the way unitXMLList does. Siblings
+          # decide independently: PTB ships documents pairing nine
+          # uncertainties with one shared coverage factor.
+          def consistent?(count, value_count)
+            count.zero? || count == 1 || count == value_count
           end
 
           def descend(node, issues, visited)
