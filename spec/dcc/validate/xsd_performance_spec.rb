@@ -15,11 +15,13 @@ RSpec.describe Dcc::Validate::Xsd do
   let(:cache) { described_class::SCHEMA_CACHE }
   let(:builds) { [] }
 
-  # Records every real schema construction, letting each one through.
+  # Records every real schema construction, letting each one through. Only the
+  # count is ever read, so store a marker rather than the argument — that
+  # argument is the resolved XSD, about 50 KB each time.
   def track_builds
     allow(Nokogiri::XML::Schema)
       .to receive(:new).and_wrap_original do |original, *args|
-        builds << args.first
+        builds << :built
         original.call(*args)
       end
   end
