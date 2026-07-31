@@ -9,11 +9,11 @@ Ship the 12 DCC XSDs, 6 D-SI XSDs, QUDT, Schematron, and xmldsig-core schemas wi
 - `lib/dcc/schema.rb` — `Dcc::Schema.path`, `.exists?`, `.read` API + autoload of `Version`.
 - `lib/dcc/schema/version.rb` — `DCC_ALL`, `DCC_LATEST`, `DSI_ALL`, `DSI_LATEST`, `resolve_dcc(version, xml:)`, `resolve_dsi`, `detect_from_xml`, `major(v)`.
 - `lib/dcc/schema/resources/dcc/v{2.1.0,...,3.3.0}/dcc.xsd` — 12 DCC XSDs.
-- `lib/dcc/schema/resources/dsi/v{1.0.1,...,2.2.1}/SI_Format.xsd` — 6 D-SI XSDs.
+- `lib/dcc/schema/resources/dcc/dsi/v{1.0.1,...,2.2.1}.xsd` — 6 D-SI XSDs.
 - `lib/dcc/schema/resources/qudt/qudt.xsd`.
 - `lib/dcc/schema/resources/schematron/dcc.sch`, `dcc.svrl`.
 - `lib/dcc/schema/resources/xmldsig/xmldsig-core-schema.xsd`.
-- `spec/fixtures/ptb/` — PTB dcclib test resources (valid.xml, invalid_*.xml, custom.*, certs/).
+- `spec/fixtures/dcclib/` — PTB dcclib test resources (valid.xml, invalid_*.xml, custom.*, certs/).
 - `spec/fixtures/dcc_examples/` — DCC XSD repo examples (example.xml, siliziumkugel.xml, excel_viewer_example.xml).
 - `spec/fixtures/dsi_examples/{BRONZE,SILVER,GOLD,PLATINUM,IMPROVABLE,NOT_PASSED}/` — D-SI examples by tier.
 
@@ -24,4 +24,4 @@ Ship the 12 DCC XSDs, 6 D-SI XSDs, QUDT, Schematron, and xmldsig-core schemas wi
 
 ## Verification
 - `Dcc::Schema.exists?("dcc/v3.3.0/dcc.xsd")` → true.
-- `Dcc::Schema::Version.resolve_dcc("auto", xml: File.read("spec/fixtures/ptb/valid.xml"))` → `"3.3.0"`.
+- `Dcc::Schema::Version.resolve_dcc("auto", xml: File.read("spec/fixtures/dcclib/valid.xml"))` → `"3.3.0"`.

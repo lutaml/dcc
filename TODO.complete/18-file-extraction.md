@@ -1,6 +1,15 @@
 # 18 — File extraction (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- Ring detection covers two of the four rings. The walker at
+  `lib/dcc/extract/file.rb:52-58` assigns only `ADMINISTRATIVE_DATA` and
+  `MEASUREMENT_RESULTS`, so `in_ring(dcc, ring: :comment)` and
+  `ring: :document` always return empty.
+- `build_file` (line 126) falls back to `ring || Ring::ADMINISTRATIVE_DATA`,
+  so a `byteData` under the root `document` element is reported as
+  administrative data.
 
 ## Goal
 Walk a parsed DCC and enumerate every embedded file (`dcc:byteDataType` element) with its ring (administrativeData / measurementResults / comment / document).

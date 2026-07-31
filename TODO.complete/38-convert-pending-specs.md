@@ -2,6 +2,12 @@
 
 **Status:** COMPLETED
 
+## Outcome
+Two of the specs listed below were removed rather than fixed, because the
+features they cover do not exist: `spec/dcc/extract/formula_spec.rb`
+(phase 19) and `spec/dcc/streaming/reader_spec.rb` (phase 33). That is
+option 3 in the approach below. The remaining three were made to pass.
+
 ## Goal
 5 specs use `pending`/`skip`. Convert each to a real, passing spec or
 remove it if the feature truly isn't implemented.

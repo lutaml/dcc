@@ -1,6 +1,12 @@
 # 45 — Eliminate all respond_to? calls from lib/ (P0)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- Six `respond_to?` calls remain in `lib/`, none of them the exempted CLI
+  `$stdout.tty?` case:
+  `validate/schematron/rules/unit_format_check.rb:34`, `:47`, `:50`;
+  `non_si_declaration.rb:49`; `id_refid_linking.rb:41`, `:44`.
 
 ## Goal
 67 `respond_to?` calls remain in lib/ despite the project rule:
