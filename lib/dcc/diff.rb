@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bigdecimal"
+require "date"
 require "lutaml/model"
 
 module Dcc
