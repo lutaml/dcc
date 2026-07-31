@@ -1,6 +1,13 @@
 # 37 — Implement stub Schematron rules (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `AdministrativeDataCompleteness` is not in the Schematron profile, so it
+  never runs during validation — see phase 15.
+- The specs do not exercise violations. All four examples in
+  `spec/dcc/validate/schematron_stubs_spec.rb` parse `valid.xml` and assert
+  only that the result is an Array.
 
 ## Goal
 Four Schematron rules currently return `[]` unconditionally. Implement

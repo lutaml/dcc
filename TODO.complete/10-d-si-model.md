@@ -1,21 +1,27 @@
 # 10 — D-SI model (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/si/base/` ships 12 modules, not the ~30 listed below.
+- D-SI multivariate uncertainty is unmodelled: covariance matrix,
+  covariance, column, ellipsoidal region and rectangular region appear
+  nowhere in `lib/`.
 
 ## Goal
 Build `Dcc::Si::V1::*` and `Dcc::Si::V2::*` covering all D-SI quantity types, uncertainty types, and supporting types (column, covariance, region). Same registry pattern as DCC.
 
 ## Files to create
-- `lib/dcc/si/si.rb` — `Dcc::Si` top-level: `parse(input, version: 2)`, `SUPPORTED_VERSIONS = [1, 2]`, `Dcc::Si::UNSPECIFIED_CONTEXT`.
-- `lib/dcc/si/versioned_parser.rb` — mirrors `Dcc::VersionedParser` for D-SI.
-- `lib/dcc/si/context_configuration.rb` — re-uses `Dcc::ContextConfiguration`.
+- `lib/dcc/si.rb` — `Dcc::Si` top-level: `parse(input, version: 2)`, `SUPPORTED_VERSIONS = [1, 2]`, `Dcc::Si::UNSPECIFIED_CONTEXT`.
+- D-SI reuses `Dcc::VersionedParser`; no separate `si/versioned_parser.rb` was needed.
+- D-SI reuses `Dcc::ContextConfiguration` directly; no separate file was needed.
 - `lib/dcc/si/namespace.rb` — `Dcc::Si::Namespace = Dcc::Namespace::Si`.
 - `lib/dcc/si/common_elements.rb` — shared base for D-SI elements.
 - `lib/dcc/si/base/` — one module per D-SI complexType (≈30 files):
   - `quantity.rb` (abstract head)
   - `real.rb`, `complex.rb`, `constant.rb`
   - `real_list.rb`, `complex_list.rb`, `real_list_xml_list.rb`, `complex_list_xml_list.rb`
-  - `hybrid.rb`, `list.rb` (recursive)
+  - `hybrid.rb`, `si_list.rb` (recursive; drafted as `list.rb`)
   - `standard_mu.rb`, `expanded_mu.rb`, `coverage_interval_mu.rb`
   - `ellipsoidal_region.rb`, `rectangular_region.rb`
   - `covariance_matrix.rb`, `covariance.rb`, `column.rb`

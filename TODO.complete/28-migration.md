@@ -1,6 +1,13 @@
 # 28 — Version migration (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `lib/dcc/migrate/` does not exist: `route.rb`, `v2_to_v3.rb` and
+  `v3_to_v3_4.rb` are all absent.
+- `lib/dcc/migrate.rb` is a 41-line shim that serializes, re-parses under the
+  target context and rewrites `schemaVersion`. There are no per-field
+  transformations and no D-SI v1 → v2 transition.
 
 ## Goal
 `Dcc.migrate(dcc, from:, to:)` upgrades or downgrades a DCC between schema versions, applying the necessary field renames and D-SI version transitions.
