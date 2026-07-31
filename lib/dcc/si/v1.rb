@@ -23,7 +23,8 @@ module Dcc
       autoload :CoverageIntervalMU, "dcc/si/v1/coverage_interval_mu"
       autoload :ExpandedUnc, "dcc/si/v1/expanded_unc"
       autoload :ExpandedUncXmlList, "dcc/si/v1/expanded_unc_xml_list"
-      autoload :MeasurementUncertaintyUnivariate, "dcc/si/v1/measurement_uncertainty_univariate"
+      autoload :MeasurementUncertaintyUnivariate,
+               "dcc/si/v1/measurement_uncertainty_univariate"
 
       ROOT_ELEMENT_TAG = "real"
 

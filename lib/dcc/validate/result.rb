@@ -58,12 +58,12 @@ module Dcc
 
       def to_s
         if ok?
-          "OK: no errors found#{schema_version ? " (schemaVersion #{schema_version})" : ''}"
+          "OK: no errors found#{" (schemaVersion #{schema_version})" if schema_version}"
         else
           header = "#{errors.size} error(s), #{warnings.size} warning(s)"
           header += " (schemaVersion #{schema_version})" if schema_version
-          body = errors.map(&:to_s).unshift(header).join("\n")
-          body
+          errors.map(&:to_s).unshift(header).join("\n")
+
         end
       end
 
@@ -97,7 +97,9 @@ module Dcc
           ok: ok?,
           source: source,
           schema_version: schema_version,
-          issues: issues.map { |i| [i.severity.to_s, i.message, i.line, i.path] },
+          issues: issues.map do |i|
+            [i.severity.to_s, i.message, i.line, i.path]
+          end,
         }.to_yaml
       end
     end

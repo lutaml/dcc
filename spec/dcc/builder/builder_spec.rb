@@ -19,7 +19,7 @@ RSpec.describe Dcc::Builder do
         end
       end
 
-      expect(dcc).to be_a(::Dcc::V3::DigitalCalibrationCertificate)
+      expect(dcc).to be_a(Dcc::V3::DigitalCalibrationCertificate)
       expect(dcc.administrative_data.core_data.unique_identifier).to eq("urn:uuid:test-123")
       expect(dcc.administrative_data.core_data.country_code_iso_3166_1.to_s).to eq("DE")
       expect(dcc.administrative_data.core_data.used_lang_code_iso_639_1).to include("en")
@@ -31,7 +31,7 @@ RSpec.describe Dcc::Builder do
         described_class.call do
           administrative_data { items { item(model: "X") } }
         end
-      end.to raise_error(::Dcc::BuilderError, /core_data is required/)
+      end.to raise_error(Dcc::BuilderError, /core_data is required/)
     end
 
     it "raises BuilderError when items is missing" do
@@ -46,7 +46,7 @@ RSpec.describe Dcc::Builder do
             end
           end
         end
-      end.to raise_error(::Dcc::BuilderError, /items is required/)
+      end.to raise_error(Dcc::BuilderError, /items is required/)
     end
   end
 end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -10,20 +9,24 @@ module Dcc
         class UsedMethodsPlacement < Base
           def check_on(dcc)
             issues = []
-            return issues unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
+            return issues unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                                :measurement_results)
 
             mr_list = safe_attr(dcc.measurement_results, :measurement_result)
             return issues if mr_list.empty?
 
             any_used = mr_list.any? do |mr|
-              Dcc::TypeGuards.has_attribute?(mr, :used_methods) && !mr.used_methods.nil? ||
+              (Dcc::TypeGuards.has_attribute?(mr,
+                                              :used_methods) && !mr.used_methods.nil?) ||
                 mr_has_descendant?(mr, :used_methods)
             end
 
-            issues << issue(
-              severity: :error,
-              message: "dcc:usedMethods is missing in every measurementResult and its descendants",
-            ) unless any_used
+            unless any_used
+              issues << issue(
+                severity: :error,
+                message: "dcc:usedMethods is missing in every measurementResult and its descendants",
+              )
+            end
 
             issues
           end
@@ -31,7 +34,8 @@ module Dcc
           private
 
           def mr_has_descendant?(mr, attr_name)
-            return false unless Dcc::TypeGuards.has_attribute?(mr, :results) && mr.results
+            return false unless Dcc::TypeGuards.has_attribute?(mr,
+                                                               :results) && mr.results
 
             result = safe_attr(mr.results, :result)
             result.any? { |r| descendant_has?(r, attr_name) }
@@ -40,7 +44,8 @@ module Dcc
           def descendant_has?(node, attr_name)
             return false unless node.is_a?(::Lutaml::Model::Serializable)
 
-            if Dcc::TypeGuards.has_attribute?(node, attr_name) && !node.public_send(attr_name).nil?
+            if Dcc::TypeGuards.has_attribute?(node,
+                                              attr_name) && !node.public_send(attr_name).nil?
               return true
             end
 

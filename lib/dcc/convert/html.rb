@@ -5,7 +5,8 @@ require "liquid"
 module Dcc
   module Convert
     module Html
-      TEMPLATE_PATH = File.expand_path("templates/report.liquid", __dir__).freeze
+      TEMPLATE_PATH = File.expand_path("templates/report.liquid",
+                                       __dir__).freeze
 
       class << self
         def call(dcc_or_xml, lang: nil)
@@ -34,7 +35,7 @@ module Dcc
         def render_template(hash, lang:)
           template = ::Liquid::Template.parse(File.read(TEMPLATE_PATH))
           template.render({ "dcc" => hash, "page_lang" => lang },
-                           filters: [::Dcc::Convert::LiquidFilters])
+                          filters: [::Dcc::Convert::LiquidFilters])
         end
       end
     end

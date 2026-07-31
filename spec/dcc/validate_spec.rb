@@ -5,11 +5,14 @@ require "spec_helper"
 RSpec.describe Dcc::Validate::Xsd do
   describe ".call" do
     let(:valid_xml) { File.read(fixtures_path("dcclib", "valid.xml")) }
-    let(:invalid_schema_xml) { File.read(fixtures_path("dcclib", "invalid_schema.xml")) }
+    let(:invalid_schema_xml) do
+      File.read(fixtures_path("dcclib", "invalid_schema.xml"))
+    end
 
     it "accepts a valid document against auto-detected version" do
       result = described_class.call(valid_xml)
-      expect(result.ok?).to be(true), "Expected valid.xml to pass XSD validation, got:\n#{result}"
+      expect(result.ok?).to be(true),
+                            "Expected valid.xml to pass XSD validation, got:\n#{result}"
       expect(result.schema_version).to eq("3.3.0")
       expect(result.source).to eq("xsd")
     end
@@ -81,7 +84,7 @@ RSpec.describe Dcc::Validate::Issue do
     it "includes severity, message, and location" do
       issue = described_class.build(
         severity: :error, message: "bad value", code: "test.x",
-        line: 42, path: "/dcc:foo", source: "test",
+        line: 42, path: "/dcc:foo", source: "test"
       )
       expect(issue.to_s).to include("ERROR")
       expect(issue.to_s).to include("bad value")
@@ -92,13 +95,14 @@ RSpec.describe Dcc::Validate::Issue do
 end
 
 RSpec.describe Dcc::Validate::Result do
+  subject(:result) do
+    described_class.new(issues: [issue_err, issue_warn, issue_info],
+                        schema_version: "3.3.0", source: "xsd")
+  end
+
   let(:issue_err) { Dcc::Validate::Issue.build(severity: :error, message: "e1") }
   let(:issue_warn) { Dcc::Validate::Issue.build(severity: :warning, message: "w1") }
   let(:issue_info) { Dcc::Validate::Issue.build(severity: :info, message: "i1") }
-
-  subject(:result) do
-    described_class.new(issues: [issue_err, issue_warn, issue_info], schema_version: "3.3.0", source: "xsd")
-  end
 
   describe "#ok?" do
     it "returns false when there are errors" do

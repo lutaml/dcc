@@ -39,7 +39,7 @@ module Dcc
           )
 
           serialized = ::Moxml::Signature::Serializer
-                         .new(context: ctx).serialize(signature)
+            .new(context: ctx).serialize(signature)
           doc.root.add_child(serialized.root)
           doc.to_xml
         end

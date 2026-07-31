@@ -53,6 +53,7 @@ module Dcc
     autoload :MeasurementMetaData, "dcc/base/measurement_meta_data"
     autoload :MeasurementMetaDataList, "dcc/base/measurement_meta_data_list"
     autoload :AdministrativeData, "dcc/base/administrative_data"
-    autoload :DigitalCalibrationCertificate, "dcc/base/digital_calibration_certificate"
+    autoload :DigitalCalibrationCertificate,
+             "dcc/base/digital_calibration_certificate"
   end
 end

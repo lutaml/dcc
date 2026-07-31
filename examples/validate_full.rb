@@ -22,6 +22,6 @@ dcc = Dcc.parse(xml)
     else service.call(dcc)
     end
   puts "== #{service.name} =="
-  puts result.to_s
+  puts result
   puts
 end

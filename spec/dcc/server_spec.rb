@@ -8,7 +8,7 @@ RSpec.describe Dcc::Server::Storage::Memory do
 
   it "stores and retrieves by SHA-256 id" do
     entry = subject.put(xml)
-    expect(entry.id).to eq(::Digest::SHA256.hexdigest(xml))
+    expect(entry.id).to eq(Digest::SHA256.hexdigest(xml))
     fetched = subject.get(entry.id)
     expect(fetched.xml).to eq(xml)
   end
@@ -34,7 +34,7 @@ end
 RSpec.describe Dcc::Server do
   describe ".available?" do
     it "reflects whether sinatra is installed" do
-      expect([true, false]).to include(described_class.available?)
+      expect(described_class.available?).to be(true).or be(false)
     end
   end
 

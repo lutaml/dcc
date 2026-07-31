@@ -10,13 +10,14 @@ module Dcc
     # check: the string must not contain whitespace (Schematron rule), and the
     # non-SI declaration prefix (`|unit`) is allowed.
     class SiUnit < Lutaml::Model::Type::String
-      NO_WHITESPACE_PATTERN = /\A\S+\z/.freeze
+      NO_WHITESPACE_PATTERN = /\A\S+\z/
 
       def self.cast(value)
         return nil unless value.is_a?(::String) && value != ""
 
         unless NO_WHITESPACE_PATTERN.match?(value)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "invalid SI unit expression (whitespace not allowed): #{value.inspect}")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "invalid SI unit expression (whitespace not allowed): #{value.inspect}")
         end
 
         value

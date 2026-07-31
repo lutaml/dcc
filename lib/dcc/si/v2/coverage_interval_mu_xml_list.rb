@@ -16,9 +16,11 @@ module Dcc::Si::V2
       map_element "valueStandardMUXMLList", to: :value_standard_mu_xml_list
       map_element "intervalMinXMLList", to: :interval_min_xml_list
       map_element "intervalMaxXMLList", to: :interval_max_xml_list
-      map_element "coverageProbabilityXMLList", to: :coverage_probability_xml_list
+      map_element "coverageProbabilityXMLList",
+                  to: :coverage_probability_xml_list
       map_element "distributionXMLList", to: :distribution_xml_list
     end
   end
-  Configuration.register_model(CoverageIntervalMUXMLList, id: :coverageIntervalMUXMLList)
+  Configuration.register_model(CoverageIntervalMUXMLList,
+                               id: :coverageIntervalMUXMLList)
 end

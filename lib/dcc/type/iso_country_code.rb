@@ -7,13 +7,14 @@ module Dcc
     # ISO 3166-1 alpha-2 country code (two uppercase letters, e.g. `"DE"`).
     # Used by `dcc:countryCodeISO3166_1`.
     class IsoCountryCode < Lutaml::Model::Type::String
-      PATTERN = /\A[A-Z]{2}\z/.freeze
+      PATTERN = /\A[A-Z]{2}\z/
 
       def self.cast(value)
         return nil unless value.is_a?(::String) && value != ""
 
         unless PATTERN.match?(value)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "invalid ISO 3166-1 alpha-2 country code: #{value.inspect}")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "invalid ISO 3166-1 alpha-2 country code: #{value.inspect}")
         end
 
         value

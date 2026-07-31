@@ -15,7 +15,9 @@ RSpec.describe Dcc::Validate::BusinessRules do
     it "fails when uniqueIdentifier is empty" do
       dcc = Dcc.parse(File.read(fixtures_path("dcclib", "invalid_schema.xml")))
       result = described_class.call(dcc)
-      unique_issues = result.errors.select { |i| i.message.include?("uniqueIdentifier") }
+      unique_issues = result.errors.select do |i|
+        i.message.include?("uniqueIdentifier")
+      end
       expect(unique_issues).not_to be_empty
     end
   end

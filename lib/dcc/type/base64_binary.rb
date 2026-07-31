@@ -15,7 +15,8 @@ module Dcc
       def self.cast(value)
         return nil if value.nil? || value == ""
         unless value.is_a?(::String)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "expected binary String")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "expected binary String")
         end
 
         value
@@ -25,7 +26,8 @@ module Dcc
         return nil if value.nil?
 
         unless value.is_a?(::String)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "expected binary String")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "expected binary String")
         end
 
         value

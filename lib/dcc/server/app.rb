@@ -3,7 +3,7 @@
 begin
   require "sinatra/base"
   SINATRA_AVAILABLE = true
-rescue ::LoadError
+rescue LoadError
   SINATRA_AVAILABLE = false
 end
 
@@ -31,7 +31,7 @@ module Dcc
         validation = run_validation(xml)
 
         { cert: cert_data, validation: validation }.to_json
-      rescue => e
+      rescue StandardError => e
         content_type :json
         status 500
         { error: e.message }.to_json
@@ -75,6 +75,7 @@ module Dcc
 
       def text(node)
         return "" unless node
+
         c = node.is_a?(::Hash) ? node["content"] : node
         return "" unless c
 
@@ -105,12 +106,16 @@ module Dcc
                     when ::String then langs
                     else ""
                     end
-        fields << { label: "Languages", value: langs_str } unless langs_str.empty?
+        unless langs_str.empty?
+          fields << { label: "Languages",
+                      value: langs_str }
+        end
         fields
       end
 
       def build_address(loc)
         return "" unless loc
+
         parts = []
         parts << "#{loc['street']} #{loc['streetNo']}" if loc["street"]
         parts << "#{loc['postCode']} #{loc['city']}" if loc["postCode"]
@@ -120,6 +125,7 @@ module Dcc
 
       def build_signers(resp_persons)
         return [] unless resp_persons
+
         rp = resp_persons["respPerson"]
         list = rp.is_a?(::Array) ? rp : [rp]
         list.map do |p|
@@ -134,6 +140,7 @@ module Dcc
 
       def build_measurements(mr_hash)
         return [] unless mr_hash
+
         mr = mr_hash["measurementResult"]
         list = mr.is_a?(::Array) ? mr : [mr]
         list.map do |m|
@@ -157,6 +164,7 @@ module Dcc
 
       def extract_quantity_values(data)
         return [] unless data
+
         values = []
         d = data.is_a?(::Array) ? data.first : data
         return values unless d.is_a?(::Hash)
@@ -190,14 +198,14 @@ module Dcc
         issues = xsd_result.issues || []
         {
           ok: issues.none? { |i| i.severity == :error },
-          errors: issues.select { |i| i.severity == :error }.map { |i|
+          errors: issues.select { |i| i.severity == :error }.map do |i|
             { line: i.line, message: i.message }
-          },
-          warnings: issues.select { |i| i.severity == :warning }.map { |i|
+          end,
+          warnings: issues.select { |i| i.severity == :warning }.map do |i|
             { line: i.line, message: i.message }
-          },
+          end,
         }
-      rescue => e
+      rescue StandardError => e
         {
           ok: false,
           errors: [{ line: nil, message: e.message }],

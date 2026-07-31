@@ -24,7 +24,10 @@ module Dcc
 
             visited << node.object_id
 
-            check_node(node, issues) if node.class.name.end_with?("::RealListXmlList")
+            if node.class.name.end_with?("::RealListXmlList")
+              check_node(node,
+                         issues)
+            end
             descend(node, issues, visited)
           end
 
@@ -54,5 +57,3 @@ module Dcc
     end
   end
 end
-
-require "set"

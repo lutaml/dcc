@@ -4,5 +4,6 @@ module Dcc::V2
   class DigitalCalibrationCertificate < CommonElements
     include ::Dcc::Base::DigitalCalibrationCertificate
   end
-  Configuration.register_model(DigitalCalibrationCertificate, id: :digitalCalibrationCertificate)
+  Configuration.register_model(DigitalCalibrationCertificate,
+                               id: :digitalCalibrationCertificate)
 end

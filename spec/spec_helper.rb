@@ -19,11 +19,11 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.before(:each) do
+  config.before do
     # Reset lutaml-model global state between specs to avoid cross-test
     # contamination (per lutaml-model CLAUDE.md).
     if defined?(Lutaml::Model::GlobalContext) &&
-       Lutaml::Model::GlobalContext.respond_to?(:clear_caches)
+        Lutaml::Model::GlobalContext.respond_to?(:clear_caches)
       Lutaml::Model::GlobalContext.clear_caches
     end
     next unless defined?(Lutaml::Model::TransformationRegistry)

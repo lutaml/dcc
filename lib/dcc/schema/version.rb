@@ -30,7 +30,7 @@ module Dcc
         def normalize(v)
           return nil if v.nil?
 
-          s = v.to_s.sub(/\Av/, "").gsub(/_/, ".")
+          s = v.to_s.sub(/\Av/, "").gsub("_", ".")
           s.empty? ? nil : s
         end
 

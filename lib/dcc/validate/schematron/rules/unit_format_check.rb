@@ -29,7 +29,8 @@ module Dcc
           end
 
           def check_single_unit(node, issues)
-            return unless node.class.name.end_with?("::Real", "::Complex", "::Constant")
+            return unless node.class.name.end_with?("::Real", "::Complex",
+                                                    "::Constant")
             return unless node.respond_to?(:unit)
 
             unit = node.unit
@@ -70,5 +71,3 @@ module Dcc
     end
   end
 end
-
-require "set"

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -11,13 +10,17 @@ module Dcc
 
           def check_on(dcc)
             issues = []
-            return issues unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
+            return issues unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                                :administrative_data)
 
             software_list = safe_attr(dcc.administrative_data, :dcc_software)
             return issues if software_list.nil?
 
             Array(safe_attr(software_list, :software)).each do |sw|
-              release = Dcc::TypeGuards.has_attribute?(sw, :release) ? sw.release : nil
+              release = if Dcc::TypeGuards.has_attribute?(sw,
+                                                          :release)
+                          sw.release
+                        end
               next if release.nil? || release.empty?
               next if release.match?(PATTERN)
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -12,17 +11,22 @@ module Dcc
           end
 
           def check_on(dcc)
-            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :schema_version)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                            :schema_version)
 
             current = dcc.schema_version.to_s
             latest = ::Dcc::Schema::Version::DCC_LATEST
 
-            current == latest ? [] : [
-              issue(
-                severity: :warning,
-                message: "schemaVersion '#{current}' is not the latest release (#{latest})",
-              ),
-            ]
+            if current == latest
+              []
+            else
+              [
+                issue(
+                  severity: :warning,
+                  message: "schemaVersion '#{current}' is not the latest release (#{latest})",
+                ),
+              ]
+            end
           end
         end
       end

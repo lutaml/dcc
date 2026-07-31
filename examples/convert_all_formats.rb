@@ -11,7 +11,8 @@ require "dcc"
 path = ARGV[0] || File.expand_path("../spec/fixtures/dcclib/valid.xml", __dir__)
 dcc = Dcc.parse(File.read(path))
 
-[Dcc::Convert::Json, Dcc::Convert::Yaml, Dcc::Convert::Csv, Dcc::Convert::Html].each do |service|
+[Dcc::Convert::Json, Dcc::Convert::Yaml, Dcc::Convert::Csv,
+ Dcc::Convert::Html].each do |service|
   result = service.call(dcc)
   puts "== #{service.name.split('::').last} =="
   puts result.to_s[0, 200] + "..."

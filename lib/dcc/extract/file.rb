@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "base64"
-require "set"
 
 module Dcc
   module Extract
@@ -40,7 +39,7 @@ module Dcc
         # @param dcc [Lutaml::Model::Serializable]
         # @yieldparam [Dcc::Extract::File]
         # @return [Array<Dcc::Extract::File>] the list when no block given.
-        def each(dcc, &block)
+        def each(dcc, &)
           list = []
           visited = ::Set.new
 
@@ -65,7 +64,7 @@ module Dcc
           collect.call(dcc, nil)
           return list unless block_given?
 
-          list.each(&block)
+          list.each(&)
         end
 
         # @param dcc [Lutaml::Model::Serializable]

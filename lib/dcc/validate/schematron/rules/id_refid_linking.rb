@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -57,5 +56,3 @@ module Dcc
     end
   end
 end
-
-require "set"

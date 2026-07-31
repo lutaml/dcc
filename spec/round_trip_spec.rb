@@ -27,7 +27,7 @@ RSpec.describe "DCC XML round-trip fidelity" do
 
         it "auto-detects a known major version" do
           expect { Dcc.detect_version(xml) }.not_to raise_error
-          expect([2, 3]).to include(Dcc.detect_version(xml))
+          expect(Dcc.detect_version(xml)).to eq(2).or eq(3)
         end
 
         it "parses without raising" do

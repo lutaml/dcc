@@ -27,20 +27,24 @@ module Dcc
       def collect_differences(a, b, path, changes)
         # Both nil - no diff
         return if a.nil? && b.nil?
+
         # One is nil - add/remove
         if a.nil?
-          changes << Change.new(path: path, kind: :add, before: nil, after: summarize(b))
+          changes << Change.new(path: path, kind: :add, before: nil,
+                                after: summarize(b))
           return
         end
         if b.nil?
-          changes << Change.new(path: path, kind: :remove, before: summarize(a), after: nil)
+          changes << Change.new(path: path, kind: :remove,
+                                before: summarize(a), after: nil)
           return
         end
 
         # Both primitives - compare values
         if primitive?(a) || primitive?(b)
           if a != b
-            changes << Change.new(path: path, kind: :change, before: a, after: b)
+            changes << Change.new(path: path, kind: :change, before: a,
+                                  after: b)
           end
           return
         end
@@ -66,7 +70,7 @@ module Dcc
       def primitive?(value)
         return true if value.nil?
         return true if value.is_a?(::String) || value.is_a?(::Numeric) || value.is_a?(::Symbol)
-        return true if value == true || value == false
+        return true if [true, false].include?(value)
         return true if value.is_a?(::Time) || value.is_a?(::Date) || value.is_a?(::DateTime)
         return true if value.is_a?(::BigDecimal)
 

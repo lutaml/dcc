@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -12,21 +11,27 @@ module Dcc
           end
 
           def check_on(dcc)
-            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                            :measurement_results)
 
             mr_list = safe_attr(dcc.measurement_results, :measurement_result)
             return [] if mr_list.empty?
 
             present = mr_list.any? do |mr|
-              Dcc::TypeGuards.has_attribute?(mr, :used_software) && !mr.used_software.nil?
+              Dcc::TypeGuards.has_attribute?(mr,
+                                             :used_software) && !mr.used_software.nil?
             end
 
-            present ? [] : [
-              issue(
-                severity: :warning,
-                message: "dcc:usedSoftware is missing on every measurementResult",
-              ),
-            ]
+            if present
+              []
+            else
+              [
+                issue(
+                  severity: :warning,
+                  message: "dcc:usedSoftware is missing on every measurementResult",
+                ),
+              ]
+            end
           end
 
           private

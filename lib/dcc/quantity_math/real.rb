@@ -52,7 +52,7 @@ module Dcc
       # @param exponent [Integer]
       # @return [Real]
       def **(exponent)
-        new_value = value ** exponent
+        new_value = value**exponent
         Real.new(
           value: new_value,
           unit: unit && "^#{exponent}",
@@ -75,7 +75,7 @@ module Dcc
         return other.uncertainty if uncertainty.nil?
         return uncertainty if other.uncertainty.nil?
 
-        sum_of_squares = (uncertainty ** 2) + (other.uncertainty ** 2)
+        sum_of_squares = (uncertainty**2) + (other.uncertainty**2)
         BigDecimal(Math.sqrt(sum_of_squares.to_f).to_s)
       end
 
@@ -86,15 +86,15 @@ module Dcc
 
         a_rel = uncertainty / value
         b_rel = other.uncertainty / other.value
-        sum_of_squares = (a_rel ** 2) + (b_rel ** 2)
+        sum_of_squares = (a_rel**2) + (b_rel**2)
         BigDecimal(Math.sqrt(sum_of_squares.to_f).to_s) * new_value.abs
       end
 
       # Power rule: σ_y = |n * x^(n-1)| * σ_x
-      def power_uncertainty(exponent, new_value)
+      def power_uncertainty(exponent, _new_value)
         return nil unless uncertain?
 
-        derivative = exponent * (value ** (exponent - 1))
+        derivative = exponent * (value**(exponent - 1))
         (derivative.abs * uncertainty)
       end
 

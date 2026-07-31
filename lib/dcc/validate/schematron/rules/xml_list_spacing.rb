@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -32,7 +31,9 @@ module Dcc
 
             node.class.attributes.each_key do |a|
               v = node.public_send(a)
-              Array(v).each { |child| check_string_list_attribute(child, issues, attr, label) }
+              Array(v).each do |child|
+                check_string_list_attribute(child, issues, attr, label)
+              end
             end
           end
         end

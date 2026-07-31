@@ -31,7 +31,7 @@ module Dcc
           "(no structural changes)"
         else
           header = "#{changes.size} change(s): " \
-                  "#{additions.size} added, #{removals.size} removed, #{modifications.size} changed"
+                   "#{additions.size} added, #{removals.size} removed, #{modifications.size} changed"
           ([header] + changes.map(&:to_s)).join("\n")
         end
       end
@@ -41,7 +41,9 @@ module Dcc
         ::JSON.pretty_generate(
           additions: additions.map { |c| { path: c.path, value: c.after } },
           removals: removals.map { |c| { path: c.path, value: c.before } },
-          modifications: modifications.map { |c| { path: c.path, before: c.before, after: c.after } },
+          modifications: modifications.map do |c|
+            { path: c.path, before: c.before, after: c.after }
+          end,
         )
       end
 
@@ -50,7 +52,9 @@ module Dcc
         {
           additions: additions.map { |c| { path: c.path, value: c.after } },
           removals: removals.map { |c| { path: c.path, value: c.before } },
-          modifications: modifications.map { |c| { path: c.path, before: c.before, after: c.after } },
+          modifications: modifications.map do |c|
+            { path: c.path, before: c.before, after: c.after }
+          end,
         }.to_yaml
       end
     end

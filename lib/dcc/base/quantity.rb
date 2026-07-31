@@ -25,7 +25,8 @@ module Dcc
           attribute :constant, :constant, collection: true
           attribute :hybrid, :hybrid, collection: true
           attribute :real_list_xml_list, :realListXMLList, collection: true
-          attribute :complex_list_xml_list, :complexListXMLList, collection: true
+          attribute :complex_list_xml_list, :complexListXMLList,
+                    collection: true
           attribute :list, :list, collection: true
           # Ancillary DCC sections
           attribute :used_methods, :usedMethods

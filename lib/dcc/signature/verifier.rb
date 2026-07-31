@@ -33,11 +33,9 @@ module Dcc
         private
 
         def load_key(pem)
-          begin
-            ::OpenSSL::X509::Certificate.new(pem).public_key
-          rescue ::OpenSSL::X509::CertificateError
-            ::OpenSSL::PKey::RSA.new(pem)
-          end
+          ::OpenSSL::X509::Certificate.new(pem).public_key
+        rescue ::OpenSSL::X509::CertificateError
+          ::OpenSSL::PKey::RSA.new(pem)
         end
       end
     end

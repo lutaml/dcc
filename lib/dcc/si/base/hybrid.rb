@@ -18,7 +18,8 @@ module Dcc
             attribute :complex, :complex, collection: true
             attribute :constant, :constant, collection: true
             attribute :real_list_xml_list, :realListXMLList, collection: true
-            attribute :complex_list_xml_list, :complexListXMLList, collection: true
+            attribute :complex_list_xml_list, :complexListXMLList,
+                      collection: true
 
             xml do
               namespace ::Dcc::Namespace::Si

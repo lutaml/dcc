@@ -25,32 +25,32 @@ module Dcc
 
       # Top-level DSL methods. Each opens a nested container that captures
       # subsequent setter calls via instance_eval.
-      def administrative_data(**attrs, &block)
+      def administrative_data(**attrs, &)
         apply_attrs(@administrative_in_progress, attrs)
-        instance_eval(&block) if block_given?
+        instance_eval(&) if block_given?
         @administrative_in_progress
       end
 
-      def core_data(**attrs, &block)
+      def core_data(**attrs, &)
         cd = new_core_data
         apply_attrs(cd, attrs)
         @administrative_in_progress.core_data = cd
-        instance_eval(&block) if block_given?
+        instance_eval(&) if block_given?
         cd
       end
 
-      def items(**attrs, &block)
+      def items(**attrs, &)
         items_obj = new_items
         apply_attrs(items_obj, attrs)
         @administrative_in_progress.items = items_obj
-        instance_eval(&block) if block_given?
+        instance_eval(&) if block_given?
         items_obj
       end
 
-      def item(**attrs, &block)
+      def item(**attrs, &)
         it = new_item
         apply_attrs(it, attrs)
-        instance_eval(&block) if block_given?
+        instance_eval(&) if block_given?
         (@items_in_progress ||= []) << it
         # Wire into the open items container if present.
         if @administrative_in_progress&.items
@@ -60,14 +60,14 @@ module Dcc
         it
       end
 
-      def measurement_results(**_attrs, &block)
-        instance_eval(&block) if block_given?
+      def measurement_results(**_attrs, &)
+        instance_eval(&) if block_given?
       end
 
-      def measurement_result(**attrs, &block)
+      def measurement_result(**attrs, &)
         mr = new_measurement_result
         apply_attrs(mr, attrs)
-        instance_eval(&block) if block_given?
+        instance_eval(&) if block_given?
         @results_in_progress << mr
         mr
       end
@@ -130,7 +130,9 @@ module Dcc
       def apply_attrs(target, attrs)
         attrs.each do |k, v|
           setter = :"#{k}="
-          target.public_send(setter, v) if Dcc::TypeGuards.has_attribute?(target, setter)
+          target.public_send(setter, v) if Dcc::TypeGuards.has_attribute?(
+            target, setter
+          )
         end
       end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Dcc
   module Validate
     module Schematron
@@ -8,14 +7,22 @@ module Dcc
         # Errors on duplicate language codes in `dcc:usedLangCodeISO639_1`.
         class LanguageCodeDedup < Base
           def check_on(dcc)
-            return [] unless Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
+            return [] unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                            :administrative_data)
 
             core = safe_attr(dcc.administrative_data, :core_data)
             return [] if core.nil?
 
-            used = Dcc::TypeGuards.has_attribute?(core, :used_lang_code_iso_639_1) ? Array(core.used_lang_code_iso_639_1) : []
+            used = if Dcc::TypeGuards.has_attribute?(core,
+                                                     :used_lang_code_iso_639_1)
+                     Array(core.used_lang_code_iso_639_1)
+                   else
+                     []
+                   end
             used_strings = used.map(&:to_s)
-            duplicates = used_strings.group_by(&:itself).select { |_k, v| v.size > 1 }.keys
+            duplicates = used_strings.group_by(&:itself).select do |_k, v|
+              v.size > 1
+            end.keys
 
             duplicates.map do |dup|
               issue(

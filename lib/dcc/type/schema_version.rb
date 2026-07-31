@@ -12,13 +12,14 @@ module Dcc
         (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)
         (?:-(?<pre>[0-9A-Za-z.-]+))?
         (?:\+(?<build>[0-9A-Za-z.-]+))?
-      \z/x.freeze
+      \z/x
 
       def self.cast(value)
         return nil unless value.is_a?(::String) && value != ""
 
         unless PATTERN.match?(value)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "invalid schemaVersion")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "invalid schemaVersion")
         end
 
         value

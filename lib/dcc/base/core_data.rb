@@ -11,8 +11,10 @@ module Dcc
           attribute :ref_id, :string
           attribute :ref_type, :string
           attribute :country_code_iso_3166_1, ::Dcc::Type::IsoCountryCode
-          attribute :used_lang_code_iso_639_1, ::Dcc::Type::IsoLanguageCode, collection: true
-          attribute :mandatory_lang_code_iso_639_1, ::Dcc::Type::IsoLanguageCode, collection: true
+          attribute :used_lang_code_iso_639_1, ::Dcc::Type::IsoLanguageCode,
+                    collection: true
+          attribute :mandatory_lang_code_iso_639_1,
+                    ::Dcc::Type::IsoLanguageCode, collection: true
           attribute :unique_identifier, :string
           attribute :identifications, :identifications
           attribute :receipt_date, :date
@@ -29,7 +31,8 @@ module Dcc
             map_attribute "refType", to: :ref_type
             map_element "countryCodeISO3166_1", to: :country_code_iso_3166_1
             map_element "usedLangCodeISO639_1", to: :used_lang_code_iso_639_1
-            map_element "mandatoryLangCodeISO639_1", to: :mandatory_lang_code_iso_639_1
+            map_element "mandatoryLangCodeISO639_1",
+                        to: :mandatory_lang_code_iso_639_1
             map_element "uniqueIdentifier", to: :unique_identifier
             map_element "identifications", to: :identifications
             map_element "receiptDate", to: :receipt_date

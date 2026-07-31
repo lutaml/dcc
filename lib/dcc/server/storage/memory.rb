@@ -20,7 +20,8 @@ module Dcc
         # @return [Dcc::Server::Storage::Entry]
         def put(xml)
           id = ::Digest::SHA256.hexdigest(xml)
-          entry = Entry.new(id: id, xml: xml, expires_at: Time.now + ttl_seconds)
+          entry = Entry.new(id: id, xml: xml,
+                            expires_at: Time.now + ttl_seconds)
           @store[id] = entry
           entry
         end

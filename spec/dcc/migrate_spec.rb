@@ -14,6 +14,6 @@ RSpec.describe Dcc::Migrate do
   it "raises UnknownVersionError for unsupported target" do
     dcc = Dcc.parse(File.read(fixtures_path("dcclib", "valid.xml")))
     expect { described_class.call(dcc, from: "3.3.0", to: "9.9.9") }
-      .to raise_error(::Dcc::UnknownVersionError, /Unsupported DCC version/)
+      .to raise_error(Dcc::UnknownVersionError, /Unsupported DCC version/)
   end
 end

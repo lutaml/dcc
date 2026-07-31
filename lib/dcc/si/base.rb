@@ -18,7 +18,8 @@ module Dcc
       autoload :ExpandedMU, "dcc/si/base/expanded_mu"
       autoload :CoverageIntervalMU, "dcc/si/base/coverage_interval_mu"
       autoload :ExpandedUncXmlList, "dcc/si/base/expanded_unc_xml_list"
-      autoload :MeasurementUncertaintyUnivariate, "dcc/si/base/measurement_uncertainty_univariate"
+      autoload :MeasurementUncertaintyUnivariate,
+               "dcc/si/base/measurement_uncertainty_univariate"
     end
   end
 end

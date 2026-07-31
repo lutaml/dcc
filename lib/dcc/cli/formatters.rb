@@ -14,7 +14,7 @@ module Dcc
         when "json" then puts object.to_json
         when "yaml" then puts object.to_yaml
         else
-          puts object.to_s
+          puts object
         end
       end
 
@@ -34,7 +34,8 @@ module Dcc
         table = ::TTY::Table.new(
           ["Index", "Name", "File Name", "MIME", "Ring", "Size"],
           files.each_with_index.map do |f, i|
-            [i, f.name.to_s, f.file_name.to_s, f.mime_type.to_s, f.ring, f.data.bytesize]
+            [i, f.name.to_s, f.file_name.to_s, f.mime_type.to_s, f.ring,
+             f.data.bytesize]
           end,
         )
         puts table.render
@@ -45,8 +46,9 @@ module Dcc
 
       def print_files_plain(files)
         # Widths
-        widths = ["Index".size, "Name".size, "File Name".size, "MIME".size, "Ring".size, "Size".size]
-        rows = files.each_with_index.map do |f, i|
+        widths = ["Index".size, "Name".size, "File Name".size, "MIME".size,
+                  "Ring".size, "Size".size]
+        files.each_with_index.map do |f, i|
           [
             i.to_s,
             f.name.to_s,

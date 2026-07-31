@@ -42,7 +42,7 @@ module Dcc
     end
 
     def root_element_symbol
-      self.const_get(:ROOT_ELEMENT_TAG).to_sym
+      const_get(:ROOT_ELEMENT_TAG).to_sym
     end
   end
 end

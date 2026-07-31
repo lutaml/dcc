@@ -42,7 +42,8 @@ RSpec.describe Dcc::Signature do
     let(:cert_pem) { File.read(fixtures_path("dcclib", "certs", "cert.pem")) }
 
     it "verifies a freshly signed document" do
-      signed = Dcc::Signature::Signer.call(xml, cert_pem: cert_pem, key_pem: key_pem)
+      signed = Dcc::Signature::Signer.call(xml, cert_pem: cert_pem,
+                                                key_pem: key_pem)
       result = described_class.call(signed, ca_cert_pem: cert_pem)
       expect(result.valid?).to be(true)
     end

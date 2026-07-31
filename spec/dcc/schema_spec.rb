@@ -83,12 +83,14 @@ RSpec.describe Dcc::Schema do
 
       it "auto-detects from XML when given :auto" do
         xml = '<dcc:digitalCalibrationCertificate schemaVersion="3.1.0"/>'
-        expect(Dcc::Schema::Version.resolve_dcc("auto", xml: xml)).to eq("3.1.0")
+        expect(Dcc::Schema::Version.resolve_dcc("auto",
+                                                xml: xml)).to eq("3.1.0")
       end
 
       it "raises UnknownVersionError for unknown versions" do
         expect { Dcc::Schema::Version.resolve_dcc("9.9.9") }
-          .to raise_error(Dcc::UnknownVersionError, /Unknown DCC schema version/)
+          .to raise_error(Dcc::UnknownVersionError,
+                          /Unknown DCC schema version/)
       end
     end
 

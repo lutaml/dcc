@@ -33,7 +33,10 @@ RSpec.describe Dcc::Cli::Cli do
 
     it "writes to a file with --output" do
       outfile = Tempfile.new(["out", ".json"]).path
-      capture_stdout_and_exit { described_class.start(["convert", "json", valid_file, "--output", outfile]) }
+      capture_stdout_and_exit do
+        described_class.start(["convert", "json", valid_file, "--output",
+                               outfile])
+      end
       payload = File.read(outfile)
       expect(payload).to include("1234")
       File.unlink(outfile)
@@ -70,7 +73,9 @@ RSpec.describe Dcc::Cli::Cli do
   describe "diff" do
     it "compares two files" do
       expect do
-        capture_stdout_and_exit { described_class.start(["diff", valid_file, valid_file]) }
+        capture_stdout_and_exit do
+          described_class.start(["diff", valid_file, valid_file])
+        end
       end.not_to raise_error
     end
   end
@@ -79,20 +84,20 @@ RSpec.describe Dcc::Cli::Cli do
 
   def capture_stdout
     original_stdout = $stdout
-    $stdout = ::StringIO.new
+    $stdout = StringIO.new
     yield
   ensure
     captured = $stdout.string
     $stdout = original_stdout
     # Only return the captured string, not whatever the block evaluated to.
-    raise "block returned a non-string; use capture_exit for that" unless captured.is_a?(::String)
+    raise "block returned a non-string; use capture_exit for that" unless captured.is_a?(String)
 
     captured
   end
 
   def capture_stdout_and_exit
     original_stdout = $stdout
-    $stdout = ::StringIO.new
+    $stdout = StringIO.new
     exit_code = nil
     begin
       yield
@@ -111,7 +116,7 @@ RSpec.describe Dcc::Cli::Cli do
 
   def capture_exit
     original_stdout = $stdout
-    $stdout = ::StringIO.new
+    $stdout = StringIO.new
     exit_code = nil
     begin
       yield

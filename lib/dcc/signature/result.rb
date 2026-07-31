@@ -19,7 +19,7 @@ module Dcc
 
       def to_s
         if valid?
-          "Signature valid#{certificate_pem ? " (cert: #{certificate_pem.lines.first&.strip})" : ''}"
+          "Signature valid#{" (cert: #{certificate_pem.lines.first&.strip})" if certificate_pem}"
         else
           "Signature INVALID"
         end

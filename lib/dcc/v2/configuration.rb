@@ -10,7 +10,7 @@ module Dcc
       # V2 DCC imports D-SI v1.x (registered as :dsi_v1). We also fall back
       # to :dsi_v2 for forward-compatible parsing.
       def self.fallback_contexts
-        [:dsi_v1, :dsi_v2, :default]
+        %i[dsi_v1 dsi_v2 default]
       end
     end
   end

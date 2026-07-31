@@ -49,21 +49,24 @@ module Dcc
         return @value.round(2).to_s("F") if uncertainty.nil?
 
         # Decimal places = 1 - floor(log10(uncertainty))
-        decimal_places = [0, 1 - Integer(Math.log10(uncertainty.to_f).floor)].max
+        decimal_places = [0,
+                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         @value.round(decimal_places).to_s("F")
       end
 
       def format_uncertainty
         return "" if uncertainty.nil?
 
-        decimal_places = [0, 1 - Integer(Math.log10(uncertainty.to_f).floor)].max
+        decimal_places = [0,
+                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         uncertainty.round(decimal_places).to_s("F")
       end
 
       def align_value_and_uncertainty
         return [@value.to_s("F"), uncertainty.to_s("F")] if uncertainty.nil?
 
-        decimal_places = [0, 1 - Integer(Math.log10(uncertainty.to_f).floor)].max
+        decimal_places = [0,
+                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         v_str = @value.round(decimal_places).to_s("F")
         u_str = uncertainty.round(decimal_places).to_s("F")
         # Short form: digits of uncertainty after the last common digit
@@ -81,9 +84,9 @@ module Dcc
         unit
           .to_s
           .gsub(/\\([a-z]+)/, '\\1') # \kelvin → kelvin
-          .gsub(/\\per/, '/')
-          .gsub(/\\cubic/, '^3')
-          .gsub(/\\square/, '^2')
+          .gsub("\\per", "/")
+          .gsub("\\cubic", "^3")
+          .gsub("\\square", "^2")
       end
     end
   end

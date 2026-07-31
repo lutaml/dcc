@@ -36,7 +36,10 @@ module Dcc
             node.class.attributes.each_key do |attr_name|
               value = node.public_send(attr_name)
               Array(value).each do |child|
-                declared += collect_declared_non_si_units(child, visited) if child.is_a?(::Lutaml::Model::Serializable)
+                if child.is_a?(::Lutaml::Model::Serializable)
+                  declared += collect_declared_non_si_units(child,
+                                                            visited)
+                end
               end
             end
             declared
@@ -57,7 +60,9 @@ module Dcc
             extract_non_si_unit(node, accumulator)
             node.class.attributes.each_key do |attr_name|
               value = node.public_send(attr_name)
-              Array(value).each { |child| walk_for_used_units(child, accumulator, visited) }
+              Array(value).each do |child|
+                walk_for_used_units(child, accumulator, visited)
+              end
             end
           end
 
@@ -78,5 +83,3 @@ module Dcc
     end
   end
 end
-
-require "set"

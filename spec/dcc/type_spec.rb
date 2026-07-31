@@ -58,7 +58,8 @@ RSpec.describe Dcc::Type::SiUnit do
 
     it "raises InvalidValueError when whitespace is present" do
       expect { described_class.cast("\\meter per second") }
-        .to raise_error(Lutaml::Model::Type::InvalidValueError, /whitespace not allowed/)
+        .to raise_error(Lutaml::Model::Type::InvalidValueError,
+                        /whitespace not allowed/)
     end
   end
 end
@@ -119,7 +120,8 @@ RSpec.describe Dcc::Type::DecimalXmlList do
 
   describe ".serialize" do
     it "joins values with single spaces" do
-      expect(described_class.serialize([BigDecimal("1"), BigDecimal("2"), BigDecimal("3")]))
+      expect(described_class.serialize([BigDecimal(1), BigDecimal(2),
+                                        BigDecimal(3)]))
         .to eq("1 2 3")
     end
 

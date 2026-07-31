@@ -28,8 +28,10 @@ module Dcc
             map_element "description", to: :description
             map_element "mainSigner", to: :main_signer
             map_element "cryptElectronicSeal", to: :crypt_electronic_seal
-            map_element "cryptElectronicSignature", to: :crypt_electronic_signature
-            map_element "cryptElectronicTimeStamp", to: :crypt_electronic_time_stamp
+            map_element "cryptElectronicSignature",
+                        to: :crypt_electronic_signature
+            map_element "cryptElectronicTimeStamp",
+                        to: :crypt_electronic_time_stamp
           end
         end
       end

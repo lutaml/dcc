@@ -34,7 +34,8 @@ module Dcc
     # @param registry [Lutaml::Model::TypeRegistry, nil] custom registry.
     # @param fallback_to [Array<Symbol>] fallback chain for type lookup.
     # @param substitutions [Array<Hash{from_type:, to_type:}>] type substitutions.
-    def create_context(id:, registry: nil, fallback_to: [context_id], substitutions: [])
+    def create_context(id:, registry: nil, fallback_to: [context_id],
+                       substitutions: [])
       normalized_id = ::Dcc::ContextOptions.normalize_context_reference(id)
       return populate_context! if normalized_id == context_id
 

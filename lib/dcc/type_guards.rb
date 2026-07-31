@@ -130,11 +130,11 @@ module Dcc
     end
 
     # Safe method call: invokes the method if the node's class declares it.
-    def call_if_present(node, method_name, *args)
+    def call_if_present(node, method_name, *)
       return nil unless node.is_a?(::Lutaml::Model::Serializable)
       return nil unless node.class.attributes.key?(method_name)
 
-      node.public_send(method_name, *args)
+      node.public_send(method_name, *)
     end
   end
 end

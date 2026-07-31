@@ -13,7 +13,9 @@ module Dcc
           content["_text"] || content[:_text] || content.to_s
         when ::Array
           if lang
-            entry = content.find { |c| c.is_a?(::Hash) && (c["lang"] == lang || c[:lang] == lang) }
+            entry = content.find do |c|
+              c.is_a?(::Hash) && (c["lang"] == lang || c[:lang] == lang)
+            end
             return dcc_text(entry, lang) if entry
           end
           first = content.find { |c| c.is_a?(::Hash) }

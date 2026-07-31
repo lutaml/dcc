@@ -21,7 +21,8 @@ module Dcc
                    when :xsltproc then run_xsltproc(xml_string, stylesheet)
                    when :saxon then run_saxon(xml_string, stylesheet)
                    else
-                     raise ::ArgumentError, "unknown XSLT engine: #{engine.inspect}"
+                     raise ::ArgumentError,
+                           "unknown XSLT engine: #{engine.inspect}"
                    end
           ::Dcc::Transform::Result.new(payload: output, engine: engine)
         end
@@ -31,22 +32,31 @@ module Dcc
         def run_xsltproc(xml, stylesheet)
           ensure_tool!("xsltproc")
           xsl_path = stylesheet_path(stylesheet)
-          out, status = ::Open3.capture2("xsltproc", xsl_path, "-", stdin_data: xml)
-          raise ::Dcc::TransformError, "xsltproc failed: #{status}" unless status.success?
+          out, status = ::Open3.capture2("xsltproc", xsl_path, "-",
+                                         stdin_data: xml)
+          unless status.success?
+            raise ::Dcc::TransformError,
+                  "xsltproc failed: #{status}"
+          end
 
           out
         end
 
         def run_saxon(xml, stylesheet)
-          jar = ENV["SAXON_JAR"]
-          raise ::Dcc::MissingDependencyError.new(gem_name: "saxon-he",
-                                                  feature: "XSLT 2.0/3.0"),
-                "SAXON_JAR env var is required for the :saxon engine" unless jar
+          jar = ENV.fetch("SAXON_JAR", nil)
+          unless jar
+            raise ::Dcc::MissingDependencyError.new(gem_name: "saxon-he",
+                                                    feature: "XSLT 2.0/3.0"),
+                  "SAXON_JAR env var is required for the :saxon engine"
+          end
 
           xsl_path = stylesheet_path(stylesheet)
           cmd = ["java", "-jar", jar, "-s:-", "-xsl:#{xsl_path}"]
           out, status = ::Open3.capture2(*cmd, stdin_data: xml)
-          raise ::Dcc::TransformError, "saxon failed: #{status}" unless status.success?
+          unless status.success?
+            raise ::Dcc::TransformError,
+                  "saxon failed: #{status}"
+          end
 
           out
         end

@@ -4,7 +4,9 @@ require "spec_helper"
 
 RSpec.describe Dcc::Validate::Schematron do
   let(:valid_xml) { File.read(fixtures_path("dcclib", "valid.xml")) }
-  let(:invalid_xml) { File.read(fixtures_path("dcclib", "invalid_schematron.xml")) }
+  let(:invalid_xml) do
+    File.read(fixtures_path("dcclib", "invalid_schematron.xml"))
+  end
 
   before { Dcc::V3.load_all! }
 
@@ -43,7 +45,9 @@ RSpec.describe Dcc::Validate::Schematron do
 end
 
 RSpec.describe Dcc::Validate::Schematron::Rules::DateRangeCheck do
-  let(:dcc) { Dcc.parse(File.read(fixtures_path("dcclib", "invalid_schematron.xml"))) }
+  let(:dcc) do
+    Dcc.parse(File.read(fixtures_path("dcclib", "invalid_schematron.xml")))
+  end
 
   before { Dcc::V3.load_all! }
 

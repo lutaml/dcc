@@ -16,12 +16,12 @@ RSpec.describe Dcc::Convert::Json do
       expect(result.format).to eq(:json)
       expect(result.payload).to be_a(String)
 
-      parsed = ::JSON.parse(result.payload)
+      parsed = JSON.parse(result.payload)
       expect(parsed).to be_a(Hash)
     end
 
     it "includes key fields" do
-      parsed = ::JSON.parse(described_class.call(dcc).payload)
+      parsed = JSON.parse(described_class.call(dcc).payload)
       admin = parsed["administrativeData"]
       expect(admin["coreData"]["uniqueIdentifier"]).to eq("1234")
     end
@@ -34,7 +34,7 @@ RSpec.describe Dcc::Convert::Json do
 
     it "round-trips through JSON" do
       payload = described_class.call(dcc).payload
-      parsed = ::JSON.parse(payload)
+      parsed = JSON.parse(payload)
       admin = parsed["administrativeData"]
       expect(admin["coreData"]["countryCodeISO3166_1"]).to eq("DE")
     end
@@ -42,10 +42,11 @@ RSpec.describe Dcc::Convert::Json do
 end
 
 RSpec.describe Dcc::Convert::Result do
-  let(:payload) { '{"key":"value"}' }
   subject(:result) do
     described_class.new(format: :json, payload: payload, source_class: "Dcc::V3::DigitalCalibrationCertificate")
   end
+
+  let(:payload) { '{"key":"value"}' }
 
   describe "#to_s" do
     it "returns the raw payload" do

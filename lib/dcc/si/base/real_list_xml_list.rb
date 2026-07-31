@@ -31,11 +31,13 @@ module Dcc
               map_element "quantityTypeXMLList", to: :quantity_type_xml_list
               map_element "valueXMLList", to: :value_xml_list
               map_element "unitXMLList", to: :unit_xml_list
-              map_element "significantDigitXMLList", to: :significant_digit_xml_list
+              map_element "significantDigitXMLList",
+                          to: :significant_digit_xml_list
               map_element "dateTimeXMLList", to: :date_time_xml_list
               map_element "expandedUncXMLList", to: :expanded_unc_xml_list
               map_element "standardMUXMLList", to: :standard_mu_xml_list
-              map_element "coverageIntervalMUXMLList", to: :coverage_interval_mu_xml_list
+              map_element "coverageIntervalMUXMLList",
+                          to: :coverage_interval_mu_xml_list
             end
           end
         end

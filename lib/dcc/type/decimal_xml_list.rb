@@ -36,7 +36,13 @@ module Dcc
 
         def serialize_one(value)
           case value
-          when ::BigDecimal then value.to_i.to_s == value.to_s("F") ? value.to_i.to_s : value.to_s("F").sub(/\.0\z/, "")
+          when ::BigDecimal then if value.to_i.to_s == value.to_s("F")
+                                   value.to_i.to_s
+                                 else
+                                   value.to_s("F").sub(
+                                     /\.0\z/, ""
+                                   )
+                                 end
           when ::Float then format("%.15g", value)
           else value.to_s
           end

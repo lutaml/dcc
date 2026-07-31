@@ -7,7 +7,8 @@ module Dcc
     # `Dcc::Convert::Csv` flattens a parsed DCC into a tabular CSV with
     # one row per measurement quantity.
     module Csv
-      HEADERS = %w[result_name quantity_name quantity_type value unit uncertainty coverage_factor].freeze
+      HEADERS = %w[result_name quantity_name quantity_type value unit
+                   uncertainty coverage_factor].freeze
 
       class << self
         # @param dcc [Lutaml::Model::Serializable]
@@ -31,7 +32,8 @@ module Dcc
 
         def collect_quantities(dcc)
           rows = []
-          return rows unless Dcc::TypeGuards.has_attribute?(dcc, :measurement_results)
+          return rows unless Dcc::TypeGuards.has_attribute?(dcc,
+                                                            :measurement_results)
 
           Array(dcc.measurement_results.measurement_result).each do |mr|
             mr_name = name_of(mr)
@@ -53,7 +55,9 @@ module Dcc
           walk_quantities(Array(data.quantity), mr_name, result_name, rows)
           Array(data.list).each do |list|
             walk_quantities(Array(list.quantity), mr_name, result_name, rows)
-            Array(list.list).each { |sub| walk_data(sub, mr_name, result_name, rows) }
+            Array(list.list).each do |sub|
+              walk_data(sub, mr_name, result_name, rows)
+            end
           end
         end
 
@@ -63,10 +67,10 @@ module Dcc
           end
         end
 
-        def push_quantity(q, mr_name, result_name, kind, rows)
+        def push_quantity(q, mr_name, _result_name, kind, rows)
           rows << [
             mr_name, name_of(q), kind,
-            value_of(q), unit_of(q), uncertainty_of(q), k_factor_of(q),
+            value_of(q), unit_of(q), uncertainty_of(q), k_factor_of(q)
           ]
         end
 
@@ -74,11 +78,21 @@ module Dcc
           return "" unless node && Dcc::TypeGuards.has_attribute?(node, :name)
           return "" unless node.name
 
-          content = Dcc::TypeGuards.has_attribute?(node.name, :content) ? node.name.content : []
+          content = if Dcc::TypeGuards.has_attribute?(node.name,
+                                                      :content)
+                      node.name.content
+                    else
+                      []
+                    end
           first = Array(content).first
           return "" unless first
 
-          vals = Dcc::TypeGuards.has_attribute?(first, :value) ? first.value : []
+          vals = if Dcc::TypeGuards.has_attribute?(first,
+                                                   :value)
+                   first.value
+                 else
+                   []
+                 end
           Array(vals).first.to_s
         end
 

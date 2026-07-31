@@ -19,7 +19,8 @@ module Dcc
             map_attribute "id", to: :id
             map_attribute "refId", to: :ref_id
             map_attribute "refType", to: :ref_type
-            map_element "calibrationLaboratoryCode", to: :calibration_laboratory_code
+            map_element "calibrationLaboratoryCode",
+                        to: :calibration_laboratory_code
             map_element "contact", to: :contact
           end
         end

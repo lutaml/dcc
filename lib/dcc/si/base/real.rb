@@ -25,7 +25,8 @@ module Dcc
             attribute :unit, ::Dcc::Type::SiUnit
             attribute :significant_digit, :integer
             attribute :date_time, :date_time
-            attribute :measurement_uncertainty_univariate, :measurementUncertaintyUnivariate
+            attribute :measurement_uncertainty_univariate,
+                      :measurementUncertaintyUnivariate
 
             xml do
               namespace ::Dcc::Namespace::Si
@@ -38,7 +39,8 @@ module Dcc
               map_element "unit", to: :unit
               map_element "significantDigit", to: :significant_digit
               map_element "dateTime", to: :date_time
-              map_element "measurementUncertaintyUnivariate", to: :measurement_uncertainty_univariate
+              map_element "measurementUncertaintyUnivariate",
+                          to: :measurement_uncertainty_univariate
             end
           end
         end

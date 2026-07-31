@@ -15,7 +15,9 @@ module Dcc
 
         # @return [String] rule code used in `Issue#code`.
         def code
-          "dcc.schematron.#{self.class.name.split('::').last.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').gsub(/([a-z\d])([A-Z])/, '\1_\2').downcase}"
+          "dcc.schematron.#{self.class.name.split('::').last.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').gsub(
+            /([a-z\d])([A-Z])/, '\1_\2'
+          ).downcase}"
         end
 
         # @param dcc [Lutaml::Model::Serializable]
@@ -32,7 +34,8 @@ module Dcc
           # Override in subclasses to traverse the model tree.
         end
 
-        def issue(severity:, message:, line: nil, column: nil, path: nil, source: "schematron")
+        def issue(severity:, message:, line: nil, column: nil, path: nil,
+                  source: "schematron")
           ::Dcc::Validate::Issue.build(
             severity: severity,
             message: message,

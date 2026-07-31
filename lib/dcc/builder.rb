@@ -23,10 +23,10 @@ module Dcc
       # @param version [Integer, nil] major DCC version (default: 3).
       # @yield [Dcc::Builder::Session] builder session.
       # @return [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]
-      def call(version: 3, &block)
+      def call(version: 3, &)
         ::Dcc.load_all!
         session = Session.new(version: version)
-        session.instance_eval(&block) if block_given?
+        session.instance_eval(&) if block_given?
         session.build
       end
     end

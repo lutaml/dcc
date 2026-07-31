@@ -53,7 +53,8 @@ module Dcc
     autoload :MeasurementResult, "dcc/v2/measurement_result"
     autoload :MeasurementResultList, "dcc/v2/measurement_result_list"
     autoload :AdministrativeData, "dcc/v2/administrative_data"
-    autoload :DigitalCalibrationCertificate, "dcc/v2/digital_calibration_certificate"
+    autoload :DigitalCalibrationCertificate,
+             "dcc/v2/digital_calibration_certificate"
 
     ROOT_ELEMENT_TAG = "digitalCalibrationCertificate"
 

@@ -19,5 +19,5 @@ group :optional do
   gem "tty-prompt"   # dcc issue (interactive builder)
 end
 
-gem "rackup", "~> 2.3"
 gem "puma", "~> 8.0"
+gem "rackup", "~> 2.3"

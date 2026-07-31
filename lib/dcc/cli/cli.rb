@@ -27,7 +27,8 @@ module Dcc
         true
       end
 
-      desc "validate SCHEMA FILE", "Validate a DCC XML against XSD, Schematron, or both"
+      desc "validate SCHEMA FILE",
+           "Validate a DCC XML against XSD, Schematron, or both"
       long_desc <<~DESC
         Validates the given DCC XML file.
 
@@ -37,20 +38,21 @@ module Dcc
           $ dcc validate all cert.xml
       DESC
       method_option :version, type: :string, default: "auto",
-                    desc: "Schema version (e.g. '3.3.0', 'auto')"
+                              desc: "Schema version (e.g. '3.3.0', 'auto')"
       method_option :format, type: :string, default: "text",
-                    enum: %w[text json yaml]
+                             enum: %w[text json yaml]
       def validate(schema, file)
         Cli.ensure_loaded!
         xml = File.read(file)
         version = options[:version]
         result =
           case schema
-          when "xsd"        then ::Dcc::Validate::Xsd.call(xml, version: version)
+          when "xsd"        then ::Dcc::Validate::Xsd.call(xml,
+                                                           version: version)
           when "schematron" then ::Dcc::Validate::Schematron.call(Dcc.parse(xml))
           when "all"
             ::Dcc::Validate::Xsd.call(xml, version: version)
-                   .merge(::Dcc::Validate::Schematron.call(Dcc.parse(xml)))
+              .merge(::Dcc::Validate::Schematron.call(Dcc.parse(xml)))
           else
             abort "Unknown validation target: #{schema} (expected xsd|schematron|all)"
           end
@@ -58,9 +60,10 @@ module Dcc
         exit(1) unless result.ok?
       end
 
-      desc "convert FORMAT FILE", "Convert a DCC XML file to json / yaml / csv / html"
+      desc "convert FORMAT FILE",
+           "Convert a DCC XML file to json / yaml / csv / html"
       method_option :output, type: :string, banner: "PATH",
-                    desc: "Write output to a file instead of stdout"
+                             desc: "Write output to a file instead of stdout"
       def convert(format, file)
         Cli.ensure_loaded!
         xml = File.read(file)
@@ -80,19 +83,24 @@ module Dcc
         end
       end
 
-      desc "extract TARGET FILE", "Extract embedded files or quantities from a DCC"
+      desc "extract TARGET FILE",
+           "Extract embedded files or quantities from a DCC"
       method_option :index, type: :numeric, desc: "Index of the file to extract"
       method_option :output, type: :string, banner: "PATH",
-                    desc: "Write extracted payload to PATH"
+                             desc: "Write extracted payload to PATH"
       method_option :ring, type: :string,
-                    enum: %w[administrativeData measurementResults comment document]
+                           enum: %w[administrativeData measurementResults comment document]
       def extract(target, file)
         Cli.ensure_loaded!
         dcc = Dcc.parse(File.read(file))
         case target
         when "files"
           files = ::Dcc::Extract::File.each(dcc)
-          files = files.select { |f| f.ring.to_s == options[:ring] } if options[:ring]
+          if options[:ring]
+            files = files.select do |f|
+              f.ring.to_s == options[:ring]
+            end
+          end
           if options[:index]
             f = files[options[:index].to_i] || abort("No file at index #{options[:index]}")
             output_to(f.data, options[:output], f.file_name)
@@ -106,7 +114,7 @@ module Dcc
 
       desc "inspect FILE", "Show a human-readable summary of a DCC"
       method_option :format, type: :string, default: "text",
-                    enum: %w[text json yaml]
+                             enum: %w[text json yaml]
       def inspect(file)
         Cli.ensure_loaded!
         dcc = Dcc.parse(File.read(file))
@@ -116,7 +124,7 @@ module Dcc
 
       desc "diff FILE1 FILE2", "Compare two DCC files structurally"
       method_option :format, type: :string, default: "text",
-                    enum: %w[text json]
+                             enum: %w[text json]
       def diff(file1, file2)
         Cli.ensure_loaded!
         dcc1 = Dcc.parse(File.read(file1))
@@ -127,7 +135,8 @@ module Dcc
 
       desc "serve", "Start the DCC web validator (http://localhost:4567)"
       method_option :port, type: :numeric, default: 4567, desc: "Port"
-      method_option :bind, type: :string, default: "0.0.0.0", desc: "Bind address"
+      method_option :bind, type: :string, default: "0.0.0.0",
+                           desc: "Bind address"
       def serve
         require "dcc/server"
         ::Dcc.load_all!

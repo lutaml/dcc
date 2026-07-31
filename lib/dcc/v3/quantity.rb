@@ -19,8 +19,10 @@ module Dcc::V3
     attribute :complex, ::Dcc::Si::V2::Complex, collection: true
     attribute :constant, ::Dcc::Si::V2::Constant, collection: true
     attribute :hybrid, ::Dcc::Si::V2::Hybrid, collection: true
-    attribute :real_list_xml_list, ::Dcc::Si::V2::RealListXmlList, collection: true
-    attribute :complex_list_xml_list, ::Dcc::Si::V2::ComplexListXmlList, collection: true
+    attribute :real_list_xml_list, ::Dcc::Si::V2::RealListXmlList,
+              collection: true
+    attribute :complex_list_xml_list, ::Dcc::Si::V2::ComplexListXmlList,
+              collection: true
     attribute :list, ::Dcc::Si::V2::SiList, collection: true
 
     xml do

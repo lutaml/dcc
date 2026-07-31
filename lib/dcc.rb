@@ -74,8 +74,8 @@ module Dcc
     # Build a new DCC programmatically using the builder DSL.
     # @yield [Dcc::Builder::Session] builder session
     # @param version [Integer, nil] major DCC version (default: 3).
-    def build(version: 3, &block)
-      Builder.call(version: version, &block)
+    def build(version: 3, &)
+      Builder.call(version: version, &)
     end
 
     # Migrate a parsed DCC object from one schema version to another.
@@ -94,7 +94,8 @@ module Dcc
       when 2 then V2
       when 3 then V3
       else
-        raise UnknownVersionError, "Unsupported DCC version: #{version.inspect} (expected 2 or 3)"
+        raise UnknownVersionError,
+              "Unsupported DCC version: #{version.inspect} (expected 2 or 3)"
       end
     end
 

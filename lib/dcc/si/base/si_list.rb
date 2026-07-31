@@ -13,7 +13,8 @@ module Dcc
             attribute :date_time, :date_time
             attribute :real_list, :real, collection: true
             attribute :real_list_xml_list, :realListXMLList, collection: true
-            attribute :complex_list_xml_list, :complexListXMLList, collection: true
+            attribute :complex_list_xml_list, :complexListXMLList,
+                      collection: true
             attribute :list, :list, collection: true
 
             xml do

@@ -19,7 +19,8 @@ module Dcc
               ordered
               map_element "uncertaintyXMLList", to: :uncertainty_xml_list
               map_element "coverageFactorXMLList", to: :coverage_factor_xml_list
-              map_element "coverageProbabilityXMLList", to: :coverage_probability_xml_list
+              map_element "coverageProbabilityXMLList",
+                          to: :coverage_probability_xml_list
               map_element "distributionXMLList", to: :distribution_xml_list
             end
           end

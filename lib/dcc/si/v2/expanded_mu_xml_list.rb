@@ -14,7 +14,8 @@ module Dcc::Si::V2
       ordered
       map_element "valueExpandedMUXMLList", to: :value_expanded_mu_xml_list
       map_element "coverageFactorXMLList", to: :coverage_factor_xml_list
-      map_element "coverageProbabilityXMLList", to: :coverage_probability_xml_list
+      map_element "coverageProbabilityXMLList",
+                  to: :coverage_probability_xml_list
       map_element "distributionXMLList", to: :distribution_xml_list
     end
   end

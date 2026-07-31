@@ -27,7 +27,9 @@ module Dcc
           resolved = ::Dcc::Schema::Version.resolve_dcc(version, xml: xml)
           schema = schema_for(resolved)
           doc = parse_xml(xml)
-          errors = schema.validate(doc).map { |e| issue_from_nokogiri(e, resolved) }
+          errors = schema.validate(doc).map do |e|
+            issue_from_nokogiri(e, resolved)
+          end
 
           ::Dcc::Validate::Result.new(
             issues: errors,
@@ -60,7 +62,9 @@ module Dcc
           content = ::File.read(xsd_path)
           content.gsub(/schemaLocation\s*=\s*"([^"]+)"/) do |_match|
             relative = ::Regexp.last_match(1)
-            next %{schemaLocation="#{relative}"} if relative.start_with?("http", "file://")
+            next %{schemaLocation="#{relative}"} if relative.start_with?(
+              "http", "file://"
+            )
 
             absolute = ::File.expand_path(relative, base_dir)
             uri_path = absolute.gsub(::File::ALT_SEPARATOR || "\\", "/")

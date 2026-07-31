@@ -38,7 +38,8 @@ RSpec.describe Dcc::Plugin do
     it "lists categories in use" do
       described_class.register(:validators, SamplePlugin)
       described_class.register(:converters, SamplePlugin)
-      expect(Dcc::Plugin::Registry.categories).to include(:validators, :converters)
+      expect(Dcc::Plugin::Registry.categories).to include(:validators,
+                                                          :converters)
     end
   end
 end

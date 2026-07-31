@@ -18,7 +18,9 @@ module Dcc
         # @param lang [String, nil] requested ISO 639-1 code.
         # @return [String, nil]
         def call(text_obj, dcc: nil, lang: nil)
-          return nil unless text_obj && Dcc::TypeGuards.has_attribute?(text_obj, :content)
+          return nil unless text_obj && Dcc::TypeGuards.has_attribute?(
+            text_obj, :content
+          )
 
           contents = Array(text_obj.content)
           return nil if contents.empty?
@@ -49,10 +51,12 @@ module Dcc
         end
 
         def declared_languages(dcc)
-          return [] unless dcc && Dcc::TypeGuards.has_attribute?(dcc, :administrative_data)
+          return [] unless dcc && Dcc::TypeGuards.has_attribute?(dcc,
+                                                                 :administrative_data)
 
           admin = dcc.administrative_data
-          return [] unless admin && Dcc::TypeGuards.has_attribute?(admin, :core_data)
+          return [] unless admin && Dcc::TypeGuards.has_attribute?(admin,
+                                                                   :core_data)
 
           core = admin.core_data
           return [] unless core

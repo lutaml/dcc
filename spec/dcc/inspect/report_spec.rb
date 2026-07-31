@@ -3,9 +3,10 @@
 require "spec_helper"
 
 RSpec.describe Dcc::Inspect::Report do
+  subject(:report) { described_class.call(dcc) }
+
   let(:xml) { File.read(fixtures_path("dcclib", "valid.xml")) }
   let(:dcc) { Dcc.parse(xml) }
-  subject(:report) { described_class.call(dcc) }
 
   before { Dcc::V3.load_all! }
 
@@ -33,7 +34,7 @@ RSpec.describe Dcc::Inspect::Report do
 
   describe "#to_json" do
     it "produces valid JSON with the report fields" do
-      payload = ::JSON.parse(report.to_json)
+      payload = JSON.parse(report.to_json)
       expect(payload["unique_identifier"]).to eq("1234")
       expect(payload["item_count"]).to eq(1)
     end

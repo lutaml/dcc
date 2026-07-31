@@ -7,13 +7,14 @@ module Dcc
     # ISO 639-1 language code (two lowercase letters, e.g. `"en"`).
     # Used by `dcc:usedLangCodeISO639_1` and `dcc:mandatoryLangCodeISO639_1`.
     class IsoLanguageCode < Lutaml::Model::Type::String
-      PATTERN = /\A[a-z]{2}\z/.freeze
+      PATTERN = /\A[a-z]{2}\z/
 
       def self.cast(value)
         return nil unless value.is_a?(::String) && value != ""
 
         unless PATTERN.match?(value)
-          raise Lutaml::Model::Type::InvalidValueError.new(value, "invalid ISO 639-1 language code: #{value.inspect}")
+          raise Lutaml::Model::Type::InvalidValueError.new(value,
+                                                           "invalid ISO 639-1 language code: #{value.inspect}")
         end
 
         value

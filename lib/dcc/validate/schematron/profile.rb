@@ -45,7 +45,10 @@ module Dcc
 
           ::Dcc::Validate::Result.new(
             issues: issues,
-            schema_version: Dcc::TypeGuards.has_attribute?(dcc, :schema_version) ? dcc.schema_version.to_s : nil,
+            schema_version: if Dcc::TypeGuards.has_attribute?(dcc,
+                                                              :schema_version)
+                              dcc.schema_version.to_s
+                            end,
             source: "schematron",
           )
         end

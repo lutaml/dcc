@@ -13,7 +13,8 @@ module Dcc
     # @param register [Symbol, String, nil] deprecated alias for `context:`.
     # @param default_context [Symbol, nil] returned when neither is given.
     # @param warning_source [String] caller name for deprecation warnings.
-    def normalize_context_option(context:, register:, default_context:, warning_source:)
+    def normalize_context_option(context:, register:, default_context:,
+                                 warning_source:)
       raise_if_conflicting!(context, register)
       return normalize_context_reference(register) || default_context if register
       return default_context unless context_specified?(context)
@@ -29,7 +30,8 @@ module Dcc
       return reference.to_sym if reference.is_a?(String)
       return reference.id.to_sym if reference.is_a?(::Lutaml::Xml::Namespace)
 
-      raise ArgumentError, "Unsupported context/register reference: #{reference.inspect}"
+      raise ArgumentError,
+            "Unsupported context/register reference: #{reference.inspect}"
     end
 
     def context_specified?(context)

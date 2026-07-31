@@ -24,7 +24,8 @@ module Dcc
       # @param column [Integer, nil] XML column number if known.
       # @param path [String, nil] XPath / element path if known.
       # @param source [String, nil] validator name (e.g. "xsd", "schematron").
-      def self.build(severity:, message:, code: nil, line: nil, column: nil, path: nil, source: nil)
+      def self.build(severity:, message:, code: nil, line: nil, column: nil,
+                     path: nil, source: nil)
         new(
           severity: ::Dcc::Validate::Severity.normalize(severity),
           message: message,
