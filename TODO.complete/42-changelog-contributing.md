@@ -1,6 +1,11 @@
 # 42 — Add CHANGELOG + CONTRIBUTING + LICENSE note (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `CHANGELOG.adoc`'s `[Unreleased]` section is inaccurate. It claims YARD
+  documentation throughout the public API (phase 41 is incomplete) and
+  performance memoization for hot paths (phase 43 is not started).
 
 ## Goal
 Project-level docs for users and contributors.

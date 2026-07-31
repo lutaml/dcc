@@ -1,6 +1,13 @@
 # 17 — JSON converter (P1)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- There is no `style:` parameter. `lib/dcc/convert/json.rb:11` is
+  `def call(dcc, pretty: true)`, so neither `:ptb_compatible` nor `:lutaml`
+  can be selected.
+- Conversion re-serializes to XML and walks the tree (`xml_to_hash`) rather
+  than using lutaml-model's JSON mapping DSL.
 
 ## Goal
 Convert a parsed DCC into JSON. Two styles: `:ptb_compatible` (matches PTB `JSONConverter` output) and `:lutaml` (uses lutaml-model's JSON mapping DSL directly).

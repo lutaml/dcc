@@ -13,4 +13,5 @@ for `Dcc::V2::Quantity` against D-SI v1.
 
 ## Verification
 - Parse a v2 fixture with embedded D-SI quantities
-- Spec covers V2 quantity access
+- (Not covered: the only spec naming `Dcc::V2` is `spec/dcc_spec.rb`, asserting
+  `parser_for(2)` returns the module. Nothing reaches a v2 quantity.)

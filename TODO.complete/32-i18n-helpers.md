@@ -1,6 +1,13 @@
 # 32 — i18n / multilingual navigation helpers (P3)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- `TextLookup.call` never raises. Missing mandatory-language coverage falls
+  through to the first content element regardless of language, which is the
+  failure this helper was meant to catch.
+- The signature is `call(text_obj, dcc:, lang:)`; there is no `fallback:`
+  parameter.
 
 ## Goal
 Pick the best language from `dcc:textType`, validate language coverage, and provide fallback rules for multilingual content.
@@ -17,4 +24,7 @@ Pick the best language from `dcc:textType`, validate language coverage, and prov
 - 12.
 
 ## Verification
-- Spec covers happy path + missing-language fallback + mandatory-coverage failure.
+- Spec covers the happy path: a requested language, `lang: nil` falling back to the
+  declared ones, and nil input.
+- (Not covered: `spec/dcc/i18n/text_lookup_spec.rb` has three examples and reaches
+  neither missing-language fallback nor any mandatory-coverage failure.)

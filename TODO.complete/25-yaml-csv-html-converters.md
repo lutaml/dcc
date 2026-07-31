@@ -1,6 +1,12 @@
 # 25 — YAML/CSV/HTML converters (P2)
 
-**Status:** COMPLETED
+**Status:** PARTIAL
+
+## Gaps
+- The HTML report is a flat table.
+  `lib/dcc/convert/templates/report.liquid` has no collapsible tree — no
+  `<details>`, no toggle script — and no language selector; languages appear
+  as static cells at lines 117-118.
 
 ## Goal
 Additional output formats beyond JSON: YAML (Ruby-friendly), CSV (tabular quantity export), HTML (human-readable report).
@@ -12,7 +18,8 @@ Additional output formats beyond JSON: YAML (Ruby-friendly), CSV (tabular quanti
 
 ## Design notes
 - Each converter returns a `Dcc::Convert::Result` model — never a raw String.
-- HTML converter uses ERB templates from `lib/dcc/convert/templates/`.
+- HTML converter uses Liquid templates from `lib/dcc/convert/templates/`
+  (`report.liquid`), with helpers in `lib/dcc/convert/liquid_filters.rb`.
 
 ## Dependencies
 - 17.
