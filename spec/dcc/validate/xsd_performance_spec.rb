@@ -20,9 +20,9 @@ RSpec.describe Dcc::Validate::Xsd do
   # argument is the resolved XSD, about 50 KB each time.
   def track_builds
     allow(Nokogiri::XML::Schema)
-      .to receive(:new).and_wrap_original do |original, *args|
+      .to receive(:new).and_wrap_original do |original, *args, **kwargs|
         builds << :built
-        original.call(*args)
+        original.call(*args, **kwargs)
       end
   end
 
@@ -58,18 +58,26 @@ RSpec.describe Dcc::Validate::Xsd do
     expect(looked_up).to eq(versions.to_h { |v| [v, cache.fetch(v)] })
   end
 
-  # Pins the explicit-version entry point; the example below pins `:auto`.
-  it "keeps exactly one entry when the same version is looked up again" do
+  # Both examples warm the cache first and only then start counting, so any
+  # build recorded here is a cache miss. The keys are asserted alongside the
+  # count, so a rebuild that overwrote the entry fails too. Counting the cold
+  # build is the first example's job. This one pins the explicit-version path,
+  # the next one pins `:auto`.
+  it "reuses the cached schema when the same version is looked up again" do
     described_class.call(xml, version: "3.3.0")
+    track_builds
 
-    expect { 3.times { described_class.call(xml, version: "3.3.0") } }
-      .not_to change(cache, :keys).from(%w[3.3.0])
+    3.times { described_class.call(xml, version: "3.3.0") }
+
+    expect([builds.size, cache.keys]).to eq([0, %w[3.3.0]])
   end
 
-  it "reuses that entry when the version is auto-detected" do
+  it "reuses the cached schema when the version is auto-detected" do
     described_class.call(xml, version: "3.3.0")
+    track_builds
 
-    expect { 3.times { described_class.call(xml) } }
-      .not_to change(cache, :keys).from(%w[3.3.0])
+    3.times { described_class.call(xml) }
+
+    expect([builds.size, cache.keys]).to eq([0, %w[3.3.0]])
   end
 end
