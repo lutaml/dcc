@@ -158,6 +158,46 @@ RSpec.describe Dcc::Streaming do
       payload = '<f:b xmlns:f="urn:f"><f:c>a &lt; b &amp; c</f:c></f:b>'
       expect(blob_raw(payload)).to include("a &lt; b &amp; c")
     end
+
+    # SAX hands back an attribute value with every `&` still written as
+    # `&#38;`, and hands back namespace URIs, comments and PI data untouched.
+    # The reader has to decode one channel and leave the others alone, so
+    # these pin each channel separately. Decoding one level lower, in the
+    # shared attribute writer, passes the rows above and fails these.
+    it "keeps an ampersand in a prefixed attribute on a descendant" do
+      payload = '<f:b xmlns:f="urn:f" f:q="a&amp;b"><f:c>v</f:c></f:b>'
+      expect(blob_raw(payload)).to include('f:q="a&amp;b"')
+    end
+
+    it "keeps an ampersand in a plain attribute on a descendant" do
+      payload = '<f:b xmlns:f="urn:f"><f:c q="a&amp;b">v</f:c></f:b>'
+      expect(blob_raw(payload)).to include('q="a&amp;b"')
+    end
+
+    it "keeps an ampersand in a namespace URI" do
+      payload = '<f:b xmlns:f="http://f/?x=1&amp;y"><f:c>v</f:c></f:b>'
+      expect(blob_raw(payload)).to include('xmlns:f="http://f/?x=1&amp;y"')
+    end
+
+    # The row that separates the correct fix from the plausible wrong one: a
+    # namespace URI arrives decoded, so a literal `&#38;` in one is real text
+    # and must survive. The plain-ampersand row above cannot catch this,
+    # because it has no `&#38;` in it to corrupt.
+    it "leaves a literal ampersand reference in a namespace URI alone" do
+      payload = '<f:b xmlns:f="http://f/?x=1&amp;#38;y"><f:c>v</f:c></f:b>'
+      expect(blob_raw(payload))
+        .to include('xmlns:f="http://f/?x=1&amp;#38;y"')
+    end
+
+    it "leaves a literal ampersand reference in a comment alone" do
+      payload = '<f:b xmlns:f="urn:f"><!--a&#38;b--><f:c>v</f:c></f:b>'
+      expect(blob_raw(payload)).to include("<!--a&#38;b-->")
+    end
+
+    it "leaves a literal ampersand reference in a PI alone" do
+      payload = '<f:b xmlns:f="urn:f"><?pi a&#38;b?><f:c>v</f:c></f:b>'
+      expect(blob_raw(payload)).to include("<?pi a&#38;b?>")
+    end
   end
 
   describe "namespace resolution" do
@@ -223,6 +263,51 @@ RSpec.describe Dcc::Streaming do
       expect(stream_items(doc(item, version: "9.0.0")).first)
         .to be_a(Dcc::V3::Item)
     end
+
+    # `schemaVersion` sits on the DCC root, which is not always the document
+    # root. Reading it off the outermost element instead pins every enveloped
+    # certificate to v3.
+    it "reads the version off a certificate nested in an envelope" do
+      body = %(<env:Body>#{doc(item, version: '2.4.0')}</env:Body>)
+      xml = %(<env:Envelope xmlns:env="urn:env">#{body}</env:Envelope>)
+      expect(stream_items(xml).first).to be_a(Dcc::V2::Item)
+    end
+
+    it "defaults to v3 when the item is itself the document root" do
+      xml = %(<dcc:item #{dcc_ns} id="a"><dcc:model>M</dcc:model></dcc:item>)
+      expect(stream_items(xml).first).to be_a(Dcc::V3::Item)
+    end
+
+    # Anything inside a matched subtree is payload, not document structure —
+    # an opaque `dcc:xml` blob could carry any attribute at all.
+    it "ignores a schemaVersion on a descendant of a matched item" do
+      model = %(<dcc:model schemaVersion="2.4.0">M</dcc:model>)
+      xml = %(<dcc:d #{dcc_ns}>#{item(body: model)}</dcc:d>)
+      expect(stream_items(xml).first).to be_a(Dcc::V3::Item)
+    end
+
+    # The first document with no `schemaVersion` above it falls back to v3,
+    # and that has to stick: the model class and the context are memoised off
+    # the version at the first yield.
+    it "keeps the version settled once the first item is yielded",
+       :aggregate_failures do
+      later = %(<dcc:d schemaVersion="2.4.0">#{item(id: 'b')}</dcc:d>)
+      streamed = stream_items(%(<r #{dcc_ns}>#{item}#{later}</r>))
+      expect(streamed.map(&:id)).to eq(%w[a b])
+      expect(streamed.map(&:class)).to eq([Dcc::V3::Item, Dcc::V3::Item])
+    end
+
+    # An envelope can carry a `schemaVersion` of its own. The certificate's
+    # version has to win, not whichever attribute the parser happens to reach
+    # first.
+    it "ignores a schemaVersion on a non-DCC wrapper element",
+       :aggregate_failures do
+      meta = %(<e:meta schemaVersion="2.0.0"/>)
+      xml = %(<e:env xmlns:e="urn:e">#{meta}#{doc(item)}</e:env>)
+      streamed = stream_items(xml)
+      expect(streamed.map(&:id)).to eq(["a"])
+      expect(streamed.first).to be_a(Dcc::V3::Item)
+    end
   end
 
   describe "equivalence with direct fragment parsing" do
@@ -234,24 +319,46 @@ RSpec.describe Dcc::Streaming do
       [direct(body), stream_items(doc(%(<dcc:item #{body}))).first]
     end
 
-    # Parity alone would pass if both paths corrupted the character the same
-    # way, so each example also pins the literal it must survive as.
-    it "keeps a carriage return in text", :aggregate_failures do
-      a, b = both(%(id="x"><dcc:model>a&#xD;b</dcc:model></dcc:item>))
-      expect(b.model).to eq(a.model)
-      expect(b.model).to include("\r")
-    end
+    # Every character class an attribute or a text node can carry, paired with
+    # the literal it has to survive as. Parity alone would pass if both paths
+    # corrupted a character the same way, so each row pins the literal too.
+    #
+    # This group used to cover only the classes that already round-tripped and
+    # left out the ampersand — the one class that did not — which is how the
+    # attribute double-escape reached main behind a green suite. Adding a class
+    # here is cheaper than finding out this way again.
+    character_classes = {
+      "an escaped ampersand" => ["a&amp;b", "a&b"],
+      "a decimal ampersand reference" => ["a&#38;b", "a&b"],
+      "a hex ampersand reference" => ["a&#x26;b", "a&b"],
+      "two ampersands in one value" => ["?a=1&amp;b=2&amp;c=3",
+                                        "?a=1&b=2&c=3"],
+      "a re-escaped decimal ampersand" => ["a&amp;#38;b", "a&#38;b"],
+      "a re-escaped named ampersand" => ["a&amp;amp;b", "a&amp;b"],
+      "a re-escaped hex ampersand" => ["a&amp;#x26;b", "a&#x26;b"],
+      "a less-than" => ["a&lt;b", "a<b"],
+      "a greater-than" => ["a&gt;b", "a>b"],
+      "a double quote" => ["a&quot;b", %(a"b)],
+      "an apostrophe" => ["a&apos;b", "a'b"],
+      "a tab" => ["a&#x9;b", "a\tb"],
+      "a newline" => ["a&#xA;b", "a\nb"],
+      "a carriage return" => ["a&#xD;b", "a\rb"],
+      "an astral character" => ["a\u{1F600}b", "a\u{1F600}b"],
+      "a non-breaking space" => ["a b", "a b"],
+    }
 
-    it "keeps a newline in an attribute", :aggregate_failures do
-      a, b = both(%(id="a&#xA;b"><dcc:model>M</dcc:model></dcc:item>))
-      expect(b.id).to eq(a.id)
-      expect(b.id).to include("\n")
-    end
+    character_classes.each do |description, (source, literal)|
+      it "keeps #{description} in an attribute", :aggregate_failures do
+        a, b = both(%(id="#{source}"><dcc:model>M</dcc:model></dcc:item>))
+        expect(b.id).to eq(a.id)
+        expect(b.id).to eq(literal)
+      end
 
-    it "keeps a tab in an attribute", :aggregate_failures do
-      a, b = both(%(id="a&#x9;b"><dcc:model>M</dcc:model></dcc:item>))
-      expect(b.id).to eq(a.id)
-      expect(b.id).to include("\t")
+      it "keeps #{description} in a text node", :aggregate_failures do
+        a, b = both(%(id="x"><dcc:model>#{source}</dcc:model></dcc:item>))
+        expect(b.model).to eq(a.model)
+        expect(b.model).to eq(literal)
+      end
     end
   end
 

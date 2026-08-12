@@ -8,8 +8,10 @@ Goal below. `CONTRIBUTING.adoc` bans Nokogiri outside
 `lib/dcc/validate/xsd.rb`, so the reader could not use it. The lazy,
 constant-memory streaming this phase asked for is unaffected.
 
-Items and quantities are enumerable; results are not separately streamable.
-Reach a result through the item that owns it.
+Items and quantities are enumerable. Results are out of scope for this phase:
+there is no streaming entry point for them, and no path to one from a streamed
+item — `Item` has no result-shaped attribute, and `results` hangs off
+`MeasurementResult`.
 
 Memory is verified by `spec/support/streaming_memory_probe.rb`, which runs in
 a child process and asserts retained heap stays flat as the stream advances,

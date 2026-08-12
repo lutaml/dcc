@@ -12,6 +12,15 @@
 #
 # @example Take the first two quantities without reading the whole document
 #   Dcc::Streaming.each_quantity(io).first(2)
+#
+# Version detection differs from `Dcc.parse`. Streaming reads `schemaVersion`
+# off a real DCC element, so a certificate wrapped in an envelope is detected
+# from its own root even when the envelope carries a `schemaVersion` of its
+# own. `Dcc.detect_version` scans the document lexically instead, so it also
+# matches a `schemaVersion=` inside a comment, inside text or CDATA, on a
+# prefixed attribute such as `f:schemaVersion`, or on a foreign wrapper
+# element. The two can disagree on those documents, and streaming is the one
+# reading the schema's actual attribute. Pass `version:` to settle it.
 module Dcc
   module Streaming
     autoload :Reader, "dcc/streaming/reader"
@@ -20,8 +29,10 @@ module Dcc
       # Yield each `dcc:item` in document order.
       #
       # @param io [IO, StringIO] readable XML stream.
-      # @param version [Integer, nil] major DCC version (2 or 3). Detected
-      #   from the root `schemaVersion` attribute when nil.
+      # @param version [Integer, nil] major DCC version (2 or 3). When nil it
+      #   is detected from the first `schemaVersion` attribute seen outside a
+      #   matched subtree before the first item is yielded, and falls back to
+      #   3. See the note on version detection above.
       # @param context [Symbol, String, nil] substitution context. Defaults
       #   to the version's configured context.
       # @yieldparam [Dcc::V2::Item, Dcc::V3::Item]
@@ -40,7 +51,8 @@ module Dcc
       # not yielded on its own — it is reachable from the outer object.
       #
       # @param io [IO, StringIO] readable XML stream.
-      # @param version [Integer, nil] major DCC version (2 or 3).
+      # @param version [Integer, nil] major DCC version (2 or 3). Detected the
+      #   same way `each_item` detects it when nil.
       # @param context [Symbol, String, nil] substitution context.
       # @yieldparam [Dcc::V2::Quantity, Dcc::V3::Quantity]
       # @return [Enumerator] when no block is given.

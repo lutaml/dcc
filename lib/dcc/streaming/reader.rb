@@ -20,9 +20,10 @@ module Dcc
       # @param io [IO, StringIO] readable XML stream.
       # @param model_id [Symbol] registered model id, `:item` or `:quantity`.
       # @param version [Integer, nil] major DCC version. When nil it is read
-      #   from the root element's `schemaVersion` attribute, where the schema
-      #   puts it — unlike `Dcc.detect_version`, which scans the whole
-      #   document because it is not restricted to a single pass.
+      #   from the first `schemaVersion` attribute seen outside a matched
+      #   subtree before the first model is yielded, and falls back to 3.
+      #   `Dcc.detect_version` instead scans the whole document lexically,
+      #   because it is not restricted to a single pass.
       # @param context [Symbol, String, nil] substitution context.
       # @return [void]
       # @raise [Dcc::ParseError] if the stream is not well-formed XML. A
@@ -59,7 +60,6 @@ module Dcc
         @scopes.push(
           namespaces.empty? ? @scopes.last : @scopes.last.merge(namespaces),
         )
-        @major ||= ::Dcc.major_version_from(attributes["schemaVersion"])
         return begin_subtree(name, attributes) unless @subtree
 
         @depth += 1
@@ -96,7 +96,11 @@ module Dcc
 
       private
 
+      # Only elements outside a matched subtree get a say in the version, so a
+      # `schemaVersion` on a descendant — or inside an opaque `dcc:xml` blob —
+      # cannot choose the parser for the whole stream.
       def begin_subtree(name, attributes)
+        @major ||= schema_version_major(name, attributes)
         return unless match?(name)
 
         @depth = 0
@@ -118,8 +122,11 @@ module Dcc
       end
 
       def match?(name)
-        prefix, local = split(name)
-        local == @model_id.to_s && dcc_namespace?(@scopes.last[prefix])
+        split(name).last == @model_id.to_s && dcc_element?(name)
+      end
+
+      def dcc_element?(name)
+        dcc_namespace?(@scopes.last[split(name).first])
       end
 
       # `Dcc::Namespace::Dcc` also accepts the `.xsd` alias that older PTB
@@ -151,7 +158,28 @@ module Dcc
       end
 
       def configuration
-        ::Dcc.parser_for(@major)::Configuration
+        ::Dcc.parser_for(major)::Configuration
+      end
+
+      # `schemaVersion` sits on the DCC root, which is not always the document
+      # root — a certificate can arrive wrapped in an envelope. Only a DCC
+      # element settles the version, so a wrapper carrying a `schemaVersion`
+      # of its own does not retype the certificate nested inside it.
+      def schema_version_major(name, attributes)
+        version = attributes["schemaVersion"]
+        return unless version && dcc_element?(name)
+
+        ::Dcc.major_version_from(version)
+      end
+
+      # A document that declares `schemaVersion` nowhere falls back the way an
+      # unusable one does, so `Dcc` keeps deciding that rather than a literal
+      # repeated here. The answer is written back rather than defaulted on
+      # each read: the model class and the context are memoised off this at
+      # the first yield, so a `schemaVersion` appearing later must not move
+      # the version out from under them.
+      def major
+        @major ||= ::Dcc.major_version_from(nil)
       end
 
       # Accumulates the raw XML of a single matched subtree.
@@ -201,8 +229,25 @@ module Dcc
           namespaces.each do |prefix, href|
             write_attribute(prefix ? "xmlns:#{prefix}" : "xmlns", href)
           end
-          attributes.each { |key, value| write_attribute(key, value) }
+          attributes.each do |key, value|
+            write_attribute(key, decode_ampersands(value))
+          end
           @buffer << ">"
+        end
+
+        # SAX decodes an attribute value except for `&`, which libxml2 hands
+        # back still written as the decimal reference `&#38;` whatever form
+        # the source used. Escaping that would emit `&amp;#38;`, and the value
+        # would come back one round trip more corrupt each time. A bare `&`
+        # never reaches us, which is what makes putting it back exact rather
+        # than a guess.
+        #
+        # Namespace URIs and character data do not come through here: moxml
+        # hands those over fully decoded, and a URI carrying a literal `&#38;`
+        # would be corrupted by this substitution. Re-measure both channels if
+        # the moxml dependency moves.
+        def decode_ampersands(value)
+          value.gsub("&#38;", "&")
         end
 
         def write_attribute(name, value)
