@@ -246,7 +246,13 @@ module Dcc
         # hands those over fully decoded, and a URI carrying a literal `&#38;`
         # would be corrupted by this substitution. Re-measure both channels if
         # the moxml dependency moves.
+        # Most attributes carry no `&#38;`, and `gsub` allocates a copy even
+        # when it substitutes nothing. Measured over 300k calls: the guard is
+        # about twice as fast when there is no match, and about 13% slower on
+        # the rare value that does match.
         def decode_ampersands(value)
+          return value unless value.include?("&#38;")
+
           value.gsub("&#38;", "&")
         end
 
