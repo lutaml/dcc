@@ -90,16 +90,15 @@ module Dcc
       end
 
       # One decimal in the notation D-SI writes, e.g. 0.072 rather than
-      # BigDecimal's own "0.72e-1".
+      # BigDecimal's own "0.72e-1". `to_s("F")` renders every BigDecimal,
+      # finite or not, and `sub` only trims a trailing ".0". That is what
+      # lets `NaN` through, which D-SI admits in every decimal type
+      # (SI_Format.xsd:1195).
       def self.serialize_one(value)
+        reject_infinite!(value)
+
         case value
-        when ::BigDecimal then if value.to_i.to_s == value.to_s("F")
-                                 value.to_i.to_s
-                               else
-                                 value.to_s("F").sub(
-                                   /\.0\z/, ""
-                                 )
-                               end
+        when ::BigDecimal then value.to_s("F").sub(/\.0\z/, "")
         when ::Float then format("%.15g", value)
         else value.to_s
         end
@@ -109,12 +108,24 @@ module Dcc
         private
 
         def cast_one(token)
-          return token if token.is_a?(::BigDecimal)
-
-          BigDecimal(token.to_s)
+          decimal = token.is_a?(::BigDecimal) ? token : BigDecimal(token.to_s)
+          reject_infinite!(decimal)
+          decimal
         rescue ::ArgumentError => e
           raise Lutaml::Model::Type::InvalidValueError.new(token,
                                                            "invalid decimal in XML list: #{e.message}")
+        end
+
+        # Called from `cast_one` and from the public `serialize_one`, since
+        # `serialize` takes a raw BigDecimal and casting is not the only way in.
+        def reject_infinite!(value)
+          return unless value.is_a?(::BigDecimal) && value.infinite?
+
+          raise Lutaml::Model::Type::InvalidValueError.new(
+            value,
+            "infinity is not a D-SI decimal: SI_Format.xsd:1195 admits " \
+            "numbers and NaN only",
+          )
         end
       end
     end

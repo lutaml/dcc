@@ -116,6 +116,24 @@ RSpec.describe Dcc::Type::DecimalXmlList do
       arr = [BigDecimal("1.5"), BigDecimal("2.5")]
       expect(described_class.cast(arr)).to eq(arr)
     end
+
+    # The D-SI pattern admits numbers and `NaN`, and nothing else
+    # (SI_Format.xsd:1195). Neither `Infinity` nor `INF` is legal, so an
+    # infinite value must not reach a document.
+    it "rejects positive infinity" do
+      expect { described_class.cast("Infinity") }
+        .to raise_error(Lutaml::Model::Type::InvalidValueError, /infinity/)
+    end
+
+    it "rejects negative infinity" do
+      expect { described_class.cast("-Infinity") }
+        .to raise_error(Lutaml::Model::Type::InvalidValueError, /infinity/)
+    end
+
+    it "rejects an infinite BigDecimal passed in an array" do
+      expect { described_class.cast([BigDecimal("Infinity")]) }
+        .to raise_error(Lutaml::Model::Type::InvalidValueError, /infinity/)
+    end
   end
 
   describe ".serialize" do
@@ -127,6 +145,20 @@ RSpec.describe Dcc::Type::DecimalXmlList do
 
     it "returns empty string for nil" do
       expect(described_class.serialize(nil)).to eq("")
+    end
+
+    # `NaN` is an alternative in the pattern of every D-SI decimal type
+    # (SI_Format.xsd:1195), and D-SI writes it for a not-measured entry.
+    it "serializes NaN, which D-SI admits in every decimal type" do
+      expect(described_class.serialize(described_class.cast("1.5 NaN 2.5")))
+        .to eq("1.5 NaN 2.5")
+    end
+
+    # `serialize` is public and takes a raw BigDecimal, so casting is not the
+    # only way an infinite value can reach the wire.
+    it "refuses to serialize an infinity it was handed uncast" do
+      expect { described_class.serialize([BigDecimal("Infinity")]) }
+        .to raise_error(Lutaml::Model::Type::InvalidValueError, /infinity/)
     end
   end
 
@@ -246,6 +278,33 @@ RSpec.describe Dcc::Type::DecimalXmlList do
 
     it "emits the values as space-separated decimals" do
       expect(emitted.first.text).to eq("0.072 0.089 0.107 -0.009 -0.084")
+    end
+  end
+
+  # A schema-valid NaN has to survive the whole path, not just `serialize`.
+  # Asserted on the emitted text rather than on list equality, because
+  # `BigDecimal("NaN") == BigDecimal("NaN")` is false.
+  describe "NaN round-trip through a model attribute" do
+    before { Dcc::Si::V2.load_all! }
+
+    let(:xml) do
+      <<~XML
+        <si:realListXMLList xmlns:si="https://ptb.de/si">
+          <si:valueXMLList>1.5 NaN 2.5</si:valueXMLList>
+          <si:unitXMLList>\\kelvin</si:unitXMLList>
+        </si:realListXMLList>
+      XML
+    end
+
+    let(:serialized) { Nokogiri::XML(Dcc::Si::V2::RealListXmlList.from_xml(xml).to_xml) }
+    let(:emitted) { serialized.xpath("//*[local-name()='valueXMLList']") }
+
+    it "emits one valueXMLList element for a list containing NaN" do
+      expect(emitted.size).to eq(1)
+    end
+
+    it "keeps NaN in place among the decimals" do
+      expect(emitted.first.text).to eq("1.5 NaN 2.5")
     end
   end
 end
