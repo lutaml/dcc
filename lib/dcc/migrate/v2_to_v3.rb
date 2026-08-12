@@ -148,7 +148,7 @@ module Dcc
             root.namespace&.href == ROOT_NAMESPACE
 
           raise ::Dcc::ParseError,
-                "Dcc::Migrate::V2ToV3 expects a <dcc:#{ROOT_ELEMENT}> root " \
+                "Dcc.migrate expects a <dcc:#{ROOT_ELEMENT}> root " \
                 "in the #{ROOT_NAMESPACE} namespace, got " \
                 "#{describe_root(root)}."
         end
