@@ -78,12 +78,20 @@ module Dcc
       Builder.call(version: version, &)
     end
 
-    # Migrate a parsed DCC object from one schema version to another.
-    # @param dcc [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]
+    # Migrate a DCC from one schema version to another.
+    #
+    # Prefer passing the source XML. A parsed model has to be serialized back
+    # to XML before the transform runs, so anything the model could not
+    # round-trip is already gone and cannot be migrated or reported.
+    #
+    # @param input [String, IO, Dcc::V2::DigitalCalibrationCertificate,
+    #   Dcc::V3::DigitalCalibrationCertificate] DCC source XML, or a parsed DCC.
     # @param from [String] source version, e.g. "2.3.0".
     # @param to [String] target version, e.g. "3.3.0".
-    def migrate(dcc, from:, to:)
-      Migrate.call(dcc, from: from, to: to)
+    # @return [Dcc::V2::DigitalCalibrationCertificate,
+    #   Dcc::V3::DigitalCalibrationCertificate] always a parsed DCC.
+    def migrate(input, from:, to:)
+      Migrate.call(input, from: from, to: to)
     end
 
     # Return the parser module for the given major version.

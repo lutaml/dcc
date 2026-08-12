@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Hand-built DCC v2.3.0 document exercising every v2 to v3 transform rule that
-  no PTB example fixture covers AND that the object model can round-trip.
+  no PTB example fixture covers.
 
-  Deliberately absent, because the parser cannot carry them and their presence
-  would break the public-API assertions for reasons unrelated to migration:
-  si:list, previousReport, and any quantity under statement/data or
-  metaData/data. Those live in v2_si_list.xml, which is transform-level only.
-  See the out-of-scope notes in docs/plans.
+  This is source XML, so it is NOT limited to constructs the object model can
+  round-trip: `Dcc.migrate` transforms the source rather than a re-serialized
+  model. descriptionData is the worked example — the v2 model drops it, and
+  migrating this file still carries it through as description/file.
+
+  Deliberately absent, because they break the public-API assertions for
+  reasons unrelated to migration: si:list, previousReport, and any quantity
+  under statement/data or metaData/data. Those live in v2_si_list.xml, which
+  is transform-level only.
 -->
 <dcc:digitalCalibrationCertificate
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

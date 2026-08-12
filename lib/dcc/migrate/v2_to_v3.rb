@@ -6,7 +6,8 @@ module Dcc
   module Migrate
     # Rewrites a DCC v2.x document into the v3.x wire format.
     #
-    # v3 renamed several elements, made `coreData/performanceLocation` and
+    # v3 renamed several elements, renamed the `hashType` children on all three
+    # v2 elements carrying that type, made `coreData/performanceLocation` and
     # `measurementResult/name` mandatory, moved the statement `refId` from a
     # child element to an attribute, narrowed four `description` elements to
     # single occurrence, tightened many string types to reject surrounding
@@ -24,6 +25,15 @@ module Dcc
         "si" => "https://ptb.de/si",
       }.freeze
 
+      ROOT_ELEMENT = "digitalCalibrationCertificate"
+
+      # Only the canonical URI. `Dcc::Namespace::Dcc` also accepts the
+      # `https://ptb.de/dcc.xsd` alias, but every rule below binds `dcc:` to
+      # the canonical URI, so an alias document would match no xpath: it would
+      # come back unmigrated, reporting nothing, and fail the v3 schema.
+      # Refusing it says so instead of returning a quietly broken document.
+      ROOT_NAMESPACE = NS["dcc"]
+
       # `performanceLocationType` is an enum and v2 records no location, so
       # the catch-all is the only truthful value.
       DEFAULT_PERFORMANCE_LOCATION = "other"
@@ -37,11 +47,30 @@ module Dcc
         "//dcc:document/dcc:data",
       ].join(" | ").freeze
 
+      # The three elements v2.3.0 types `dcc:hashType`. v3 renamed that type's
+      # `reference`/`referenceID` children, so all three need the rename, not
+      # `previousReport` alone. `linkedReport` is itself a `hashType` child, so
+      # the `//` anchor covers nesting at any depth.
+      #
+      # A fourth `identifier` appears in the file but sits inside the
+      # commented-out `metrologicallyTraceableType` block (v2.3.0
+      # dcc.xsd:325-341), so no valid v2 document can carry it.
+      #
+      # The anchor is what keeps this safe: v2 also declares `reference` under
+      # `equipmentClass` and `statement`, and v3 keeps BOTH of those named
+      # `reference`. An unanchored `//dcc:reference` would corrupt them.
+      HASH_TYPE_PARENTS = %w[previousReport certificate linkedReport].freeze
+
+      HASH_TYPE_REFERENCE_XPATH = HASH_TYPE_PARENTS
+        .map { |parent| "//dcc:#{parent}/dcc:reference" }.join(" | ").freeze
+      HASH_TYPE_REFERENCE_ID_XPATH = HASH_TYPE_PARENTS
+        .map { |parent| "//dcc:#{parent}/dcc:referenceID" }.join(" | ").freeze
+
       RENAMES = {
         "//dcc:identification/dcc:description" => "name",
         "//dcc:influenceCondition/dcc:state" => "status",
-        "//dcc:previousReport/dcc:reference" => "referral",
-        "//dcc:previousReport/dcc:referenceID" => "referralID",
+        HASH_TYPE_REFERENCE_XPATH => "referral",
+        HASH_TYPE_REFERENCE_ID_XPATH => "referralID",
         BYTE_DATA_DATA_XPATH => "dataBase64",
         "//dcc:formula/dcc:siunitx" => "latex",
       }.freeze
@@ -68,29 +97,66 @@ module Dcc
       ].freeze
 
       class << self
+        # Every route in `Dcc::Migrate` funnels raw input through here, not
+        # just this transform: this file is the only one sanctioned to parse
+        # XML directly, so the DCC-root check has to live with it.
+        #
+        # @param xml [String] candidate DCC XML.
+        # @return [String] the same XML, when the root is a DCC root.
+        # @raise [Dcc::ParseError] otherwise.
+        def assert_dcc_root(xml)
+          reject_rootless(parse(xml))
+          xml
+        end
+
         # @param xml [String] DCC v2 XML.
         # @param to [String] target v3 version for `schemaVersion`.
         # @return [String] DCC v3 XML.
+        # @raise [Dcc::ParseError] on malformed XML or a non-DCC root.
         def call(xml, to:)
-          doc = ::Nokogiri::XML(xml)
+          doc = parse(xml)
           reject_rootless(doc)
 
           losses = []
           doc.root["schemaVersion"] = to
           apply_rules(doc, losses)
-          report(losses)
+          report(losses, to)
 
           doc.to_xml
         end
 
         private
 
+        # Strict, so a truncated or malformed document is refused rather than
+        # silently recovered into a partial one. Nokogiri's default recovery
+        # mode would drop everything after the first syntax error, and the
+        # migration would report no loss for the sections it never saw.
+        def parse(xml)
+          ::Nokogiri::XML(xml, &:strict)
+        rescue ::Nokogiri::XML::SyntaxError => e
+          raise ::Dcc::ParseError,
+                "Dcc::Migrate::V2ToV3 expects well-formed DCC XML: #{e.message}"
+        end
+
+        # Checking the name and namespace, not merely that a root exists: the
+        # target parser builds an empty certificate out of a foreign root
+        # rather than refusing it, so a stray document would otherwise migrate
+        # to a valid-looking but empty v3 result.
         def reject_rootless(doc)
-          return if doc.root
+          root = doc.root
+          return if root && root.name == ROOT_ELEMENT &&
+            root.namespace&.href == ROOT_NAMESPACE
 
           raise ::Dcc::ParseError,
-                "Dcc::Migrate::V2ToV3 expects a DCC XML document, " \
-                "got input with no root element."
+                "Dcc::Migrate::V2ToV3 expects a <dcc:#{ROOT_ELEMENT}> root " \
+                "in the #{ROOT_NAMESPACE} namespace, got " \
+                "#{describe_root(root)}."
+        end
+
+        def describe_root(root)
+          return "input with no root element" unless root
+
+          "<#{root.name}> in #{root.namespace&.href.inspect}"
         end
 
         def apply_rules(doc, losses)
@@ -350,11 +416,11 @@ module Dcc
           end
         end
 
-        def report(losses)
+        def report(losses, to)
           return if losses.empty?
 
           Kernel.warn(
-            "Dcc.migrate 2.3.0 to 3.3.0 changed or discarded " \
+            "Dcc.migrate 2.3.0 to #{to} changed or discarded " \
             "#{losses.size} construct(s) v3 cannot represent as written: " \
             "#{losses.join('; ')}",
           )

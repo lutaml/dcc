@@ -2,9 +2,20 @@
 
 require "spec_helper"
 require "nokogiri"
+require "stringio"
 
 RSpec.describe Dcc::Migrate do
   before { Dcc.load_all! }
+
+  # The migration reports losses on stderr. Specs that assert on the migrated
+  # document rather than the report keep the suite output readable.
+  def silence_stderr
+    original = $stderr
+    $stderr = StringIO.new
+    yield
+  ensure
+    $stderr = original
+  end
 
   let(:namespaces) do
     { "dcc" => "https://ptb.de/dcc", "si" => "https://ptb.de/si" }
@@ -419,20 +430,280 @@ RSpec.describe Dcc::Migrate do
     end
   end
 
-  describe "input validation" do
-    it "rejects an unparsed document" do
-      expect { Dcc.migrate(nil, from: "2.3.0", to: "3.3.0") }
-        .to raise_error(Dcc::Error, /expects a parsed DCC document/)
+  # v2.3.0 types THREE live elements `dcc:hashType` — certificate,
+  # previousReport and linkedReport — and v3 renamed that type's
+  # reference/referenceID children on all of them. A fourth `identifier`
+  # appears in the file but sits inside the commented-out
+  # metrologicallyTraceableType block, so no valid v2 document carries it.
+  describe "hashType children on every parent carrying the type" do
+    let(:hash_type_source) do
+      doc = Nokogiri::XML(
+        File.read(fixtures_path("migrate", "v2_full_coverage.xml")),
+      )
+      equipment = doc.at_xpath("//dcc:measuringEquipment", namespaces)
+      # v2 measuringEquipmentType orders these name, equipmentClass,
+      # description, descriptionData, certificate.
+      equipment.at_xpath("dcc:name", namespaces)
+        .add_next_sibling(Nokogiri::XML(<<~CLASS).root)
+          <dcc:equipmentClass xmlns:dcc="https://ptb.de/dcc">
+            <dcc:reference>DKD-R-6-1</dcc:reference>
+            <dcc:classID>3.2</dcc:classID>
+          </dcc:equipmentClass>
+        CLASS
+      # `previousReport` is the last child of coreData. The fixture omits it,
+      # so without this the "every hashType parent" claim goes untested for
+      # one of the three.
+      doc.at_xpath("//dcc:coreData", namespaces)
+        .add_child(Nokogiri::XML(<<~PREV).root)
+          <dcc:previousReport xmlns:dcc="https://ptb.de/dcc">
+            <dcc:reference><dcc:content lang="en">Prior</dcc:content></dcc:reference>
+            <dcc:referenceID>PREV-1</dcc:referenceID>
+            <dcc:procedure>SHA256</dcc:procedure><dcc:value>xyz</dcc:value>
+          </dcc:previousReport>
+        PREV
+      # `statements` is the last child of administrativeData, and
+      # statementMetaDataType also carries a `reference` v3 keeps as-is.
+      doc.at_xpath("//dcc:administrativeData", namespaces)
+        .add_child(Nokogiri::XML(<<~STMT).root)
+          <dcc:statements xmlns:dcc="https://ptb.de/dcc">
+            <dcc:statement><dcc:reference>ISO 17025</dcc:reference></dcc:statement>
+          </dcc:statements>
+        STMT
+      anchor = equipment.at_xpath("dcc:descriptionData", namespaces) ||
+        equipment.at_xpath("dcc:description", namespaces)
+      anchor.add_next_sibling(Nokogiri::XML(<<~XML).root)
+        <dcc:certificate xmlns:dcc="https://ptb.de/dcc">
+          <dcc:reference><dcc:content lang="en">Cert doc</dcc:content></dcc:reference>
+          <dcc:referenceID>CERT-1</dcc:referenceID>
+          <dcc:procedure>SHA256</dcc:procedure>
+          <dcc:value>abc123</dcc:value>
+          <dcc:linkedReport>
+            <dcc:reference><dcc:content lang="en">Linked</dcc:content></dcc:reference>
+            <dcc:referenceID>LINK-1</dcc:referenceID>
+            <dcc:procedure>SHA256</dcc:procedure>
+            <dcc:value>def456</dcc:value>
+          </dcc:linkedReport>
+        </dcc:certificate>
+      XML
+      doc.to_xml
     end
 
-    it "rejects a string where a parsed document was expected" do
-      expect { Dcc.migrate("<xml/>", from: "2.3.0", to: "3.3.0") }
-        .to raise_error(Dcc::Error, /got String/)
+    let(:hash_type_migrated) do
+      silence_stderr { Dcc::Migrate::V2ToV3.call(hash_type_source, to: "3.3.0") }
+    end
+
+    it "starts from a valid v2.3.0 document" do
+      expect(Dcc::Validate::Xsd.call(hash_type_source, version: "2.3.0").errors)
+        .to be_empty
+    end
+
+    it "migrates a certificate to a valid v3 document" do
+      errors = Dcc::Validate::Xsd
+        .call(hash_type_migrated, version: "3.3.0").errors
+
+      expect(errors).to be_empty
+    end
+
+    it "renames reference and referenceID under certificate" do
+      certificate = Nokogiri::XML(hash_type_migrated)
+        .at_xpath("//dcc:certificate", namespaces)
+
+      expect(certificate.at_xpath("dcc:referral", namespaces).text)
+        .to eq("Cert doc")
+      expect(certificate.at_xpath("dcc:referralID", namespaces).text)
+        .to eq("CERT-1")
+    end
+
+    it "renames reference and referenceID under previousReport" do
+      previous = Nokogiri::XML(hash_type_migrated)
+        .at_xpath("//dcc:previousReport", namespaces)
+
+      expect(previous.at_xpath("dcc:referralID", namespaces).text)
+        .to eq("PREV-1")
+      expect(previous.at_xpath("dcc:reference", namespaces)).to be_nil
+    end
+
+    it "renames them inside a nested linkedReport" do
+      linked = Nokogiri::XML(hash_type_migrated)
+        .at_xpath("//dcc:certificate/dcc:linkedReport", namespaces)
+
+      expect(linked.at_xpath("dcc:referralID", namespaces).text).to eq("LINK-1")
+      expect(linked.at_xpath("dcc:reference", namespaces)).to be_nil
+    end
+
+    # Spelled out rather than iterating HASH_TYPE_PARENTS: a spec driven by
+    # the constant it is testing cannot catch that constant losing an entry.
+    it "leaves no v2 reference or referenceID under any hashType parent" do
+      doc = Nokogiri::XML(hash_type_migrated)
+
+      %w[previousReport certificate linkedReport].each do |parent|
+        expect(doc.xpath("//dcc:#{parent}/dcc:reference", namespaces))
+          .to be_empty
+        expect(doc.xpath("//dcc:#{parent}/dcc:referenceID", namespaces))
+          .to be_empty
+      end
+    end
+
+    it "covers exactly the three v2 elements typed dcc:hashType" do
+      expect(Dcc::Migrate::V2ToV3::HASH_TYPE_PARENTS)
+        .to contain_exactly("previousReport", "certificate", "linkedReport")
+    end
+
+    # v3 keeps equipmentClass/reference and statement/reference named
+    # `reference`, so the rename must stay anchored on the hashType parents.
+    it "does not rename reference under equipmentClass or statement" do
+      doc = Nokogiri::XML(hash_type_migrated)
+
+      %w[equipmentClass statement].each do |parent|
+        expect(doc.xpath("//dcc:#{parent}/dcc:reference", namespaces))
+          .not_to(be_empty, "expected #{parent}/reference to survive")
+        expect(doc.xpath("//dcc:#{parent}/dcc:referral", namespaces))
+          .to be_empty
+      end
+    end
+  end
+
+  # `Dcc.migrate` transforms the source XML, so a construct the v2 model
+  # cannot round-trip still reaches the transform. descriptionData is the
+  # worked case: the v2 model drops it, and the transform rewrites it to
+  # description/file, which the v3 model does preserve.
+  describe "migrating source XML rather than a re-serialized model" do
+    let(:coverage_xml) do
+      File.read(fixtures_path("migrate", "v2_full_coverage.xml"))
+    end
+
+    def attachment_census(xml)
+      doc = Nokogiri::XML(xml)
+      {
+        file: doc.xpath("//dcc:description/dcc:file", namespaces).size,
+        data: doc.xpath("//dcc:dataBase64", namespaces).size,
+      }
+    end
+
+    it "carries descriptionData attachments through to the returned model" do
+      migrated = silence_stderr do
+        Dcc.migrate(coverage_xml, from: "2.3.0", to: "3.3.0")
+      end
+
+      expect(attachment_census(migrated.to_xml)).to eq(file: 2, data: 2)
+    end
+
+    it "loses them when handed a parsed model instead" do
+      migrated = silence_stderr do
+        Dcc.migrate(Dcc.parse(coverage_xml), from: "2.3.0", to: "3.3.0")
+      end
+
+      expect(attachment_census(migrated.to_xml)).to eq(file: 0, data: 0)
+    end
+
+    it "reports every loss on the source-XML path" do
+      expect { Dcc.migrate(coverage_xml, from: "2.3.0", to: "3.3.0") }
+        .to output(include("discarded 7 construct")).to_stderr
+    end
+
+    it "always returns a parsed model, never the source string" do
+      migrated = silence_stderr do
+        Dcc.migrate(coverage_xml, from: "2.3.0", to: "2.3.0")
+      end
+
+      expect(migrated).to be_a(Dcc::V2::DigitalCalibrationCertificate)
+    end
+  end
+
+  describe "input validation" do
+    it "rejects nil" do
+      expect { Dcc.migrate(nil, from: "2.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::Error, /expects DCC source XML or a parsed DCC/)
+    end
+
+    it "rejects a type that is neither source XML nor a parsed DCC" do
+      expect { Dcc.migrate(42, from: "2.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::Error, /got Integer/)
+    end
+
+    it "accepts source XML as a string" do
+      xml = File.read(fixtures_path("migrate", "v2_full_coverage.xml"))
+      migrated = silence_stderr { Dcc.migrate(xml, from: "2.3.0", to: "3.3.0") }
+
+      expect(migrated).to be_a(Dcc::V3::DigitalCalibrationCertificate)
+      expect(migrated.schema_version.to_s).to eq("3.3.0")
+    end
+
+    it "accepts source XML as an IO" do
+      io = StringIO.new(
+        File.read(fixtures_path("migrate", "v2_full_coverage.xml")),
+      )
+      migrated = silence_stderr { Dcc.migrate(io, from: "2.3.0", to: "3.3.0") }
+
+      expect(migrated).to be_a(Dcc::V3::DigitalCalibrationCertificate)
     end
 
     it "rejects XML with no root element" do
       expect { Dcc::Migrate::V2ToV3.call("", to: "3.3.0") }
-        .to raise_error(Dcc::ParseError, /no root element/)
+        .to raise_error(Dcc::ParseError, /well-formed|no root element/)
+    end
+
+    # Strict parsing: recovery mode would drop everything after the first
+    # syntax error and migrate the fragment, reporting no loss for the
+    # sections it never saw.
+    it "rejects truncated XML instead of migrating the fragment" do
+      xml = File.read(fixtures_path("migrate", "v2_full_coverage.xml"))
+      truncated = xml[0, xml.index("<dcc:measurementResults")]
+
+      expect { Dcc.migrate(truncated, from: "2.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::ParseError, /well-formed/)
+    end
+
+    # Every xpath rule binds `dcc:` to the canonical URI, so an alias-namespace
+    # document would match nothing and come back unmigrated but stamped v3.
+    it "rejects the dcc.xsd alias namespace rather than silently skipping" do
+      xml = File.read(fixtures_path("migrate", "v2_full_coverage.xml"))
+        .sub('xmlns:dcc="https://ptb.de/dcc"',
+             'xmlns:dcc="https://ptb.de/dcc.xsd"')
+
+      expect { Dcc.migrate(xml, from: "2.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::ParseError, /namespace/)
+    end
+
+    # Accepting raw XML must not accept just any well-formed XML: the target
+    # parser builds an empty certificate from a foreign root rather than
+    # refusing it, so a stray document would migrate to a valid-looking blank.
+    it "rejects well-formed XML that is not a DCC" do
+      expect { Dcc.migrate("<xml/>", from: "2.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::ParseError, /digitalCalibrationCertificate/)
+    end
+
+    # The schemaVersion-only and same-version routes never reach a transform,
+    # so the DCC-root check cannot live inside one.
+    it "rejects a foreign root on every route, not just the transform" do
+      [%w[2.3.0 3.3.0], %w[3.2.1 3.3.0], %w[3.3.0 3.3.0]].each do |from, to|
+        expect { Dcc.migrate("<xml/>", from: from, to: to) }
+          .to raise_error(Dcc::ParseError, /digitalCalibrationCertificate/),
+              "expected #{from} -> #{to} to reject a foreign root"
+      end
+    end
+
+    # Any Serializable serialises happily, so the root check has to cover the
+    # model path too or a non-DCC model migrates into an empty certificate.
+    it "rejects a parsed model that is not a DCC document" do
+      expect { Dcc.migrate(Dcc::V3::Formula.new, from: "3.2.1", to: "3.3.0") }
+        .to raise_error(Dcc::ParseError, /digitalCalibrationCertificate/)
+    end
+
+    # The same-version no-op returns its input, so it needs the same check or
+    # it becomes the one path that hands back a non-DCC object.
+    it "rejects a non-DCC model on the same-version path too" do
+      expect { Dcc.migrate(Dcc::V3::Formula.new, from: "3.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::ParseError, /digitalCalibrationCertificate/)
+    end
+
+    it "rejects a DCC root in the wrong namespace" do
+      expect do
+        Dcc.migrate(
+          '<digitalCalibrationCertificate xmlns="https://example.com/x"/>',
+          from: "2.3.0", to: "3.3.0",
+        )
+      end.to raise_error(Dcc::ParseError, /namespace/)
     end
   end
 

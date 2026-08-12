@@ -71,7 +71,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 * No `require "dcc/..."` with internal paths.
 * No `send` / `instance_variable_set` / `instance_variable_get`.
 * No `respond_to?` for type checking.
-* No Nokogiri outside `lib/dcc/validate/xsd.rb`.
+* No Nokogiri outside `lib/dcc/validate/xsd.rb`. The v2-to-v3 migration later
+  added `lib/dcc/migrate/v2_to_v3.rb` as a second sanctioned file, because a
+  version transform has to rewrite documents the object model cannot
+  round-trip. To be removed once the parser round-trips without loss.
 * No doubles in specs.
 * `frozen_string_literal: true` everywhere.
 * OCP/MECE/DRY throughout.
