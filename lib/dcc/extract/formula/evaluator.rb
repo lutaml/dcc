@@ -29,6 +29,27 @@ module Dcc
         TEN = BigDecimal(10)
         ZERO_DIVISION = "Division by zero in formula"
 
+        # A cost ceiling, not a correctness one. Three things in here
+        # scale with the size of a value, and `BigDecimal#precision`
+        # counts digits across the exponent span, so one limit covers
+        # all three:
+        #
+        #   * BigMath reduces a trigonometric argument before it can
+        #     answer, and that is linear in the exponent — sin(1e1000)
+        #     is 1ms, sin(1e100000) 0.74s, sin(1e1000000) 8.6s.
+        #   * exact `**` and `*` allocate one digit at a time, and the
+        #     exponent does not constrain that at all: 0.99999999999
+        #     raised to 999 twice keeps exponent 0 while going from 11
+        #     digits to eleven million.
+        #   * the printed value — `to_s("F")` of 1e1000000 is a megabyte.
+        #
+        # Nothing real comes near it: exp(1000) is 435, tan(pi/2) is 34,
+        # 2**1000 is 302, and IEEE double tops out at 1e308.
+        #
+        # `precision` has been on BigDecimal since 3.0.0, well under the
+        # gem's Ruby floor of 3.2.
+        MAX_DIGITS = 1_000
+
         class << self
           # @param ast [Dcc::Extract::Formula::Ast]
           # @param overrides [Hash{String => Object}]
@@ -48,19 +69,21 @@ module Dcc
           # it would then broadcast against a longer list instead of
           # raising a length mismatch.
           def environment(ast, overrides)
-            referenced = referenced_names(ast.body)
             ast.bindings.merge(overrides)
-              .slice(*referenced)
-              .transform_values { |value| quantify(value) }
+              .slice(*ast.variables)
+              .to_h { |name, value| [name, sized(name, quantify(value))] }
           end
 
-          # @return [Array<String>] every variable the expression mentions.
-          def referenced_names(node)
-            case node
-            in (Ast::Variable | Ast::BoundVariable) => ref then [ref.name]
-            in Ast::Apply(operands:) then operands.flat_map { |o| referenced_names(o) }
-            else []
-            end
+          # Only the referenced slice is checked. `Formula.bindings_in`
+          # builds a Quantity for every identified quantity in the data
+          # block before it looks at the formulae, so refusing an
+          # oversized one at coercion would take down every other
+          # formula in the document over a value none of them uses.
+          def sized(name, quantity)
+            subject = "Formula variable '#{name}'"
+            numbers = quantity.values
+            numbers.each { |value| check_size(value, subject) }
+            quantity
           end
 
           # A Quantity coerced every value in its constructor, so its
@@ -76,15 +99,29 @@ module Dcc
           # list must agree, whatever its length — a one-element list is
           # still a list.
           def width(env)
-            lengths = env.each_value.select(&:list?).map { |q| q.values.size }
-            distinct = lengths.uniq
+            lists = env.select { |_, quantity| quantity.list? }
+            distinct = lists.each_value.map { |q| q.values.size }.uniq
+            check_lengths(distinct, lists.keys)
+
+            distinct.first || 1
+          end
+
+          # Refuses both ways a referenced list can make a width
+          # meaningless. An empty one used to give width zero, so
+          # `Array.new(0)` never evaluated the body at all: no values,
+          # no error, exit 0 — and a genuinely missing variable went
+          # unreported with it, because nothing ever looked one up.
+          def check_lengths(distinct, names)
             if distinct.size > 1
               raise ::Dcc::ExtractionError,
                     "Formula variables have mismatched list lengths: " \
                     "#{distinct.sort.inspect}"
             end
+            return unless distinct == [0]
 
-            distinct.first || 1
+            raise ::Dcc::ExtractionError,
+                  "Formula variables have empty value lists: " \
+                  "#{names.sort.inspect}"
           end
 
           def scope(env, index)
@@ -99,7 +136,7 @@ module Dcc
           # B(name:)` is a syntax error ("duplicated variable name").
           def evaluate(node, scope)
             case node
-            in Ast::Number(value:) then value
+            in Ast::Number(value:) then check_size(value, "A formula number")
             in Ast::Constant(name:) then constant(name)
             in (Ast::Variable | Ast::BoundVariable) => ref
               lookup(ref.name, scope)
@@ -108,6 +145,8 @@ module Dcc
             end
           end
 
+          # Needs no size check: BigMath.PI(34) and E(34) are 34 digits
+          # by construction, so a constant cannot reach the ceiling.
           def constant(name)
             case name
             when :pi then BigMath.PI(PRECISION)
@@ -128,7 +167,24 @@ module Dcc
           # non-finite operand then poisons everything above it. A huge but
           # finite result still passes.
           def operate(operator, args)
-            finite(dispatch(operator, args), operator)
+            checked(dispatch(operator, args), operator)
+          end
+
+          # Every value the evaluator produces goes through here — the
+          # answer of an operation and every intermediate inside an
+          # n-ary fold alike. Checking only the answer let
+          # 1.25e998 * 1.25e998 * 8e-999 * 8e-999 run the accumulator up
+          # to an exponent of 1997 and land back on exactly 1 unnoticed.
+          def checked(value, operator, role = "result of")
+            check_size(finite(value, operator), "The #{role} #{operator}")
+          end
+
+          def check_size(value, subject)
+            return value if value.precision <= MAX_DIGITS
+
+            raise ::Dcc::ExtractionError,
+                  "#{subject} exceeds the formula limit of " \
+                  "#{MAX_DIGITS} digits"
           end
 
           def finite(result, operator)
@@ -149,17 +205,28 @@ module Dcc
             end
           end
 
+          # Folds through `checked` so an intermediate cannot exceed the
+          # ceiling on its way to an answer that does not.
+          #
+          # `Array#sum` seeds with 0 and that seed is observable —
+          # `[-0].sum` is 0.0 where `[-0].reduce(:+)` is -0.0 — so `+`
+          # folds from the same seed and no printed value moves.
           def fold(operator, args)
-            case operator
-            when :+ then args.sum
-            when :* then args.reduce(:*)
-            when :- then negate_or_subtract(args)
-            else args.reduce { |a, b| divide(a, b) }
+            return -args.first if operator == :- && args.size == 1
+
+            operands = operator == :+ ? [BigDecimal(0), *args] : args
+            operands.reduce do |left, right|
+              checked(step(operator, left, right), operator)
             end
           end
 
-          def negate_or_subtract(args)
-            args.size == 1 ? -args.first : args.reduce(:-)
+          def step(operator, left, right)
+            case operator
+            when :+ then left + right
+            when :* then left * right
+            when :- then left - right
+            else divide(left, right)
+            end
           end
 
           def function(operator, arg)
@@ -214,17 +281,42 @@ module Dcc
                     "in formula"
             end
 
-            BigMath.exp(exponent * ln(base), PRECISION)
+            scaled = checked(exponent * ln(base), :**, "intermediate in")
+            BigMath.exp(scaled, PRECISION)
           end
 
           # `**` chooses its own precision, so a negative exponent is
           # inexact (`3 ** -1` gives 32 digits, not 34). Route it through
           # `divide`.
           def integer_power(base, exponent)
+            check_power_size(base, exponent)
             return base**exponent unless exponent.negative?
             raise ::Dcc::ExtractionError, ZERO_DIVISION if base.zero?
 
             divide(BigDecimal(1), base**-exponent)
+          end
+
+          # The exact path allocates the whole number before any result
+          # check can see how big it got, so the size is predicted here
+          # instead. `2 ** 1e8` takes 2.7s and `2 ** 1e9` 25s, and
+          # `(0.99999999999 ** 999) ** 999` needs eleven million digits
+          # while its exponent never leaves zero.
+          #
+          # `precision * |exponent|` is an upper bound, not the exact
+          # size, so it refuses some powers that would have fitted:
+          # anything with an integer exponent past MAX_DIGITS, however
+          # small the base (`2 ** 1001` really lands on 302 digits), and
+          # `1 ** huge`, which costs nothing. Predicting exactly means
+          # hand-rolling capped exponentiation, and a subtle bug in that
+          # loop fails this guard open. An over-refusal is a message; an
+          # under-refusal is the CPU-exhaustion path this exists to
+          # close. No certificate raises anything to the 1001st power.
+          def check_power_size(base, exponent)
+            return if base.precision * exponent.abs <= MAX_DIGITS
+
+            raise ::Dcc::ExtractionError,
+                  "An exact power in the formula is not provably within " \
+                  "the limit of #{MAX_DIGITS} digits"
           end
 
           def zero_to_the(exponent)
@@ -254,7 +346,9 @@ module Dcc
             end
             return zero_to_the(degree) if value.zero?
 
-            BigMath.exp(divide(ln(value), degree), PRECISION)
+            scaled = checked(divide(ln(value), degree), :root,
+                             "intermediate in")
+            BigMath.exp(scaled, PRECISION)
           end
         end
       end

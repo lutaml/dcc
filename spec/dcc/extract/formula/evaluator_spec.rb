@@ -230,9 +230,12 @@ RSpec.describe Dcc::Extract::Formula::Evaluator do
         .to raise_error(Dcc::ExtractionError, /non-finite/i)
     end
 
-    it "rejects a power that overflows to infinity" do
+    # Was a /non-finite/ assertion. The size guard now refuses this
+    # before the exact path allocates, which is the stronger property:
+    # the overflow never happens rather than being detected after.
+    it "rejects a power that would overflow, before computing it" do
       expect { evaluate(apply(:**, num("10"), num("1e30"))) }
-        .to raise_error(Dcc::ExtractionError, /non-finite/i)
+        .to raise_error(Dcc::ExtractionError, /not provably within/)
     end
 
     it "stops the overflow before it reaches the parent operation" do
@@ -396,6 +399,130 @@ RSpec.describe Dcc::Extract::Formula::Evaluator do
     it "raises when a referenced variable has no value" do
       expect { evaluate(apply(:+, var("missing"), num("1"))) }
         .to raise_error(Dcc::ExtractionError, /missing/)
+    end
+
+    # An empty list made the width zero, so Array.new(0) never ran the
+    # body: no values, no error, exit 0. It also hid a genuinely
+    # missing variable, because nothing ever looked one up.
+    describe "an empty referenced list" do
+      let(:bindings) { { "empty" => quantity([]) } }
+
+      it "is refused rather than producing no values" do
+        body = apply(:+, var("empty"), num("1"))
+
+        expect { evaluate(body, bindings: bindings) }
+          .to raise_error(Dcc::ExtractionError, /lists: \["empty"\]/)
+      end
+
+      # It used to return [] here, so a formula referencing a variable
+      # that does not exist reported nothing at all. It still refuses on
+      # the empty list rather than on the missing name — the point is
+      # that it no longer answers "no values, all good".
+      it "refuses rather than returning [] when a name is also missing" do
+        body = apply(:+, var("empty"), var("missing"))
+
+        expect { evaluate(body, bindings: bindings) }
+          .to raise_error(Dcc::ExtractionError, /empty value lists/)
+      end
+    end
+  end
+
+  # A cost ceiling. Each example pins one of the places it is applied —
+  # referenced bindings, literals, operation results, fold
+  # intermediates, the predictive check before an exact power, and the
+  # two arguments the evaluator builds for BigMath itself. No one of
+  # them is reachable through another.
+  #
+  # The sizes here are deliberately modest. They are far past the limit,
+  # so they pin the guard, but small enough that removing the guard
+  # computes an answer in a fraction of a second instead of allocating
+  # for minutes — a mutation run has to stay survivable. The real cost
+  # (2**1e9 is 25s, three nested near-one powers need eleven billion
+  # digits) was measured outside the suite.
+  describe "the size ceiling" do
+    it "refuses an oversized literal that never reaches an operation" do
+      expect { evaluate(num("1e1000000")) }
+        .to raise_error(Dcc::ExtractionError, /A formula number exceeds/)
+    end
+
+    it "refuses an oversized referenced binding" do
+      bindings = { "x" => quantity("1e1000000") }
+
+      expect { evaluate(apply(:sin, var("x")), bindings: bindings) }
+        .to raise_error(Dcc::ExtractionError, /Formula variable 'x' exceeds/)
+    end
+
+    # Formula.bindings_in builds a Quantity for every quantity in the
+    # data block before it looks at the formulae, so checking at
+    # coercion would take a whole document down over an unused value.
+    it "ignores an oversized binding no formula references" do
+      bindings = { "unused" => quantity("1e1000000") }
+
+      expect(evaluate(num("2"), bindings: bindings)).to eq([BigDecimal(2)])
+    end
+
+    it "refuses an oversized operation result" do
+      expect { evaluate(apply(:exp, num("5000"))) }
+        .to raise_error(Dcc::ExtractionError, /result of exp exceeds/)
+    end
+
+    # The answer is exactly 1 and passes any result-only check; the
+    # accumulator reaches an exponent of 1997 on the way there.
+    it "refuses a fold whose intermediate exceeds the ceiling" do
+      body = apply(:*, num("1.25e998"), num("1.25e998"),
+                   num("8e-999"), num("8e-999"))
+
+      expect { evaluate(body) }
+        .to raise_error(Dcc::ExtractionError, /result of \* exceeds/)
+    end
+
+    it "refuses a huge integral exponent" do
+      expect { evaluate(apply(:**, num("2"), num("1e7"))) }
+        .to raise_error(Dcc::ExtractionError, /exact power/)
+    end
+
+    # Exponent 0 throughout, so only a digit-aware bound stops it: the
+    # magnitude never moves while the digit count multiplies.
+    it "refuses nested near-one powers" do
+      body = apply(:**, apply(:**, num("0.99999999999"), num("999")),
+                   num("99"))
+
+      expect { evaluate(body) }
+        .to raise_error(Dcc::ExtractionError, /exact power/)
+    end
+
+    it "still allows the exact powers a real formula uses" do
+      expect(result(apply(:**, num("2"), num("1000"))).precision).to eq(302)
+    end
+
+    it "still allows a trigonometric argument inside the ceiling" do
+      expect(result(apply(:sin, num("1e999")))).to be_finite
+    end
+
+    # `exponent * ln(base)` and `ln(value) / degree` are built inside
+    # the evaluator, so no operand check sees them. Both feed BigMath
+    # and both can exceed the ceiling while the answer comes back as
+    # 1.0, which is why they are checked where they are made.
+    describe "an internally built argument to BigMath.exp" do
+      let(:near_one) { "1.#{'0' * 998}1" }
+
+      it "is checked on the fractional power path" do
+        expect { evaluate(apply(:**, num(near_one), num("1e-999"))) }
+          .to raise_error(Dcc::ExtractionError, /intermediate in \*\* exceeds/)
+      end
+
+      it "is checked on the nth-root path" do
+        expect { evaluate(apply(:root, num(near_one), num("1e999"))) }
+          .to raise_error(Dcc::ExtractionError, /intermediate in root exceeds/)
+      end
+    end
+
+    # Folding `+` through a checked reduce replaced `Array#sum`, and
+    # `sum`'s 0 seed is observable: `[-0].sum` is 0.0 where
+    # `[-0].reduce(:+)` is -0.0. `<cn>-0</cn>` reaches this from a real
+    # document, so the seed stays and this pins it.
+    it "keeps the sign of zero that Array#sum produced" do
+      expect(result(apply(:+, num("-0"))).to_s("F")).to eq("0.0")
     end
   end
 end

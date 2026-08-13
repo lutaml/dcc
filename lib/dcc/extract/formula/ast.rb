@@ -29,6 +29,16 @@ module Dcc
           Evaluator.call(self, overrides)
         end
 
+        # Bound and free variables are both reported: an override may
+        # legitimately name either. Repeats are left in — the evaluator
+        # slices with these names and the CLI subtracts them, and neither
+        # cares how often a name appears.
+        #
+        # @return [Array<String>] every variable the body mentions.
+        def variables
+          names_in(body)
+        end
+
         def to_s
           "#{name || '(anonymous)'}(#{bound_variables.join(', ')})"
         end
@@ -107,6 +117,18 @@ module Dcc
             raise ::Dcc::ExtractionError,
                   "#{operator} takes #{expected} operand(s) in formula, " \
                   "got #{operands.size}"
+          end
+        end
+
+        private
+
+        # Walks the tree for `variables`. Private: the tree shape is not
+        # part of what this gem promises.
+        def names_in(node)
+          case node
+          in (Variable | BoundVariable) => ref then [ref.name]
+          in Apply(operands:) then operands.flat_map { |o| names_in(o) }
+          else []
           end
         end
       end

@@ -174,9 +174,23 @@ module Dcc
       no_commands do
         def extract_formulae(dcc)
           variables = parse_variables(options[:variable])
-          print_formulae(::Dcc::Extract::Formula.call(dcc), variables)
+          formulae = ::Dcc::Extract::Formula.call(dcc)
+          check_overrides(formulae, variables)
+          print_formulae(formulae, variables)
         rescue ::Dcc::ExtractionError => e
           abort e.message
+        end
+
+        # The evaluator slices bindings down to the names a formula
+        # actually references, so a mistyped -v reaches nothing and the
+        # run still reports success with plausible default numbers.
+        # `decimal_or_abort` already aborts on a malformed -v; an
+        # override that lands nowhere is the same class of mistake.
+        def check_overrides(formulae, variables)
+          unknown = variables.keys - formulae.flat_map(&:variables)
+          return if unknown.empty?
+
+          abort "No formula references #{unknown.join(', ')}"
         end
       end
 
@@ -229,11 +243,32 @@ module Dcc
         def print_formulae(formulae, variables)
           return puts("No formulae found.") if formulae.empty?
 
-          formulae.each do |formula|
-            puts formula
-            values = formula.evaluate(variables)
-            values.each { |value| puts "  #{value.to_s('F')}" }
-          end
+          # `map`, deliberately, not `all?` with a block: `all?`
+          # short-circuits, and stopping at the first failure is exactly
+          # the bug this is fixing.
+          printed = formulae.map { |formula| print_formula(formula, variables) }
+          exit(1) unless printed.all?
+        end
+      end
+
+      no_commands do
+        # Evaluates before printing the header. A header printed ahead
+        # of a failure leaves a truncated record on stdout that reads
+        # like a formula with no values. One formula that cannot be
+        # evaluated is reported on stderr and the rest still print.
+        def print_formula(formula, variables)
+          values = formula.evaluate(variables)
+          puts formula
+          values.each { |value| puts "  #{value.to_s('F')}" }
+          true
+        rescue ::Dcc::ExtractionError => e
+          # `$stderr.puts`, not `warn`: Kernel#warn prints nothing when
+          # warnings are off, so `RUBYOPT=-W0` would leave the user with
+          # exit 1 and no explanation at all. The cop's own rationale —
+          # "to allow such output to be disabled" — is the thing this
+          # message must not permit.
+          $stderr.puts "#{formula}: #{e.message}" # rubocop:disable Style/StderrPuts
+          false
         end
       end
     end

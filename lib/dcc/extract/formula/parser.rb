@@ -39,23 +39,35 @@ module Dcc
           # @param bindings [Hash{String => Quantity}]
           # @return [Dcc::Extract::Formula::Ast]
           def call(math, bindings: {})
-            declaration = math.declare_value.first
-            return parse_declaration(declaration, bindings) if declaration
+            name, model = only(children(math))
+            return parse_declaration(model, bindings) if name == "declare"
 
-            body = expression(children(math))
-            Ast.new(name: nil, bound_variables: [], body: body,
-                    bindings: bindings)
+            Ast.new(name: nil, bound_variables: [],
+                    body: node(name, model, []), bindings: bindings)
           end
 
           private
 
           def parse_declaration(declaration, bindings)
             nodes = children(declaration)
+            check_declaration(nodes)
             lambda_children = children(fetch(nodes, "lambda"))
             bound = bound_variable_names(lambda_children)
             body = expression(without_bvars(lambda_children), bound)
             Ast.new(name: text_of(nodes, "ci"), bound_variables: bound,
                     body: body, bindings: bindings)
+          end
+
+          # `fetch` and `text_of` take the first match, so a second
+          # <lambda> or a second name <ci> would vanish the same way a
+          # second top-level expression used to.
+          def check_declaration(nodes)
+            names = nodes.map(&:first)
+            return if names == %w[ci lambda]
+
+            raise ::Dcc::ExtractionError,
+                  "<declare> must hold one <ci> then one <lambda>, " \
+                  "found #{names.empty? ? 'nothing' : names.join(', ')}"
           end
 
           def without_bvars(nodes)
@@ -64,20 +76,47 @@ module Dcc
 
           def bound_variable_names(nodes)
             nodes.select { |pair| pair.first == "bvar" }
-              .map { |pair| text_of(children(pair.last), "ci") }
+              .map { |pair| bound_name(children(pair.last)) }
+          end
+
+          # A <bvar> names one variable. MathML also allows a <degree>
+          # qualifier there, but that spells a derivative and this
+          # evaluator has none to offer, so it is refused rather than
+          # ignored — and the message names what was actually there.
+          def bound_name(contents)
+            names = contents.map(&:first)
+            return text(contents.first.last) if names == %w[ci]
+
+            raise ::Dcc::ExtractionError,
+                  "<bvar> must contain exactly one <ci>, " \
+                  "found #{names.empty? ? 'nothing' : names.join(', ')}"
           end
 
           # @param nodes [Array<(String, Object)>] ordered
           #   [element name, model] pairs.
           # @return [Object] the single expression node.
           def expression(nodes, bound = [])
-            name, model = nodes.first
-            if name.nil?
+            name, model = only(nodes)
+            node(name, model, bound)
+          end
+
+          # `<math>` and a `<lambda>` body each hold exactly one
+          # expression. Taking `.first` of several dropped the rest
+          # without a word — the same silent wrong answer this file
+          # refuses everywhere else. (`<bvar>` has its own check, in
+          # `bound_name`, because a qualifier there is not an
+          # expression.)
+          def only(nodes)
+            case nodes.size
+            when 1 then nodes.first
+            when 0
               raise ::Dcc::ExtractionError,
                     "dcc:formula contains no formula expression"
+            else
+              raise ::Dcc::ExtractionError,
+                    "dcc:formula contains #{nodes.size} expressions " \
+                    "where exactly one is expected"
             end
-
-            node(name, model, bound)
           end
 
           def node(name, model, bound)
@@ -99,7 +138,28 @@ module Dcc
           # text through Quantity.decimal.
           def number_node(model)
             check_plain_number(model)
-            Ast::Number.new(value: text(model))
+            literal = text(model)
+            number = Ast::Number.new(value: literal)
+            check_integral(model.type, number.value, literal)
+            number
+          end
+
+          # `<cn type="integer">1.5</cn>` declares one thing and writes
+          # another. Reading it as 1.5 is the same contradiction
+          # `base="8"` is refused for.
+          #
+          # Returns the node explicitly rather than ending on the check:
+          # a check's return value in an operand slot would put nil into
+          # the tree and leak a raw NoMethodError out of `abs`.
+          # Quotes the source lexeme, not `value.to_s("F")`: expanding
+          # the decimal turns `1e-100000` — nine bytes of document —
+          # into a hundred-kilobyte exception message.
+          def check_integral(type, value, literal)
+            return unless type == "integer"
+            return if value.frac.zero?
+
+            raise ::Dcc::ExtractionError,
+                  %(<cn type="integer"> holds a non-integer value: #{literal})
           end
 
           def check_plain_number(model)

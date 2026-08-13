@@ -17,6 +17,109 @@ RSpec.describe Dcc::Extract::Formula::Parser do
     node(:Number, value: BigDecimal(value))
   end
 
+  # Content MathML's <math> is a sequence, so two top-level expressions
+  # is a legal shape. Taking `.first` of it dropped the rest with no
+  # error, no warning and exit 0 — the silent wrong answer this parser
+  # refuses everywhere else.
+  describe "expression cardinality" do
+    let(:declare) do
+      <<~ML
+        <ml:declare type="fn">
+          <ml:ci>R</ml:ci>
+          <ml:lambda>
+            <ml:bvar><ml:ci>T</ml:ci></ml:bvar>
+            <ml:cn>1</ml:cn>
+          </ml:lambda>
+        </ml:declare>
+      ML
+    end
+
+    let(:degree) { "<ml:degree><ml:cn>2</ml:cn></ml:degree>" }
+
+    it "refuses two top-level expressions" do
+      expect { parse("<ml:cn>1</ml:cn><ml:cn>2</ml:cn>") }
+        .to raise_error(Dcc::ExtractionError, /2 expressions where exactly one/)
+    end
+
+    it "refuses two top-level declarations" do
+      second = declare.sub("<ml:ci>R</ml:ci>", "<ml:ci>S</ml:ci>")
+
+      expect { parse(declare + second) }
+        .to raise_error(Dcc::ExtractionError, /2 expressions where exactly one/)
+    end
+
+    it "refuses a declaration holding two lambdas" do
+      two = declare.sub("</ml:lambda>",
+                        "</ml:lambda><ml:lambda><ml:cn>2</ml:cn></ml:lambda>")
+
+      expect { parse(two) }
+        .to raise_error(Dcc::ExtractionError, /must hold one <ci> then one/)
+    end
+
+    it "refuses a lambda body of two expressions" do
+      two = declare.sub("<ml:cn>1</ml:cn>", "<ml:cn>1</ml:cn><ml:cn>2</ml:cn>")
+
+      expect { parse(two) }
+        .to raise_error(Dcc::ExtractionError, /2 expressions where exactly one/)
+    end
+
+    it "refuses a bvar holding two identifiers" do
+      two = declare.sub("<ml:ci>T</ml:ci></ml:bvar>",
+                        "<ml:ci>T</ml:ci><ml:ci>U</ml:ci></ml:bvar>")
+
+      expect { parse(two) }
+        .to raise_error(Dcc::ExtractionError, /exactly one <ci>, found ci, ci/)
+    end
+
+    # MathML lets a <bvar> carry a <degree>, but that spells a
+    # derivative and this evaluator has none. The old parser took the
+    # <ci> and dropped the qualifier, which is a wrong answer, not a
+    # missing feature.
+    it "refuses a bvar qualifier it cannot honour, and names it" do
+      qualified = declare.sub("<ml:ci>T</ml:ci></ml:bvar>",
+                              "<ml:ci>T</ml:ci>#{degree}</ml:bvar>")
+
+      expect { parse(qualified) }
+        .to raise_error(Dcc::ExtractionError, /one <ci>, found ci, degree/)
+    end
+
+    it "refuses a bvar holding something other than an identifier" do
+      other = declare.sub("<ml:ci>T</ml:ci></ml:bvar>",
+                          "<ml:cn>1</ml:cn></ml:bvar>")
+
+      expect { parse(other) }
+        .to raise_error(Dcc::ExtractionError, /<bvar> must contain exactly one/)
+    end
+
+    it "still parses a single declaration" do
+      expect(parse(declare).name).to eq("R")
+    end
+  end
+
+  # The PR refuses `base="8"` because a declared encoding it cannot read
+  # exactly is a wrong answer waiting to happen. A declared integer
+  # holding a fraction is the same contradiction.
+  describe "<cn type=\"integer\">" do
+    it "refuses a fractional value" do
+      expect { parse('<ml:cn type="integer">1.5</ml:cn>') }
+        .to raise_error(Dcc::ExtractionError, /non-integer value: 1\.5/)
+    end
+
+    # Guards the implicit-return trap: ending number_node on the check
+    # would put the check's value into the tree, and `abs` would then
+    # raise a bare NoMethodError out of a public call.
+    it "returns the number node for a whole value" do
+      expect(parse('<ml:cn type="integer">2</ml:cn>').body).to eq(num("2"))
+    end
+
+    # Quoting the expanded decimal turned nine bytes of document into a
+    # hundred-kilobyte exception message.
+    it "quotes the source lexeme rather than expanding it" do
+      expect { parse('<ml:cn type="integer">1e-100000</ml:cn>') }
+        .to raise_error(Dcc::ExtractionError, /value: 1e-100000\z/)
+    end
+  end
+
   describe "operand order" do
     let(:times) do
       "<ml:apply><ml:times/><ml:ci>R0</ml:ci><ml:cn>2</ml:cn></ml:apply>"
