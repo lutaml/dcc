@@ -129,3 +129,60 @@ RSpec.describe Dcc::Validate::Schematron::Profile do
       .not_to include("dcc.schematron.plugin_probe_rule")
   end
 end
+
+# `register_validator` accepts any class defining `#check_on`, anonymous ones
+# included, and `Rule#code` derives its code from the class name. An anonymous
+# class has no name, so a rule built this way used to raise from inside the run.
+RSpec.describe Dcc::Validate::Schematron::Rule do
+  let(:dcc) { Dcc.parse(File.read(fixtures_path("dcclib", "valid.xml"))) }
+
+  # Held in a `let`, never assigned to a constant — assigning `Class.new` to a
+  # constant names the class and hides the very case under test.
+  let(:anonymous_rule) do
+    Class.new(Dcc::Validate::Schematron::Rules::Base) do
+      def check_on(_dcc)
+        [issue(severity: :error, message: "anonymous rule fired")]
+      end
+    end
+  end
+
+  before do
+    Dcc::V3.load_all!
+    Dcc::Plugin.reset!
+  end
+
+  after { Dcc::Plugin.reset! }
+
+  it "has no class name to derive a code from" do
+    expect(anonymous_rule.name).to be_nil
+  end
+
+  it "codes an anonymous rule without raising" do
+    expect(anonymous_rule.new.code).to eq("dcc.schematron.anonymous")
+  end
+
+  it "still derives a named rule's code from its class name" do
+    expect(Dcc::Validate::Schematron::Rules::DateRangeCheck.new.code)
+      .to eq("dcc.schematron.date_range_check")
+  end
+
+  context "when registered as a plugin validator" do
+    before { Dcc::Plugin.register(:validators, anonymous_rule) }
+
+    it "completes the run instead of raising" do
+      expect { Dcc::Validate::Schematron.call(dcc) }.not_to raise_error
+    end
+
+    it "emits the anonymous rule's issue" do
+      expect(Dcc::Validate::Schematron.call(dcc).issues.map(&:code))
+        .to include("dcc.schematron.anonymous")
+    end
+
+    # The point of coding rather than raising: one anonymous plugin rule must
+    # not cost the caller every issue the built-in rules already found.
+    it "keeps the issues the built-in rules found" do
+      expect(Dcc::Validate::Schematron.call(dcc).issues.map(&:code))
+        .to include("dcc.schematron.used_software_placement")
+    end
+  end
+end
