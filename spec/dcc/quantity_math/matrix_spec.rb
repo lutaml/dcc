@@ -314,8 +314,10 @@ RSpec.describe Dcc::QuantityMath::Matrix do
   end
 
   describe "#to_s" do
-    it "lists each element with its unit and uncertainty" do
-      expect(pair.to_s).to include("\\kelvin")
+    it "lists each element with its unit and uncertainty",
+       :aggregate_failures do
+      expect(pair.to_s).to include("0.3e1 ± 0.2e1 \\kelvin")
+      expect(pair.to_s).to include("0.4e1 ± 0.3e1 \\kelvin")
     end
   end
 end

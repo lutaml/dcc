@@ -267,8 +267,8 @@ RSpec.describe Dcc::QuantityMath::Complex do
   describe "#to_s" do
     it "shows both components and names the shared unit once",
        :aggregate_failures do
-      expect(z1.to_s).to include("0.1")
-      expect(z1.to_s).to include("0.2")
+      expect(z1.to_s).to include("0.3e1 ± 0.1")
+      expect(z1.to_s).to include("0.4e1 ± 0.2")
       expect(z1.to_s.scan("\\ohm").size).to eq(1)
     end
 
