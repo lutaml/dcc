@@ -29,6 +29,14 @@ RSpec.describe Dcc::Migrate do
         .to equal(v3_dcc)
     end
 
+    it "rejects a model whose version is not the one asked for" do
+      v2_dcc = Dcc.parse(File.read(fixtures_path("migrate",
+                                                 "v2_full_coverage.xml")))
+
+      expect { described_class.call(v2_dcc, from: "3.3.0", to: "3.3.0") }
+        .to raise_error(Dcc::Error, /asked for 3\.3\.0.*declares 2\.3\.0/)
+    end
+
     it "rejects a target outside the bundled versions" do
       expect { described_class.call(v3_dcc, from: "3.3.0", to: "3.4.0-rc.2") }
         .to raise_error(Dcc::UnknownVersionError, /3\.4\.0-rc\.2/)

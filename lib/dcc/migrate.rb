@@ -48,10 +48,28 @@ module Dcc
       # would apply the parse loss this transform exists to avoid. The model
       # is still checked, so the no-op path cannot hand back a non-DCC object
       # the other paths would have refused.
+      #
+      # The version is checked too. Every other route re-parses under the
+      # target, so its result carries the requested version whatever `from:`
+      # said. This route returns the input untouched, so a mis-declared
+      # `from:` would hand back a document of some other version and make both
+      # parameters meaningless.
       def same_version_result(input, target)
-        return input if dcc_document?(input)
+        if dcc_document?(input)
+          reject_version_mismatch(input, target)
+          return input
+        end
 
         parse_as(source_xml(input), target)
+      end
+
+      def reject_version_mismatch(dcc, target)
+        actual = dcc.schema_version
+        return if actual.nil? || actual == target
+
+        raise ::Dcc::Error,
+              "Dcc.migrate was asked for #{target} but the document " \
+              "declares #{actual}."
       end
 
       # The one place an input becomes XML, and the one place the DCC root is
