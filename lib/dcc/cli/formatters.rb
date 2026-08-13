@@ -43,8 +43,10 @@ module Dcc
         end
 
         unless table_available?
-          print_files_plain(files)
+          # Hint first: a stderr that raises is caught by the rescue below,
+          # which re-runs the renderer. Printing first would duplicate it.
           warn TTY_TABLE_HINT
+          print_files_plain(files)
           return
         end
 

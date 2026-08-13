@@ -47,6 +47,15 @@ RSpec.describe Dcc::Cli::Formatters do
       expect { described_class.print_files(files) }
         .not_to output(/gem install/).to_stdout
     end
+
+    # A stderr that raises lands in the method's `rescue StandardError`,
+    # which renders again. Anything parsing stdout would read the rows twice.
+    it "renders each file once when the hint cannot be written" do
+      allow(described_class).to receive(:warn).and_raise(Errno::EPIPE)
+
+      expect { described_class.print_files(files) }
+        .to output(satisfy { |out| out.scan("test.txt").size == 1 }).to_stdout
+    end
   end
 
   describe ".print" do
