@@ -25,8 +25,9 @@ module Dcc
             SCHEMA_VERSION_ONLY.include?([from, to])
         end
 
-        # @return [Module, nil] a module responding to `.call(xml, to:)`, or
-        #   nil when only `schemaVersion` needs rewriting.
+        # @return [Module, nil] a module responding to
+        #   `.call(xml, to:, on_loss:)`, or nil when only `schemaVersion`
+        #   needs rewriting.
         def for(from, to)
           name = TRANSFORMS[[from, to]]
           name && ::Dcc::Migrate.const_get(name)

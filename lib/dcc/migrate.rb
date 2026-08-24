@@ -24,12 +24,15 @@ module Dcc
       #   or a parsed DCC. Prefer the source XML: see the note on this module.
       # @param from [String] source version, e.g. "2.3.0".
       # @param to [String] target version, e.g. "3.3.0".
+      # @param on_loss [#call, nil] callable receiving each loss message (a
+      #   String) the transform would otherwise send to `Kernel.warn`; when
+      #   given, nothing is warned. Nil keeps the stderr report.
       # @raise [Dcc::UnknownVersionError] if either version is not bundled.
       # @raise [Dcc::UnsupportedMigrationError] on a downgrade, or on a pair
       #   whose incompatibilities have not been verified.
       # @return [Dcc::V2::DigitalCalibrationCertificate,
       #   Dcc::V3::DigitalCalibrationCertificate] always a parsed DCC.
-      def call(input, from:, to:)
+      def call(input, from:, to:, on_loss: nil)
         source = ::Dcc::Schema::Version.resolve_dcc(from)
         target = ::Dcc::Schema::Version.resolve_dcc(to)
         return same_version_result(input, target) if source == target
@@ -39,7 +42,13 @@ module Dcc
 
         transform = Route.for(source, target)
         xml = source_xml(input)
-        parse_as(transform ? transform.call(xml, to: target) : xml, target)
+        migrated = if transform
+                     transform.call(xml, to: target,
+                                         on_loss: on_loss)
+                   else
+                     xml
+                   end
+        parse_as(migrated, target)
       end
 
       private

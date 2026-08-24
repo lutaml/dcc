@@ -88,10 +88,15 @@ module Dcc
     #   Dcc::V3::DigitalCalibrationCertificate] DCC source XML, or a parsed DCC.
     # @param from [String] source version, e.g. "2.3.0".
     # @param to [String] target version, e.g. "3.3.0".
+    # @param on_loss [#call, nil] callable receiving each message describing a
+    #   construct the migration changed or discarded (a String per loss).
+    #   When given, the messages go to the callable and nothing is sent to
+    #   `Kernel.warn`; when nil (the default), each loss report is warned to
+    #   stderr as before.
     # @return [Dcc::V2::DigitalCalibrationCertificate,
     #   Dcc::V3::DigitalCalibrationCertificate] always a parsed DCC.
-    def migrate(input, from:, to:)
-      Migrate.call(input, from: from, to: to)
+    def migrate(input, from:, to:, on_loss: nil)
+      Migrate.call(input, from: from, to: to, on_loss: on_loss)
     end
 
     # Return the parser module for the given major version.

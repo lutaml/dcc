@@ -111,16 +111,18 @@ module Dcc
 
         # @param xml [String] DCC v2 XML.
         # @param to [String] target v3 version for `schemaVersion`.
+        # @param on_loss [#call, nil] receives each loss message (a String)
+        #   instead of the stderr report; nil keeps the `Kernel.warn` report.
         # @return [String] DCC v3 XML.
         # @raise [Dcc::ParseError] on malformed XML or a non-DCC root.
-        def call(xml, to:)
+        def call(xml, to:, on_loss: nil)
           doc = parse(xml)
           reject_rootless(doc)
 
           losses = []
           doc.root["schemaVersion"] = to
           apply_rules(doc, losses)
-          report(losses, to)
+          report(losses, to, on_loss)
 
           doc.to_xml
         end
@@ -416,8 +418,16 @@ module Dcc
           end
         end
 
-        def report(losses, to)
+        # With an `on_loss` callable the caller owns the loss list: every
+        # message goes to the callable, one call per loss, and nothing is
+        # warned. Without one, the report goes to stderr as before.
+        def report(losses, to, on_loss)
           return if losses.empty?
+
+          if on_loss
+            losses.each { |loss| on_loss.call(loss) }
+            return
+          end
 
           Kernel.warn(
             "Dcc.migrate 2.3.0 to #{to} changed or discarded " \

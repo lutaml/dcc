@@ -618,6 +618,52 @@ RSpec.describe Dcc::Migrate do
     end
   end
 
+  # `on_loss:` hands the loss list to the caller. Without it every loss is
+  # reported through Kernel.warn, which a program cannot read back.
+  describe "on_loss:" do
+    let(:coverage_xml) do
+      File.read(fixtures_path("migrate", "v2_full_coverage.xml"))
+    end
+
+    it "collects each loss message and warns nothing" do
+      losses = []
+
+      expect do
+        Dcc.migrate(coverage_xml, from: "2.3.0", to: "3.3.0",
+                                  on_loss: ->(message) { losses << message })
+      end.not_to output.to_stderr
+
+      expect(losses.size).to eq(7)
+      expect(losses).to all(be_a(String))
+      expect(losses).to include(a_string_matching(%r{formula/@lang}))
+        .and include(a_string_matching(/whitespace trimmed/))
+    end
+
+    it "does not change the return value" do
+      migrated = Dcc.migrate(coverage_xml, from: "2.3.0", to: "3.3.0",
+                                           on_loss: ->(_message) {})
+
+      expect(migrated).to be_a(Dcc::V3::DigitalCalibrationCertificate)
+      expect(migrated.schema_version.to_s).to eq("3.3.0")
+    end
+
+    it "still warns to stderr when omitted" do
+      expect { Dcc.migrate(coverage_xml, from: "2.3.0", to: "3.3.0") }
+        .to output(/changed or discarded/).to_stderr
+    end
+
+    it "is never called when the migration loses nothing" do
+      dcc = Dcc.parse(File.read(fixtures_path("dcclib", "valid.xml")))
+      dcc.schema_version = "3.2.1"
+      losses = []
+
+      Dcc.migrate(dcc, from: "3.2.1", to: "3.3.0",
+                       on_loss: ->(message) { losses << message })
+
+      expect(losses).to be_empty
+    end
+  end
+
   describe "input validation" do
     it "rejects nil" do
       expect { Dcc.migrate(nil, from: "2.3.0", to: "3.3.0") }
