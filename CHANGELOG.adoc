@@ -12,6 +12,36 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 * Performance memoization for hot paths
 * Plugin system for custom validators and converters
 
+=== Fixed
+* `dcc:list` no longer parses as an empty `si:list`. The D-SI re-export was
+  overwriting the DCC `list` registration, so every list and the quantities
+  inside it were dropped on parse.
+* `si:expandedUnc` and `si:coverageInterval` now survive a parse. Both are
+  members of the same `si:real` choice group and neither was mapped, so D-SI
+  v1 uncertainties were discarded.
+* `dcc:mathml` now parses. It is a `dcc:xmlType` wrapper around `ml:math`,
+  not the `ml:math` element itself, so `formula.mathml` was always `nil`.
+  Known gap: `ml:ci/@xref` does not survive a round-trip. `Mml::V3::Ci`
+  has no `xref` attribute, so the value is lost on parse and never reaches
+  the output. Those xrefs bind the formula variables to their
+  `dcc:quantity/@id`. A round-tripped formula keeps its MathML and loses
+  those bindings, with no warning. The fix belongs in the `mml` gem, not
+  here.
+* Decimal XML lists serialize as one space-separated element again. Each
+  value was being written as its own element containing a Ruby array
+  literal, e.g. `<si:valueXMLList>[0.72e-1]</si:valueXMLList>`. `NaN`
+  round-trips too, which every D-SI decimal type admits.
+* `UncertaintyConsistency` accepts a single entry broadcast across every
+  value, and now checks `coverageFactorXMLList`, `coverageProbabilityXMLList`
+  and `distributionXMLList` rather than the uncertainty list alone.
+* CSV export renders list values as plain decimals instead of `0.72e-1`.
+
+=== Changed
+* *Breaking:* `formula.mathml` returns a `Dcc::V2::Mathml` / `Dcc::V3::Mathml`
+  wrapper instead of an `Mml::V3::Math`. The MathML tree moves one level
+  down, so callers now read `formula.mathml.math`. This matches the XSD,
+  where `dcc:mathml` is a `dcc:xmlType` wrapper.
+
 == [0.1.0] — 2026-07-22
 
 === Added

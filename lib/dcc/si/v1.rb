@@ -22,6 +22,7 @@ module Dcc
       autoload :ExpandedMU, "dcc/si/v1/expanded_mu"
       autoload :CoverageIntervalMU, "dcc/si/v1/coverage_interval_mu"
       autoload :ExpandedUnc, "dcc/si/v1/expanded_unc"
+      autoload :CoverageInterval, "dcc/si/v1/coverage_interval"
       autoload :ExpandedUncXmlList, "dcc/si/v1/expanded_unc_xml_list"
       autoload :MeasurementUncertaintyUnivariate,
                "dcc/si/v1/measurement_uncertainty_univariate"
@@ -34,7 +35,8 @@ module Dcc
         Real Complex Constant
         RealListXmlList ComplexListXmlList Hybrid SiList
         StandardMU ExpandedMU CoverageIntervalMU
-        ExpandedUnc ExpandedUncXmlList MeasurementUncertaintyUnivariate
+        ExpandedUnc CoverageInterval
+        ExpandedUncXmlList MeasurementUncertaintyUnivariate
       ].freeze
 
       def self.load_all!

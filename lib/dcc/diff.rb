@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bigdecimal"
+require "date"
 require "lutaml/model"
 
 module Dcc
@@ -11,6 +12,12 @@ module Dcc
   module Diff
     autoload :Result, "dcc/diff/result"
     autoload :Change, "dcc/diff/change"
+
+    # Leaf types compared directly rather than descended into. Numeric covers
+    # BigDecimal and Date covers DateTime, so neither needs its own entry.
+    PRIMITIVE_TYPES = [
+      ::String, ::Numeric, ::Symbol, ::Time, ::Date
+    ].freeze
 
     class << self
       # @param a [Lutaml::Model::Serializable]
@@ -42,7 +49,7 @@ module Dcc
 
         # Both primitives - compare values
         if primitive?(a) || primitive?(b)
-          if a != b
+          unless equivalent?(a, b)
             changes << Change.new(path: path, kind: :change, before: a,
                                   after: b)
           end
@@ -67,14 +74,35 @@ module Dcc
         end
       end
 
-      def primitive?(value)
-        return true if value.nil?
-        return true if value.is_a?(::String) || value.is_a?(::Numeric) || value.is_a?(::Symbol)
-        return true if [true, false].include?(value)
-        return true if value.is_a?(::Time) || value.is_a?(::Date) || value.is_a?(::DateTime)
-        return true if value.is_a?(::BigDecimal)
+      # "Did this document change?" is not "are these numbers equal?".
+      # `BigDecimal("NaN") == BigDecimal("NaN")` is false by IEEE, and
+      # `Values#==` honours that, so two documents carrying the same
+      # not-measured entry would otherwise report a change to itself.
+      def equivalent?(a, b)
+        values = ::Dcc::Type::DecimalXmlList::Values
+        return a == b unless a.is_a?(values) && b.is_a?(values)
 
-        false
+        a.size == b.size && a.to_a.zip(b.to_a).all? { |x, y| same_decimal?(x, y) }
+      end
+
+      # `Values.new` takes whatever it is handed, so a list assigned in Ruby
+      # rather than parsed can hold anything. Only BigDecimals are asked
+      # whether they are NaN.
+      def same_decimal?(left, right)
+        return true if left == right
+
+        left.is_a?(::BigDecimal) && right.is_a?(::BigDecimal) &&
+          left.nan? && right.nan?
+      end
+
+      def primitive?(value)
+        return true if value.nil? || [true, false].include?(value)
+        return false if value.is_a?(::Array)
+        return true if PRIMITIVE_TYPES.any? { |type| value.is_a?(type) }
+
+        # Anything we cannot descend into is compared with `==`, which covers
+        # value objects such as decimal XML lists.
+        !value.class.respond_to?(:attributes)
       end
 
       def summarize(node)

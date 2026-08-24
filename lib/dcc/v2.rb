@@ -14,6 +14,7 @@ module Dcc
     autoload :Text, "dcc/v2/text"
     autoload :ByteData, "dcc/v2/byte_data"
     autoload :Formula, "dcc/v2/formula"
+    autoload :Mathml, "dcc/v2/mathml"
     autoload :RichContent, "dcc/v2/rich_content"
     autoload :XmlBlob, "dcc/v2/xml_blob"
     autoload :Comment, "dcc/v2/comment"
@@ -61,7 +62,7 @@ module Dcc
     extend ::Dcc::VersionedParser
 
     ELEMENT_CLASSES = %i[
-      StringWithLang Text ByteData Formula RichContent XmlBlob Comment
+      StringWithLang Text ByteData Mathml Formula RichContent XmlBlob Comment
       EquipmentClass Location Contact ContactNotStrict HashType
       Identification Identifications Software SoftwareList
       RefTypeDefinition RefTypeDefinitionList
