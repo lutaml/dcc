@@ -130,6 +130,93 @@ RSpec.describe Dcc::Validate::Schematron::Profile do
   end
 end
 
+# Broken plugin rules for the fault-isolation specs below. Rules that also
+# fire a healthy issue would blur the assertion that the built-in findings
+# survive, so each broken rule does only one bad thing. Defined at the top
+# level, not inside a block, so no constant leaks out of an example group.
+class RaisingPluginRule < Dcc::Validate::Schematron::Rules::Base
+  def check_on(_dcc)
+    raise "plugin exploded"
+  end
+end
+
+class RequiredArgPluginRule < Dcc::Validate::Schematron::Rules::Base
+  def initialize(required)
+    @required = required
+    super()
+  end
+
+  def check_on(_dcc)
+    []
+  end
+end
+
+class NilReturningPluginRule < Dcc::Validate::Schematron::Rules::Base
+  def check_on(_dcc)
+    nil
+  end
+end
+
+# A broken plugin rule is third-party code: its failure must be contained
+# and attributed, never allowed to abort the run and lose the built-in
+# rules' findings.
+RSpec.describe Dcc::Validate::Schematron::Profile, "#call" do
+  # The invalid fixture, so the built-in rules have real findings to lose.
+  let(:dcc) do
+    Dcc.parse(File.read(fixtures_path("dcclib", "invalid_schematron.xml")))
+  end
+
+  before do
+    Dcc::V3.load_all!
+    Dcc::Plugin.reset!
+  end
+
+  after { Dcc::Plugin.reset! }
+
+  shared_examples "a contained plugin failure" do |rule_class|
+    before { Dcc::Plugin.register(:validators, rule_class) }
+
+    it "does not abort the run" do
+      expect { Dcc::Validate::Schematron.call(dcc) }.not_to raise_error
+    end
+
+    it "reports exactly one error issue naming the rule class" do
+      failures = Dcc::Validate::Schematron.call(dcc).issues
+        .select { |i| i.code == "dcc.schematron.plugin_failure" }
+      expect(failures.size).to eq(1)
+      expect(failures.first.severity).to eq(:error)
+      expect(failures.first.message).to include(rule_class.name)
+    end
+
+    it "keeps the issues the built-in rules found" do
+      broken = Dcc::Validate::Schematron.call(dcc).issues.map(&:code)
+      Dcc::Plugin.reset!
+      baseline = Dcc::Validate::Schematron.call(dcc).issues.map(&:code)
+      expect(baseline).not_to be_empty
+      expect(broken).to include(*baseline)
+    end
+  end
+
+  context "with a plugin rule whose check_on raises" do
+    it_behaves_like "a contained plugin failure", RaisingPluginRule
+  end
+
+  context "with a plugin rule whose initialize takes a required argument" do
+    it_behaves_like "a contained plugin failure", RequiredArgPluginRule
+  end
+
+  context "with a plugin rule whose check_on returns nil" do
+    it_behaves_like "a contained plugin failure", NilReturningPluginRule
+  end
+
+  it "still fails fast when a built-in rule raises" do
+    allow(Dcc::Validate::Schematron::Rules::DateRangeCheck)
+      .to receive(:new).and_raise("built-in bug")
+    expect { Dcc::Validate::Schematron.call(dcc) }
+      .to raise_error("built-in bug")
+  end
+end
+
 # `register_validator` accepts any class defining `#check_on`, anonymous ones
 # included, and `Rule#code` derives its code from the class name. An anonymous
 # class has no name, so a rule built this way used to raise from inside the run.
