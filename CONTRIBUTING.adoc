@@ -34,7 +34,14 @@ constraints:
 * `send` to call private methods — redesign the API boundary.
 * `instance_variable_set` / `instance_variable_get` — use accessors.
 * `respond_to?` for type checking — use `is_a?` or model the type hierarchy.
-* Nokogiri anywhere outside `lib/dcc/validate/xsd.rb`.
+* Nokogiri anywhere outside `lib/dcc/validate/xsd.rb` and
+  `lib/dcc/migrate/v2_to_v3.rb`.
++
+The migration exception exists because a version transform rewrites element
+names and moves subtrees on documents the object model cannot round-trip —
+doing it through the model would discard the very constructs the transform
+has to carry. Revisit and remove this exception when the parser round-trips
+a DCC without loss, at which point the transform can run on the model.
 * Doubles in specs — use real model instances.
 * Hand-rolled `to_h`/`from_h` on model classes — use lutaml-model mappings.
 

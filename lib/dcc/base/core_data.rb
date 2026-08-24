@@ -20,6 +20,7 @@ module Dcc
           attribute :receipt_date, :date
           attribute :begin_performance_date, :date
           attribute :end_performance_date, :date
+          attribute :performance_location, :string
           attribute :previous_report, :previousReport
 
           xml do
@@ -38,6 +39,7 @@ module Dcc
             map_element "receiptDate", to: :receipt_date
             map_element "beginPerformanceDate", to: :begin_performance_date
             map_element "endPerformanceDate", to: :end_performance_date
+            map_element "performanceLocation", to: :performance_location
             map_element "previousReport", to: :previous_report
           end
         end

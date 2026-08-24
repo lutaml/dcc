@@ -3,7 +3,10 @@
 module Dcc
   module Base
     # `dcc:conditionType` — single influence condition: name + description +
-    # optional state enum (beforeAdjustment, etc.) + data.
+    # optional status enum (beforeAdjustment, etc.) + data.
+    #
+    # v3 calls that child `status`; v2 calls it `state`, which
+    # `Dcc::V2::Condition` maps.
     module Condition
       def self.included(klass)
         klass.class_eval do
@@ -24,7 +27,7 @@ module Dcc
             map_attribute "refType", to: :ref_type
             map_element "name", to: :name
             map_element "description", to: :description
-            map_element "state", to: :status
+            map_element "status", to: :status
             map_element "data", to: :data
           end
         end
