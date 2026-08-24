@@ -7,7 +7,7 @@ require "spec_helper"
 # A gem may be left undeclared only when its require is guarded (indented
 # inside a method or conditional) AND it is named in `optional`, meaning its
 # absence degrades the output instead of raising.
-# rubocop:disable RSpec/DescribeClass -- packaging invariant, not a class
+# rubocop:disable-next RSpec/DescribeClass -- packaging invariant, not a class
 RSpec.describe "dcc runtime dependencies" do
   let(:root) { File.expand_path("../../..", __dir__) }
   let(:gemspec) { Gem::Specification.load(File.join(root, "dcc.gemspec")) }
@@ -24,11 +24,15 @@ RSpec.describe "dcc runtime dependencies" do
   let(:guarded) { scan(/^[ \t]+require ["']([^"']+)["']/) }
 
   def scan(pattern)
-    Dir[File.join(root, "lib", "**", "*.rb")]
+    paths = Dir[File.join(root, "lib", "**", "*.rb")]
       .flat_map { |f| File.read(f).scan(pattern).flatten }
-      .reject { |name| name == "dcc" || name.start_with?("dcc/") }
-      .map { |name| gem_for(name) }
-      .uniq - stdlib
+    gems_for(paths) - stdlib
+  end
+
+  def gems_for(paths)
+    paths.reject { |path| path == "dcc" || path.start_with?("dcc/") }
+      .map { |path| gem_for(path) }
+      .uniq
   end
 
   # Require paths whose gem name is not simply the first path segment.
@@ -55,8 +59,11 @@ RSpec.describe "dcc runtime dependencies" do
     %w[sinatra tty-table]
   end
 
-  it "finds the gems the library requires" do
+  it "finds the gems the library requires unguarded" do
     expect(unguarded).to include("thor", "nokogiri")
+  end
+
+  it "finds the gems the library requires behind a guard" do
     expect(guarded).to include("tty-table")
   end
 
@@ -72,4 +79,3 @@ RSpec.describe "dcc runtime dependencies" do
     expect(declared).not_to include(*optional)
   end
 end
-# rubocop:enable RSpec/DescribeClass
