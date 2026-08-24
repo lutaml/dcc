@@ -3,13 +3,13 @@
 **Status:** PARTIAL
 
 ## Gaps
-- `lib/dcc/plugin/base.rb` does not exist, and there is no
-  `Dcc.load_plugins` or gem-prefix auto-discovery.
-- Nothing consumes the registry. `Dcc::Validate`, `Dcc::Convert` and
-  `Dcc::Cli` never read `Dcc::Plugin.all`, so a registered plugin has no
-  effect on validation, conversion or the CLI.
-- `spec/dcc/plugin_spec.rb` asserts only that the registry stores and returns
-  objects.
+- There is no gem-prefix auto-discovery. `Dcc.load_plugins` loads plugins by
+  explicit name; nothing scans installed gems for the `dcc/*` prefix.
+- Only validators are wired end to end. `Dcc::Plugin::Base` declares
+  `register_validator` and nothing else, and neither `Dcc::Convert` nor
+  `Dcc::Cli` reads `Dcc::Plugin.all`, so a converter or CLI subcommand can
+  be neither declared nor consumed. `Dcc::Validate` does read the registry,
+  via `Dcc::Validate::Schematron::Profile`.
 
 ## Goal
 Registry-based plugin system for custom validators, converters, and CLI commands.
