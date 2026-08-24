@@ -2,6 +2,10 @@
 
 require "spec_helper"
 
+# Appended, not prepended: the fixture tree mirrors real `dcc/` paths, so
+# giving it precedence would let a fixture shadow the gem's own files.
+$LOAD_PATH.push(fixtures_path("plugins"))
+
 RSpec.describe Dcc do
   describe ".parser_for" do
     it "returns Dcc::V2 for version 2" do
@@ -61,6 +65,46 @@ RSpec.describe Dcc do
     it "returns false for String, nil" do
       expect(Dcc.io_like?("plain")).to be(false)
       expect(Dcc.io_like?(nil)).to be(false)
+    end
+  end
+
+  describe ".load_plugins" do
+    before { Dcc::Plugin.reset! }
+    after { Dcc::Plugin.reset! }
+
+    it "maps a gem name to its entry-file path" do
+      expect(described_class.load_plugins("dcc-version"))
+        .to eq(["dcc/version"])
+    end
+
+    # The entry file was found. Wrapping this would blame the plugin's own
+    # path for a dependency it failed to require.
+    it "lets a failure from inside the plugin through untouched" do
+      expect { described_class.load_plugins("dcc-brokendep") }
+        .to raise_error(LoadError, /a_gem_that_does_not_exist/)
+    end
+
+    it "leaves a slash-separated path alone, hyphens included" do
+      expect { described_class.load_plugins("dcc/nope-not-real") }
+        .to raise_error(Dcc::PluginError, %r{require "dcc/nope-not-real"})
+    end
+
+    it "names the plugin when its entry file is missing" do
+      expect { described_class.load_plugins("dcc-nope-not-real") }
+        .to raise_error(Dcc::PluginError, /dcc-nope-not-real/)
+    end
+
+    it "names the path it tried when loading fails" do
+      expect { described_class.load_plugins("dcc-nope-not-real") }
+        .to raise_error(Dcc::PluginError, %r{dcc/nope/not/real})
+    end
+
+    # Only this example may load the fixture: `require` is idempotent per
+    # process, so a second one would find nothing registered.
+    it "requires the plugin so its declarations take effect" do
+      described_class.load_plugins("dcc-sample_plugin")
+      expect(Dcc::Plugin.all(:validators))
+        .to include(DccSamplePlugin::SampleRule)
     end
   end
 end

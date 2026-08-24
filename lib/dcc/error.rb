@@ -40,6 +40,9 @@ module Dcc
   # Raised when the builder DSL is used incorrectly.
   class BuilderError < Error; end
 
+  # Raised when a plugin gem's entry file cannot be loaded.
+  class PluginError < Error; end
+
   # Raised when a soft dependency (`xmldsig`, `sinatra`, etc.) is required
   # but not installed.
   class MissingDependencyError < Error

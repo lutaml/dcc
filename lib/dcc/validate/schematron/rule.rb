@@ -13,9 +13,16 @@ module Dcc
           ::Dcc::Validate::Severity::ERROR
         end
 
+        # A plugin can register an anonymous rule class, whose `name` is nil.
+        # Falling back keeps one such rule from taking the whole run down and
+        # losing every issue the built-in rules already found.
+        #
         # @return [String] rule code used in `Issue#code`.
         def code
-          "dcc.schematron.#{self.class.name.split('::').last.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').gsub(
+          class_name = self.class.name
+          return "dcc.schematron.anonymous" unless class_name
+
+          "dcc.schematron.#{class_name.split('::').last.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').gsub(
             /([a-z\d])([A-Z])/, '\1_\2'
           ).downcase}"
         end
