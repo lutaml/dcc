@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "thor"
-require "tty-table"
 
 # `Dcc::Cli::Cli` is the Thor-based command-line interface. Each subcommand
 # (validate, convert, extract, signature, transform, inspect, diff, issue)
