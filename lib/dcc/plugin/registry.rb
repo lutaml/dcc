@@ -9,12 +9,17 @@ module Dcc
       @mutex = ::Mutex.new
 
       class << self
+        # Idempotent per (category, entry): registering the same entry in
+        # the same category twice is a no-op, so a doubly-loaded plugin does
+        # not run its validators twice.
+        #
         # @param category [Symbol]
         # @param entry [Class, Object]
         # @return [Class, Object]
         def register(category, entry)
           @mutex.synchronize do
-            @categories[category.to_sym] << entry
+            entries = @categories[category.to_sym]
+            entries << entry unless entries.include?(entry)
             entry
           end
         end

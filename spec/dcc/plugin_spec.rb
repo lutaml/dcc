@@ -8,6 +8,7 @@ end
 
 RSpec.describe Dcc::Plugin do
   before { described_class.reset! }
+  after { described_class.reset! }
 
   describe ".register and .all" do
     it "stores plugins by category" do
@@ -24,6 +25,18 @@ RSpec.describe Dcc::Plugin do
       expect(described_class.any?(:validators)).to be(false)
       described_class.register(:validators, SamplePlugin)
       expect(described_class.any?(:validators)).to be(true)
+    end
+
+    it "is idempotent: registering the same entry twice stores it once" do
+      described_class.register(:validators, SamplePlugin)
+      described_class.register(:validators, SamplePlugin)
+      expect(described_class.all(:validators)).to eq([SamplePlugin])
+    end
+
+    it "still allows the same entry in different categories" do
+      described_class.register(:validators, SamplePlugin)
+      described_class.register(:converters, SamplePlugin)
+      expect(described_class.all(:converters)).to eq([SamplePlugin])
     end
 
     it "returns a copy of the registry (mutation safety)" do

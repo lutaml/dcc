@@ -49,7 +49,7 @@ module Dcc
 
         # Both primitives - compare values
         if primitive?(a) || primitive?(b)
-          if a != b
+          unless equivalent?(a, b)
             changes << Change.new(path: path, kind: :change, before: a,
                                   after: b)
           end
@@ -72,6 +72,27 @@ module Dcc
           bv = Dcc::TypeGuards.has_attribute?(b, key) ? b.public_send(key) : nil
           collect_differences(av, bv, "#{path}/#{key}", changes)
         end
+      end
+
+      # "Did this document change?" is not "are these numbers equal?".
+      # `BigDecimal("NaN") == BigDecimal("NaN")` is false by IEEE, and
+      # `Values#==` honours that, so two documents carrying the same
+      # not-measured entry would otherwise report a change to itself.
+      def equivalent?(a, b)
+        values = ::Dcc::Type::DecimalXmlList::Values
+        return a == b unless a.is_a?(values) && b.is_a?(values)
+
+        a.size == b.size && a.to_a.zip(b.to_a).all? { |x, y| same_decimal?(x, y) }
+      end
+
+      # `Values.new` takes whatever it is handed, so a list assigned in Ruby
+      # rather than parsed can hold anything. Only BigDecimals are asked
+      # whether they are NaN.
+      def same_decimal?(left, right)
+        return true if left == right
+
+        left.is_a?(::BigDecimal) && right.is_a?(::BigDecimal) &&
+          left.nan? && right.nan?
       end
 
       def primitive?(value)
