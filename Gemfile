@@ -21,3 +21,5 @@ end
 
 gem "puma", "~> 8.0"
 gem "rackup", "~> 2.3"
+
+gem "canon", github: "lutaml/canon", branch: "main" # Canon::Config is main-only; released 0.3.81 predates it
