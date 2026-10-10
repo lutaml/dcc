@@ -38,10 +38,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "base64" # not a default gem since Ruby 3.4
   spec.add_dependency "csv" # not a default gem since Ruby 3.4
   spec.add_dependency "forwardable" # stdlib, declared for the packaging guard
-  spec.add_dependency "liquid"
+  spec.add_dependency "liquid", "~> 5"
   spec.add_dependency "lutaml-model", "~> 0.8"
   spec.add_dependency "mml", "~> 2.4.0"
   spec.add_dependency "moxml", "~> 0.5"
   spec.add_dependency "nokogiri", "~> 1.16"
-  spec.add_dependency "thor"
+  spec.add_dependency "thor", "~> 1.4"
 end
