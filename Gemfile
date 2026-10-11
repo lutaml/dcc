@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "canon", github: "lutaml/canon", branch: "main" # Canon::Config is main-only; released 0.3.81 predates it
+gem "canon", github: "lutaml/canon", branch: "main" # main-only Canon::Config
 gem "rake", "~> 13.0"
 gem "rspec", "~> 3.0"
 gem "rubocop", "~> 1.21"
@@ -21,4 +21,3 @@ end
 
 gem "puma", "~> 8.0"
 gem "rackup", "~> 2.3"
-
