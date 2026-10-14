@@ -3,8 +3,16 @@
 **Status:** PARTIAL
 
 ## Gaps
-- `lib/dcc/quantity_math/complex.rb` and `matrix.rb` do not exist, so complex
-  arithmetic and covariance-aware multivariate operations are unavailable.
+- `Dcc::QuantityMath::Real` implements `+`, `-`, `*`, `/` and `**` only. The
+  `sqrt` and comparison operators listed under Files are not defined.
+- `Dcc::QuantityMath::Quantity` carries `(value, unit, uncertainty)`.
+  `coverage_factor` and `coverage_probability` do not exist — passing either
+  to the constructor raises `unknown keyword`.
+- `Real` propagates uncertainty through `Math.sqrt(x.to_f)`
+  (`lib/dcc/quantity_math/real.rb:79`, `:90`), so RSS and fractional results
+  are capped at double precision rather than honouring the BigDecimal
+  precision the design notes describe. `Complex` and `Matrix` do take exact
+  BigDecimal square roots.
 
 ## Goal
 BigDecimal-based arithmetic on D-SI quantities that propagates uncertainty via root-sum-square (RSS) for add/sub and fractional for mul/div.
