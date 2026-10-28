@@ -33,12 +33,23 @@ def document
   %(<dcc:d #{root}>#{body}</dcc:d>)
 end
 
+# The parsed DOM node class depends on the lutaml-model line: current lines
+# parse fragments into Lutaml::Xml::Element, older ones into Moxml::Element.
+DOM_NODE_CLASSES = [
+  (Lutaml::Xml::Element if defined?(Lutaml::Xml::Element)),
+  (Moxml::Element if defined?(Moxml::Element)),
+].compact.freeze
+
+def dom_nodes
+  DOM_NODE_CLASSES.sum { |klass| ObjectSpace.each_object(klass).count }
+end
+
 def sample
   GC.start
   GC.start
   [ObjectSpace.memsize_of_all,
    ObjectSpace.each_object(Dcc::V3::Item).count,
-   ObjectSpace.each_object(Moxml::Element).count]
+   dom_nodes]
 end
 
 marks = {}

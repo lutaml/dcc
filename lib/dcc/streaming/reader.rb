@@ -230,30 +230,9 @@ module Dcc
             write_attribute(prefix ? "xmlns:#{prefix}" : "xmlns", href)
           end
           attributes.each do |key, value|
-            write_attribute(key, decode_ampersands(value))
+            write_attribute(key, value)
           end
           @buffer << ">"
-        end
-
-        # SAX decodes an attribute value except for `&`, which libxml2 hands
-        # back still written as the decimal reference `&#38;` whatever form
-        # the source used. Escaping that would emit `&amp;#38;`, and the value
-        # would come back one round trip more corrupt each time. A bare `&`
-        # never reaches us, which is what makes putting it back exact rather
-        # than a guess.
-        #
-        # Namespace URIs and character data do not come through here: moxml
-        # hands those over fully decoded, and a URI carrying a literal `&#38;`
-        # would be corrupted by this substitution. Re-measure both channels if
-        # the moxml dependency moves.
-        # Most attributes carry no `&#38;`, and `gsub` allocates a copy even
-        # when it substitutes nothing. Measured over 300k calls: the guard is
-        # about twice as fast when there is no match, and about 13% slower on
-        # the rare value that does match.
-        def decode_ampersands(value)
-          return value unless value.include?("&#38;")
-
-          value.gsub("&#38;", "&")
         end
 
         def write_attribute(name, value)
