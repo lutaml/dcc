@@ -101,7 +101,11 @@ module Dcc
           return reals.first.value.to_s if reals.any?
 
           lists = Array(q.real_list_xml_list)
-          return lists.first.value_xml_list.map(&:to_s).join("; ") if lists.any?
+          # Serialized rather than mapped over: BigDecimal#to_s renders 0.072
+          # as "0.72e-1", which is not what the document said.
+          if lists.any?
+            return ::Dcc::Type::DecimalXmlList.serialize(lists.first.value_xml_list)
+          end
 
           ""
         end

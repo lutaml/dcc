@@ -17,6 +17,8 @@ module Dcc
       #   </si:real>
       module Real
         def self.included(klass)
+          # rubocop:disable Metrics/BlockLength -- one lutaml mapping block,
+          # as in the sibling D-SI modules already listed in the todo file.
           klass.class_eval do
             attribute :id, :string
             attribute :ref_type, :string
@@ -27,6 +29,9 @@ module Dcc
             attribute :date_time, :date_time
             attribute :measurement_uncertainty_univariate,
                       :measurementUncertaintyUnivariate
+            # Deprecated in v2, but the only uncertainty form v1 documents use.
+            attribute :expanded_unc, :expandedUnc
+            attribute :coverage_interval, :coverageInterval
 
             xml do
               namespace ::Dcc::Namespace::Si
@@ -41,8 +46,11 @@ module Dcc
               map_element "dateTime", to: :date_time
               map_element "measurementUncertaintyUnivariate",
                           to: :measurement_uncertainty_univariate
+              map_element "expandedUnc", to: :expanded_unc
+              map_element "coverageInterval", to: :coverage_interval
             end
           end
+          # rubocop:enable Metrics/BlockLength
         end
       end
     end

@@ -51,15 +51,28 @@ Dcc::Schema::Version.resolve_dcc(:auto, xml: xml) # => "3.3.0"
 
 == Migration
 
-Use `Dcc.migrate` to upgrade or downgrade between schema versions:
+Use `Dcc.migrate` to upgrade a DCC to a newer schema version:
 
 [source,ruby]
 ----
-dcc = Dcc.parse(File.read("v3.xml"))
-migrated = Dcc.migrate(dcc, from: "3.3.0", to: "3.2.1")
-puts migrated.schema_version # => 3.2.1
+xml = File.read("v2.xml")
+migrated = Dcc.migrate(xml, from: "2.3.0", to: "3.3.0")
+puts migrated.schema_version # => 3.3.0
 ----
 
-Cross-major migration (e.g. v2 → v3) serializes the source DCC and
-re-parses it under the target version's context. Same-major just
-rewrites the `schemaVersion` attribute in place.
+Pass the source XML whenever you have it. `Dcc.migrate` also accepts a
+parsed DCC, but a model has to be serialized back to XML before the
+transform runs — so anything the parser could not round-trip is already
+gone, and the migration can neither carry it nor report it.
+
+Migration is one-way. Downgrading raises `Dcc::UnsupportedMigrationError`,
+because v3 adds elements and attributes no older schema accepts:
+
+[source,ruby]
+----
+Dcc.migrate(xml, from: "3.3.0", to: "3.2.1") # raises
+----
+
+Cross-major migration (e.g. v2 → v3) applies the route's field rules to the
+XML and parses the result under the target version's context. Same-major
+just rewrites the `schemaVersion` attribute.
