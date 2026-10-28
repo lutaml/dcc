@@ -37,6 +37,10 @@ module Dcc
   # Raised when an unsupported schema version is requested.
   class UnknownVersionError < Error; end
 
+  # Raised when a migration direction is not supported — any downgrade, and
+  # any pair whose incompatibilities have not been verified.
+  class UnsupportedMigrationError < Error; end
+
   # Raised when the builder DSL is used incorrectly.
   class BuilderError < Error; end
 
