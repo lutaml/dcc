@@ -78,12 +78,59 @@ module Dcc
       Builder.call(version: version, &)
     end
 
-    # Migrate a parsed DCC object from one schema version to another.
-    # @param dcc [Dcc::V2::DigitalCalibrationCertificate, Dcc::V3::DigitalCalibrationCertificate]
+    # Load plugin gems by name.
+    #
+    # A gem name maps to its entry file the usual way: "dcc-audit" loads
+    # "dcc/audit". A slash-separated path is accepted unchanged.
+    #
+    # @param names [Array<String, Symbol>] plugin gem names.
+    # @raise [Dcc::PluginError] if a plugin's entry file cannot be loaded.
+    # @return [Array<String>] the entry-file path for each name given.
+    #   A plugin already loaded is left alone and its path still returned.
+    #
+    # A plugin whose own `require` fails raises from inside a file we did
+    # find. Reporting that as a missing entry file points the author at the
+    # wrong problem, so only the entry path's own LoadError is wrapped.
+    def load_plugins(*names)
+      names.flatten.map do |name|
+        path = plugin_path(name)
+        require path
+        path
+      rescue ::LoadError => e
+        raise unless e.path == path
+
+        raise PluginError, "could not load plugin #{name}: tried " \
+                           "require #{path.inspect} (#{e.message})"
+      end
+    end
+
+    # "dcc-audit" is a gem name and maps to "dcc/audit". Anything already
+    # carrying a slash is a require path and is left alone, hyphens included.
+    def plugin_path(name)
+      text = name.to_s
+      text.include?("/") ? text : text.tr("-", "/")
+    end
+    private :plugin_path
+
+    # Migrate a DCC from one schema version to another.
+    #
+    # Prefer passing the source XML. A parsed model has to be serialized back
+    # to XML before the transform runs, so anything the model could not
+    # round-trip is already gone and cannot be migrated or reported.
+    #
+    # @param input [String, IO, Dcc::V2::DigitalCalibrationCertificate,
+    #   Dcc::V3::DigitalCalibrationCertificate] DCC source XML, or a parsed DCC.
     # @param from [String] source version, e.g. "2.3.0".
     # @param to [String] target version, e.g. "3.3.0".
-    def migrate(dcc, from:, to:)
-      Migrate.call(dcc, from: from, to: to)
+    # @param on_loss [#call, nil] callable receiving each message describing a
+    #   construct the migration changed or discarded (a String per loss).
+    #   When given, the messages go to the callable and nothing is sent to
+    #   `Kernel.warn`; when nil (the default), each loss report is warned to
+    #   stderr as before.
+    # @return [Dcc::V2::DigitalCalibrationCertificate,
+    #   Dcc::V3::DigitalCalibrationCertificate] always a parsed DCC.
+    def migrate(input, from:, to:, on_loss: nil)
+      Migrate.call(input, from: from, to: to, on_loss: on_loss)
     end
 
     # Return the parser module for the given major version.

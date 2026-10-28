@@ -24,6 +24,8 @@ module Dcc
       autoload :CoverageIntervalMU, "dcc/si/v2/coverage_interval_mu"
       autoload :CoverageIntervalMUXMLList,
                "dcc/si/v2/coverage_interval_mu_xml_list"
+      autoload :ExpandedUnc, "dcc/si/v2/expanded_unc"
+      autoload :CoverageInterval, "dcc/si/v2/coverage_interval"
       autoload :ExpandedUncXmlList, "dcc/si/v2/expanded_unc_xml_list"
       autoload :MeasurementUncertaintyUnivariate,
                "dcc/si/v2/measurement_uncertainty_univariate"
@@ -38,6 +40,7 @@ module Dcc
         StandardMU StandardMUXMLList
         ExpandedMU ExpandedMUXMLList
         CoverageIntervalMU CoverageIntervalMUXMLList
+        ExpandedUnc CoverageInterval
         ExpandedUncXmlList MeasurementUncertaintyUnivariate
       ].freeze
 
