@@ -65,7 +65,7 @@ streamed_kb = ((LAST - FIRST) * PAD.bytesize) / 1024.0
 
 # Not an example group — this is a standalone program whose entire contract
 # is printing the measurement to stdout for the parent process to parse.
-# rubocop:disable RSpec/Output
+# rubocop:disable-next RSpec/Output
 puts({
   yielded: seen,
   heap_growth_kb: ((last[0] - first[0]) / 1024.0).round,
@@ -75,4 +75,3 @@ puts({
   elements_first: first[2],
   elements_last: last[2],
 }.to_json)
-# rubocop:enable RSpec/Output
