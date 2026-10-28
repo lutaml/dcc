@@ -5,7 +5,7 @@ require "mml"
 module Dcc
   module Base
     # `dcc:formulaType` — formula expression. Contains `latex` string,
-    # `mathml` (a typed `Mml::V3::Math` model), or legacy `siunitx`.
+    # `mathml` (a `dcc:xmlType` wrapper around `ml:math`), or legacy `siunitx`.
     module Formula
       def self.included(klass)
         klass.class_eval do
@@ -13,7 +13,7 @@ module Dcc
           attribute :ref_id, :string
           attribute :ref_type, :string
           attribute :latex, :string
-          attribute :mathml, ::Mml::V3::Math
+          attribute :mathml, :mathml
           attribute :siunitx, :string
 
           xml do

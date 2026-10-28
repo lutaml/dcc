@@ -45,33 +45,36 @@ module Dcc
       private
 
       def format_value
-        # Two decimals by default; tightened to uncertainty precision when known.
-        return @value.round(2).to_s("F") if uncertainty.nil?
+        # Two decimals by default, tightened to the uncertainty's precision
+        # when it has any. Neither a nil nor a NaN uncertainty has one.
+        return @value.round(2).to_s("F") if uncertainty.nil? || uncertainty.nan?
 
-        # Decimal places = 1 - floor(log10(uncertainty))
-        decimal_places = [0,
-                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         @value.round(decimal_places).to_s("F")
       end
 
       def format_uncertainty
         return "" if uncertainty.nil?
+        return "NaN" if uncertainty.nan?
 
-        decimal_places = [0,
-                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         uncertainty.round(decimal_places).to_s("F")
       end
 
       def align_value_and_uncertainty
         return [@value.to_s("F"), uncertainty.to_s("F")] if uncertainty.nil?
+        return [format_value, "NaN"] if uncertainty.nan?
 
-        decimal_places = [0,
-                          1 - Integer(Math.log10(uncertainty.to_f).floor)].max
         v_str = @value.round(decimal_places).to_s("F")
         u_str = uncertainty.round(decimal_places).to_s("F")
         # Short form: digits of uncertainty after the last common digit
         last_digits = u_str.gsub(/[^0-9]/, "")[-2..]
         [v_str, last_digits]
+      end
+
+      # Decimal places = 1 - floor(log10(uncertainty)). D-SI writes `NaN` for a
+      # not-measured entry (SI_Format.xsd:1195) and `Math.log10` cannot answer
+      # for it, so every caller excludes nil and NaN first.
+      def decimal_places
+        [0, 1 - Integer(Math.log10(uncertainty.to_f).floor)].max
       end
 
       def unit_suffix

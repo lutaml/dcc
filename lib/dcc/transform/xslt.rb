@@ -6,9 +6,9 @@ module Dcc
   module Transform
     # `Dcc::Transform::Xslt` applies an XSLT stylesheet to a DCC XML document.
     #
-    # Nokogiri is OFFICIALLY banned outside validation, so we shell out to
-    # the system `xsltproc` (libxslt) for XSLT 1.0 transforms. For XSLT
-    # 2.0/3.0, set `ENV["SAXON_JAR"]` to point at saxon-he.jar.
+    # Nokogiri is banned outside XSD validation and the v2-to-v3 migration,
+    # so we shell out to the system `xsltproc` (libxslt) for XSLT 1.0
+    # transforms. For XSLT 2.0/3.0, set `ENV["SAXON_JAR"]` to saxon-he.jar.
     module Xslt
       class << self
         # @param xml [String, Lutaml::Model::Serializable]
