@@ -1,11 +1,25 @@
 # 33 — Streaming parser for large documents (P3)
 
-**Status:** PENDING
+**Status:** COMPLETED
 
-## Gaps
-- Neither `lib/dcc/streaming.rb` nor `lib/dcc/streaming/reader.rb` exists.
-- Nothing in `lib/` uses `Nokogiri::XML::Reader`.
-- `spec/dcc/streaming/reader_spec.rb` was removed — see phase 38.
+## Outcome
+Built on `Moxml::SAX` rather than the `Nokogiri::XML::Reader` named in the
+Goal below. `CONTRIBUTING.adoc` bans Nokogiri outside
+`lib/dcc/validate/xsd.rb`, so the reader could not use it. The lazy,
+constant-memory streaming this phase asked for is unaffected.
+
+Items and quantities are enumerable. Results are out of scope for this phase:
+there is no streaming entry point for them, and no path to one from a streamed
+item — `Item` has no result-shaped attribute, and `results` hangs off
+`MeasurementResult`.
+
+Memory is verified by `spec/support/streaming_memory_probe.rb`, which runs in
+a child process and asserts retained heap stays flat as the stream advances,
+instead of the 50 MB / 200 MB fixture in the Verification section below. That
+bounds growth at any document size rather than at one size.
+
+`spec/dcc/streaming/reader_spec.rb`, removed in phase 38, is replaced by
+`spec/dcc/streaming_spec.rb`.
 
 ## Goal
 Lazy enumeration of items / results / quantities for multi-MB DCC documents using Nokogiri::XML::Reader.
